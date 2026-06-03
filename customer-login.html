@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SokoHub Admin — Login</title>
+    <title>SokoHub — Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -106,7 +106,7 @@
       .form-input {
         width: 100%;
         padding: 14px 16px;
-        background: #eef4ff; /* Light blueish tint like in image */
+        background: #eef4ff;
         border: 1px solid transparent;
         border-radius: var(--radius-md);
         font-size: 14px;
@@ -214,6 +214,21 @@
           transform: rotate(360deg);
         }
       }
+
+      .vendor-link {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .vendor-link a {
+        color: var(--orange);
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+      .vendor-link a:hover {
+        color: var(--orange-hover);
+      }
     </style>
   </head>
   <body>
@@ -226,9 +241,9 @@
 
     <div class="login-card">
       <div class="logo">SokoHub</div>
-      <h1 class="portal-title">Admin Portal</h1>
+      <h1 class="portal-title">Welcome Back</h1>
       <p class="portal-sub">
-        Sign in to manage your listings, orders, and shop settings.
+        Sign in to your account and start buying and selling.
       </p>
 
       <div class="tab-wrap">
@@ -236,7 +251,7 @@
           Sign In
         </button>
         <button class="tab" id="tabSignUp" onclick="switchTab('signup')">
-          Register
+          Sign Up
         </button>
       </div>
 
@@ -297,6 +312,11 @@
         />
         Continue with Google
       </button>
+
+      <div class="vendor-link">
+        Are you a vendor?
+        <a href="vendor-dashboard.html">Sign in to vendor portal</a>
+      </div>
     </div>
 
     <script type="module">
@@ -356,15 +376,19 @@
             }
 
             // Redirect based on role
-            if (role === "admin") window.location.href = "admin-panel.html";
-            else {
-              alert("Access Denied: This portal is for Administrators only.");
+            if (role === "admin") {
+              alert(
+                "To access the vendor portal, please sign in with your vendor account.",
+              );
               await auth.signOut();
               window.location.reload();
+            } else {
+              // Customer - redirect to listings or dashboard
+              window.location.href = "listings.html";
             }
           } catch (e) {
             console.error("Redirect error:", e);
-            window.location.href = "create-listing-v2.html";
+            window.location.href = "listings.html";
           }
         } else {
           // User not logged in, show form

@@ -653,59 +653,86 @@
       }
 
       /* ============================================================
-   CATEGORIES GRID (Etsy style — warm tiles)
+   CATEGORIES GRID (Etsy-style photo tiles)
 ============================================================ */
       .categories-section {
-        background: var(--white);
+        background: var(--cream);
       }
       .cat-grid {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
-        gap: 20px;
+        gap: 16px;
       }
       .cat-card {
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: var(--r-sm);
-        padding: 24px 16px;
-        text-align: center;
+        border-radius: var(--r-md);
+        overflow: hidden;
         cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        position: relative;
+        transition:
+          transform 0.28s ease,
+          box-shadow 0.28s ease;
+        aspect-ratio: 3/4;
+        background: var(--cream-3);
       }
       .cat-card:hover {
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        border-color: #c4c4c4;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
       }
-      .cat-icon {
-        width: 64px;
-        height: 64px;
-        background: var(--cream);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--navy);
-        margin: 0 auto 12px;
-        border-radius: 50%;
-        transition: transform 0.3s ease;
+      .cat-card-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
       }
-      .cat-card:hover .cat-icon {
-        transform: scale(1.12);
-        background: var(--amber-lt);
-        color: var(--navy);
+      .cat-card:hover .cat-card-img {
+        transform: scale(1.06);
+      }
+      .cat-card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(20, 20, 30, 0.82) 0%,
+          rgba(20, 20, 30, 0.2) 55%,
+          transparent 100%
+        );
+      }
+      .cat-card-body {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 14px 12px 12px;
       }
       .cat-name {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--text);
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.25;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cat-name-arrow {
+        display: inline-flex;
+        align-items: center;
+        color: var(--amber);
+        flex-shrink: 0;
+        transition: transform 0.2s;
+      }
+      .cat-card:hover .cat-name-arrow {
+        transform: translateX(3px);
       }
       .cat-count {
-        font-size: 0.75rem;
-        color: var(--text-3);
+        font-size: 0.68rem;
+        color: rgba(255, 255, 255, 0.6);
         margin-top: 3px;
+      }
+      /* fallback icon for cards with no image */
+      .cat-icon {
+        display: none;
       }
 
       /* ============================================================
@@ -956,7 +983,7 @@
       }
 
       /* ============================================================
-   HOW IT WORKS (Etsy style — warm, illustrated)
+   HOW IT WORKS (isometric illustrated cards)
 ============================================================ */
       .how-section {
         background: var(--cream-2);
@@ -964,15 +991,15 @@
       .how-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 32px;
+        gap: 24px;
         position: relative;
       }
       .how-grid::before {
         content: "";
         position: absolute;
-        top: 36px;
-        left: 12%;
-        right: 12%;
+        top: 80px;
+        left: 14%;
+        right: 14%;
         height: 2px;
         background: repeating-linear-gradient(
           90deg,
@@ -985,76 +1012,111 @@
       .how-item {
         text-align: center;
         position: relative;
+        background: var(--white);
+        border-radius: var(--r-lg);
+        padding: 28px 20px 24px;
+        border: 1.5px solid var(--border);
+        transition: all 0.25s ease;
       }
-      .how-num {
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
-        background: var(--navy);
-        color: var(--amber);
-        font-family: var(--font-head);
-        font-size: 1.5rem;
+      .how-item:hover {
+        border-color: var(--amber);
+        box-shadow: 0 8px 28px rgba(245, 158, 11, 0.12);
+        transform: translateY(-4px);
+      }
+      .how-iso {
+        width: 120px;
+        height: 100px;
+        margin: 0 auto 16px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 18px;
-        box-shadow: 0 4px 16px rgba(26, 31, 46, 0.2);
-        position: relative;
+      }
+      .how-step-badge {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--amber);
+        color: var(--navy);
+        font-size: 0.75rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
         z-index: 1;
       }
-      .how-icon {
-        font-size: 1.5rem;
+      .how-num {
+        display: none;
       }
       .how-title {
-        font-size: 0.95rem;
+        font-size: 0.97rem;
         font-weight: 700;
         color: var(--text);
         margin-bottom: 8px;
       }
       .how-desc {
-        font-size: 0.82rem;
+        font-size: 0.81rem;
         color: var(--text-3);
-        line-height: 1.6;
+        line-height: 1.65;
       }
 
       /* ============================================================
-   TRUST / WHY US
+   TRUST / WHY US (isometric cards)
 ============================================================ */
       .trust-section {
-        background: var(--white);
+        background: var(--navy);
+      }
+      .trust-section .section-head h2 {
+        color: var(--white);
+      }
+      .trust-section .section-head p {
+        color: rgba(255, 255, 255, 0.5);
       }
       .trust-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
+        gap: 20px;
       }
       .trust-card {
-        padding: 28px 22px;
-        border-radius: var(--r-md);
-        background: var(--cream);
-        border: 1.5px solid var(--cream-3);
-        transition: all 0.22s;
+        padding: 28px 20px 24px;
+        border-radius: var(--r-lg);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.25s ease;
+        text-align: center;
       }
       .trust-card:hover {
         border-color: var(--amber);
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.1);
-        transform: translateY(-2px);
+        background: rgba(245, 158, 11, 0.07);
+        box-shadow: 0 8px 28px rgba(245, 158, 11, 0.15);
+        transform: translateY(-4px);
+      }
+      .trust-iso {
+        width: 120px;
+        height: 100px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .trust-ico {
-        font-size: 2rem;
-        margin-bottom: 14px;
+        display: none;
       }
       .trust-card h3 {
         font-size: 1rem;
         font-weight: 700;
-        color: var(--text);
+        color: var(--white);
         margin-bottom: 8px;
         font-family: var(--font-head);
       }
       .trust-card p {
-        font-size: 0.82rem;
-        color: var(--text-3);
-        line-height: 1.6;
+        font-size: 0.81rem;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.65;
       }
 
       /* ============================================================
@@ -1429,10 +1491,10 @@
           gap: 12px;
         }
         .trust-grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(2, 1fr);
         }
         .how-grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(2, 1fr);
         }
         .footer-grid {
           grid-template-columns: 1fr;
@@ -1788,11 +1850,62 @@
           <p>Buying and selling made ridiculously simple</p>
         </div>
         <div class="how-grid">
+          <!-- Step 1: Post Listing -->
           <div class="how-item">
-            <div class="how-num">
-              <span class="how-icon"
-                ><i data-lucide="camera" size="28"></i
-              ></span>
+            <div class="how-step-badge">1</div>
+            <div class="how-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <!-- Phone isometric -->
+                <g transform="translate(20,5)">
+                  <!-- Phone body -->
+                  <polygon
+                    points="40,10 72,28 72,82 40,64"
+                    fill="#1a1f2e"
+                    stroke="#2d3452"
+                    stroke-width="1"
+                  />
+                  <polygon
+                    points="8,28 40,10 40,64 8,46"
+                    fill="#232938"
+                    stroke="#2d3452"
+                    stroke-width="1"
+                  />
+                  <polygon
+                    points="8,28 72,28 72,30 8,30"
+                    fill="#f59e0b"
+                    opacity="0.7"
+                  />
+                  <polygon
+                    points="8,46 72,64 72,82 8,64"
+                    fill="#12161f"
+                    stroke="#1a1f2e"
+                    stroke-width="1"
+                  />
+                  <!-- Screen -->
+                  <polygon points="44,20 68,33 68,58 44,45" fill="#3b4a6b" />
+                  <polygon points="12,33 44,20 44,45 12,32" fill="#2d3a5c" />
+                  <!-- Camera icon on screen -->
+                  <polygon
+                    points="42,28 58,36 58,44 42,36"
+                    fill="#f59e0b"
+                    opacity="0.8"
+                  />
+                  <circle cx="46" cy="32" r="2" fill="#1a1f2e" />
+                  <!-- Flash -->
+                  <polygon
+                    points="26,24 36,29 36,24 46,29 36,38 36,33 26,28"
+                    fill="#fbbf24"
+                    opacity="0.9"
+                  />
+                  <!-- Home button -->
+                  <ellipse cx="40" cy="72" rx="4" ry="2.5" fill="#2d3452" />
+                </g>
+              </svg>
             </div>
             <div class="how-title">Post Your Listing</div>
             <div class="how-desc">
@@ -1800,11 +1913,98 @@
               minutes. Always free.
             </div>
           </div>
+          <!-- Step 2: Chat -->
           <div class="how-item">
-            <div class="how-num">
-              <span class="how-icon"
-                ><i data-lucide="message-square" size="28"></i
-              ></span>
+            <div class="how-step-badge">2</div>
+            <div class="how-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <g transform="translate(5,5)">
+                  <!-- Chat bubble 1 (left) -->
+                  <polygon
+                    points="10,20 52,20 52,42 10,42"
+                    fill="#f59e0b"
+                    rx="6"
+                  />
+                  <rect
+                    x="10"
+                    y="20"
+                    width="42"
+                    height="22"
+                    rx="5"
+                    fill="#f59e0b"
+                  />
+                  <polygon points="18,42 10,50 26,42" fill="#f59e0b" />
+                  <!-- Lines in bubble 1 -->
+                  <line
+                    x1="16"
+                    y1="27"
+                    x2="46"
+                    y2="27"
+                    stroke="#1a1f2e"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <line
+                    x1="16"
+                    y1="32"
+                    x2="38"
+                    y2="32"
+                    stroke="#1a1f2e"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <!-- Chat bubble 2 (right) -->
+                  <rect
+                    x="52"
+                    y="48"
+                    width="44"
+                    height="22"
+                    rx="5"
+                    fill="#1a1f2e"
+                  />
+                  <polygon points="86,70 96,76 80,70" fill="#1a1f2e" />
+                  <!-- Lines in bubble 2 -->
+                  <line
+                    x1="58"
+                    y1="55"
+                    x2="90"
+                    y2="55"
+                    stroke="#f59e0b"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <line
+                    x1="58"
+                    y1="61"
+                    x2="80"
+                    y2="61"
+                    stroke="rgba(245,158,11,0.5)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <!-- Lock icon -->
+                  <rect
+                    x="46"
+                    y="82"
+                    width="18"
+                    height="12"
+                    rx="2"
+                    fill="#5f7a61"
+                  />
+                  <path
+                    d="M50,82 Q55,74 60,82"
+                    stroke="#5f7a61"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                  <circle cx="55" cy="87" r="1.5" fill="white" />
+                </g>
+              </svg>
             </div>
             <div class="how-title">Chat with Buyers</div>
             <div class="how-desc">
@@ -1812,11 +2012,120 @@
               phone number needed.
             </div>
           </div>
+          <!-- Step 3: Meet & Deal -->
           <div class="how-item">
-            <div class="how-num">
-              <span class="how-icon"
-                ><i data-lucide="users" size="28"></i
-              ></span>
+            <div class="how-step-badge">3</div>
+            <div class="how-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <g transform="translate(10,8)">
+                  <!-- Handshake isometric style -->
+                  <!-- Left hand -->
+                  <ellipse
+                    cx="30"
+                    cy="55"
+                    rx="18"
+                    ry="8"
+                    fill="#c45c2b"
+                    opacity="0.15"
+                  />
+                  <rect
+                    x="14"
+                    y="44"
+                    width="22"
+                    height="10"
+                    rx="5"
+                    fill="#e07040"
+                  />
+                  <rect
+                    x="20"
+                    y="36"
+                    width="6"
+                    height="12"
+                    rx="3"
+                    fill="#e07040"
+                  />
+                  <rect
+                    x="27"
+                    y="34"
+                    width="6"
+                    height="14"
+                    rx="3"
+                    fill="#e07040"
+                  />
+                  <rect
+                    x="34"
+                    y="36"
+                    width="6"
+                    height="12"
+                    rx="3"
+                    fill="#e07040"
+                  />
+                  <!-- Right hand -->
+                  <ellipse
+                    cx="70"
+                    cy="55"
+                    rx="18"
+                    ry="8"
+                    fill="#1a1f2e"
+                    opacity="0.15"
+                  />
+                  <rect
+                    x="64"
+                    y="44"
+                    width="22"
+                    height="10"
+                    rx="5"
+                    fill="#232938"
+                  />
+                  <rect
+                    x="64"
+                    y="36"
+                    width="6"
+                    height="12"
+                    rx="3"
+                    fill="#232938"
+                  />
+                  <rect
+                    x="57"
+                    y="34"
+                    width="6"
+                    height="14"
+                    rx="3"
+                    fill="#232938"
+                  />
+                  <rect
+                    x="50"
+                    y="36"
+                    width="6"
+                    height="12"
+                    rx="3"
+                    fill="#232938"
+                  />
+                  <!-- Shake point -->
+                  <ellipse cx="50" cy="50" rx="10" ry="6" fill="#f59e0b" />
+                  <!-- M-Pesa coin -->
+                  <circle cx="50" cy="24" r="16" fill="#00a550" opacity="0.9" />
+                  <text
+                    x="50"
+                    y="28"
+                    text-anchor="middle"
+                    font-size="8"
+                    font-weight="800"
+                    fill="white"
+                    font-family="sans-serif"
+                  >
+                    M-PESA
+                  </text>
+                  <!-- sparkles -->
+                  <text x="18" y="22" font-size="12">✦</text>
+                  <text x="76" y="20" font-size="10">✦</text>
+                </g>
+              </svg>
             </div>
             <div class="how-title">Meet &amp; Deal</div>
             <div class="how-desc">
@@ -1824,9 +2133,70 @@
               transfer, or cash.
             </div>
           </div>
+          <!-- Step 4: Review -->
           <div class="how-item">
-            <div class="how-num">
-              <span class="how-icon"><i data-lucide="star" size="28"></i></span>
+            <div class="how-step-badge">4</div>
+            <div class="how-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <g transform="translate(8,5)">
+                  <!-- Rating card isometric -->
+                  <rect
+                    x="15"
+                    y="22"
+                    width="76"
+                    height="56"
+                    rx="8"
+                    fill="#faf7f2"
+                    stroke="#e0d9d0"
+                    stroke-width="1.5"
+                  />
+                  <!-- Avatar circle -->
+                  <circle cx="40" cy="42" r="14" fill="#e8dfd4" />
+                  <circle cx="40" cy="38" r="7" fill="#c45c2b" />
+                  <ellipse cx="40" cy="54" rx="10" ry="5" fill="#c45c2b" />
+                  <!-- Stars row -->
+                  <text x="58" y="38" font-size="10" fill="#f59e0b">★</text>
+                  <text x="68" y="38" font-size="10" fill="#f59e0b">★</text>
+                  <text x="78" y="38" font-size="10" fill="#f59e0b">★</text>
+                  <text x="88" y="38" font-size="10" fill="#f59e0b">★</text>
+                  <text x="98" y="38" font-size="10" fill="#e0d9d0">★</text>
+                  <!-- Rating text -->
+                  <rect
+                    x="56"
+                    y="42"
+                    width="38"
+                    height="4"
+                    rx="2"
+                    fill="#e8dfd4"
+                  />
+                  <rect
+                    x="56"
+                    y="50"
+                    width="28"
+                    height="4"
+                    rx="2"
+                    fill="#e8dfd4"
+                  />
+                  <!-- Verified badge -->
+                  <circle cx="52" cy="60" r="8" fill="#5f7a61" />
+                  <text
+                    x="52"
+                    y="64"
+                    text-anchor="middle"
+                    font-size="10"
+                    fill="white"
+                  >
+                    ✓
+                  </text>
+                  <!-- Sparkle -->
+                  <text x="12" y="20" font-size="14" fill="#f59e0b">✦</text>
+                </g>
+              </svg>
             </div>
             <div class="how-title">Leave a Review</div>
             <div class="how-desc">
@@ -1856,9 +2226,60 @@
           <p>Built for Kenyans, by Kenyans</p>
         </div>
         <div class="trust-grid">
+          <!-- Verified Sellers -->
           <div class="trust-card">
-            <div class="trust-ico">
-              <i data-lucide="shield-check" size="32" color="var(--amber)"></i>
+            <div class="trust-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <g transform="translate(10,5)">
+                  <!-- Shield isometric -->
+                  <polygon
+                    points="50,8 78,22 78,52 50,72 22,52 22,22"
+                    fill="#1a2a1f"
+                    stroke="#2d4a38"
+                    stroke-width="1.5"
+                  />
+                  <polygon
+                    points="50,14 72,26 72,50 50,66 28,50 28,26"
+                    fill="#5f7a61"
+                    opacity="0.6"
+                  />
+                  <!-- Check mark -->
+                  <polyline
+                    points="34,42 44,54 66,32"
+                    stroke="#f59e0b"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  />
+                  <!-- Badge shine -->
+                  <ellipse
+                    cx="38"
+                    cy="26"
+                    rx="4"
+                    ry="2"
+                    fill="white"
+                    opacity="0.2"
+                    transform="rotate(-30 38 26)"
+                  />
+                  <!-- Stars at top -->
+                  <text x="18" y="14" font-size="10" fill="#f59e0b">★</text>
+                  <text x="72" y="14" font-size="10" fill="#f59e0b">★</text>
+                  <!-- Ground shadow -->
+                  <ellipse
+                    cx="50"
+                    cy="86"
+                    rx="26"
+                    ry="5"
+                    fill="rgba(255,255,255,0.05)"
+                  />
+                </g>
+              </svg>
             </div>
             <h3>Verified Sellers</h3>
             <p>
@@ -1866,9 +2287,113 @@
               and reviews keep bad actors out.
             </p>
           </div>
+          <!-- 2-Minute Listing -->
           <div class="trust-card">
-            <div class="trust-ico">
-              <i data-lucide="zap" size="32" color="var(--amber)"></i>
+            <div class="trust-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <g transform="translate(12,5)">
+                  <!-- Stopwatch isometric -->
+                  <circle
+                    cx="50"
+                    cy="54"
+                    r="34"
+                    fill="#1a1f2e"
+                    stroke="#2d3452"
+                    stroke-width="2"
+                  />
+                  <circle cx="50" cy="54" r="28" fill="#232938" />
+                  <!-- Clock face ticks -->
+                  <line
+                    x1="50"
+                    y1="28"
+                    x2="50"
+                    y2="34"
+                    stroke="#f59e0b"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <line
+                    x1="50"
+                    y1="74"
+                    x2="50"
+                    y2="80"
+                    stroke="#3a4555"
+                    stroke-width="1.5"
+                  />
+                  <line
+                    x1="24"
+                    y1="54"
+                    x2="30"
+                    y2="54"
+                    stroke="#3a4555"
+                    stroke-width="1.5"
+                  />
+                  <line
+                    x1="70"
+                    y1="54"
+                    x2="76"
+                    y2="54"
+                    stroke="#3a4555"
+                    stroke-width="1.5"
+                  />
+                  <!-- Hands -->
+                  <line
+                    x1="50"
+                    y1="54"
+                    x2="50"
+                    y2="34"
+                    stroke="#f59e0b"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                  <line
+                    x1="50"
+                    y1="54"
+                    x2="62"
+                    y2="46"
+                    stroke="white"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <circle cx="50" cy="54" r="3" fill="#f59e0b" />
+                  <!-- Crown buttons on top -->
+                  <rect
+                    x="44"
+                    y="18"
+                    width="12"
+                    height="6"
+                    rx="2"
+                    fill="#2d3452"
+                  />
+                  <rect
+                    x="40"
+                    y="12"
+                    width="6"
+                    height="8"
+                    rx="2"
+                    fill="#2d3452"
+                  />
+                  <rect
+                    x="54"
+                    y="12"
+                    width="6"
+                    height="8"
+                    rx="2"
+                    fill="#2d3452"
+                  />
+                  <!-- Lightning bolt -->
+                  <polygon
+                    points="58,35 52,48 57,48 50,63 64,45 57,45 62,35"
+                    fill="#f59e0b"
+                    opacity="0.9"
+                  />
+                </g>
+              </svg>
             </div>
             <h3>2-Minute Listing</h3>
             <p>
@@ -1876,9 +2401,55 @@
               than brewing chai.
             </p>
           </div>
+          <!-- Zero Fees -->
           <div class="trust-card">
-            <div class="trust-ico">
-              <i data-lucide="banknote" size="32" color="var(--amber)"></i>
+            <div class="trust-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <g transform="translate(5,10)">
+                  <!-- Stack of coins isometric -->
+                  <!-- Coin 3 (bottom) -->
+                  <ellipse cx="55" cy="76" rx="30" ry="10" fill="#b45309" />
+                  <rect x="25" y="68" width="60" height="8" fill="#b45309" />
+                  <ellipse cx="55" cy="68" rx="30" ry="10" fill="#d97706" />
+                  <!-- Coin 2 -->
+                  <ellipse cx="55" cy="60" rx="30" ry="10" fill="#b45309" />
+                  <rect x="25" y="52" width="60" height="8" fill="#b45309" />
+                  <ellipse cx="55" cy="52" rx="30" ry="10" fill="#f59e0b" />
+                  <!-- Coin 1 (top) -->
+                  <ellipse cx="55" cy="44" rx="30" ry="10" fill="#b45309" />
+                  <rect x="25" y="36" width="60" height="8" fill="#c45c2b" />
+                  <ellipse cx="55" cy="36" rx="30" ry="10" fill="#fbbf24" />
+                  <!-- KES symbol on top coin -->
+                  <text
+                    x="55"
+                    y="40"
+                    text-anchor="middle"
+                    font-size="11"
+                    font-weight="800"
+                    fill="#1a1f2e"
+                    font-family="sans-serif"
+                  >
+                    KES
+                  </text>
+                  <!-- No-fee slash circle -->
+                  <circle cx="88" cy="20" r="14" fill="#dc2626" opacity="0.9" />
+                  <text
+                    x="88"
+                    y="24"
+                    text-anchor="middle"
+                    font-size="14"
+                    fill="white"
+                    font-family="sans-serif"
+                  >
+                    ✕
+                  </text>
+                </g>
+              </svg>
             </div>
             <h3>Zero Fees, Ever</h3>
             <p>
@@ -1886,9 +2457,77 @@
               in your pocket.
             </p>
           </div>
+          <!-- Truly Local -->
           <div class="trust-card">
-            <div class="trust-ico">
-              <i data-lucide="map" size="32" color="var(--amber)"></i>
+            <div class="trust-iso">
+              <svg
+                viewBox="0 0 120 100"
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="100"
+              >
+                <g transform="translate(15,5)">
+                  <!-- Map pin isometric -->
+                  <!-- Map surface -->
+                  <ellipse
+                    cx="45"
+                    cy="75"
+                    rx="38"
+                    ry="12"
+                    fill="#1a2a1f"
+                    opacity="0.6"
+                  />
+                  <!-- Contour lines -->
+                  <ellipse
+                    cx="45"
+                    cy="72"
+                    rx="30"
+                    ry="9"
+                    fill="none"
+                    stroke="#2d4a38"
+                    stroke-width="1"
+                    opacity="0.8"
+                  />
+                  <ellipse
+                    cx="45"
+                    cy="72"
+                    rx="20"
+                    ry="6"
+                    fill="none"
+                    stroke="#3a6050"
+                    stroke-width="1"
+                    opacity="0.6"
+                  />
+                  <!-- Pin shadow -->
+                  <ellipse
+                    cx="45"
+                    cy="72"
+                    rx="8"
+                    ry="3"
+                    fill="rgba(0,0,0,0.3)"
+                  />
+                  <!-- Pin stem -->
+                  <line
+                    x1="45"
+                    y1="72"
+                    x2="45"
+                    y2="30"
+                    stroke="#c45c2b"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+                  <!-- Pin head -->
+                  <circle cx="45" cy="22" r="18" fill="#c45c2b" />
+                  <circle cx="45" cy="22" r="13" fill="#e07040" />
+                  <!-- Kenya flag colours accent -->
+                  <circle cx="45" cy="22" r="7" fill="#1a1f2e" />
+                  <circle cx="45" cy="22" r="4" fill="#f59e0b" />
+                  <!-- Dots for nearby locations -->
+                  <circle cx="20" cy="62" r="3" fill="#f59e0b" opacity="0.7" />
+                  <circle cx="68" cy="58" r="3" fill="#f59e0b" opacity="0.7" />
+                  <circle cx="30" cy="50" r="2" fill="#f59e0b" opacity="0.5" />
+                </g>
+              </svg>
             </div>
             <h3>Truly Local</h3>
             <p>
@@ -2001,9 +2640,17 @@
             <ul>
               <li><a href="profile.html">My Profile</a></li>
               <li><a href="dashboard.html">Dashboard</a></li>
-              <li><a href="create-listing.html">Sell an Item</a></li>
+              <li><a href="customer-login.html">Sign In</a></li>
               <li><a href="messages.html">Messages</a></li>
               <li><a href="favorites.html">Saved Items</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>For Vendors</h4>
+            <ul>
+              <li><a href="vendor-dashboard.html">Vendor Dashboard</a></li>
+              <li><a href="admin-login.html">admin Login</a></li>
+              <li><a href="create-listing.html">Create Listing</a></li>
             </ul>
           </div>
           <div class="footer-col">
@@ -2181,15 +2828,44 @@
 
       /* ---- Categories grid ---- */
       const catGrid = document.getElementById("cat-grid");
+      const CAT_IMAGES = {
+        electronics:
+          "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80",
+        fashion:
+          "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400&q=80",
+        vehicles:
+          "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80",
+        home: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",
+        property:
+          "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=80",
+        services:
+          "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80",
+        jobs: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80",
+        agriculture:
+          "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=400&q=80",
+        sports:
+          "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80",
+        books:
+          "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80",
+        health:
+          "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80",
+        kids: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80",
+      };
       CATEGORIES.forEach((cat) => {
         const card = document.createElement("div");
         card.className = "category-card cat-card";
         card.onclick = () =>
           (window.location.href = `listings.html?cat=${cat.id}`);
+        const imgSrc =
+          CAT_IMAGES[cat.id] ||
+          `https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400&q=80`;
         card.innerHTML = `
-    <div class="cat-icon"><i data-lucide="${cat.icon}" size="28"></i></div>
-    <div class="cat-name">${cat.label}</div>
-    <div class="cat-count">${cat.count}</div>
+    <img class="cat-card-img" src="${imgSrc}" alt="${cat.label}" loading="lazy" />
+    <div class="cat-card-overlay"></div>
+    <div class="cat-card-body">
+      <div class="cat-name">${cat.label} <span class="cat-name-arrow">→</span></div>
+      <div class="cat-count">${cat.count}</div>
+    </div>
   `;
         catGrid.appendChild(card);
       });
@@ -2340,7 +3016,7 @@
 
       /* ---- Auth stubs ---- */
       window.handleLogin = () => {
-        showToast("🔑 Sign in coming soon!", 2500);
+        window.location.href = "customer-login.html";
       };
 
       /* ---- Scroll animations ---- */
@@ -2353,7 +3029,7 @@
         { threshold: 0.1 },
       );
       document
-        .querySelectorAll(".trust-card, .cat-card, .how-item")
+        .querySelectorAll(".trust-card, .cat-card, .how-item, .listing-card")
         .forEach((el) => obs.observe(el));
 
       // Initialize Lucide
