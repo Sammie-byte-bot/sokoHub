@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SokoHub Admin — Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --orange: #e8600a; --orange-hover: #c24d08; --orange-light: #fdf3ec;
+        --black: #1a1a1a; --white: #ffffff;
+        --gray-1: #4a4a4a; --gray-2: #717171; --gray-3: #a0a0a0;
+        --gray-4: #d4d4d4; --gray-5: #f0f0f0; --gray-6: #f8f8f8;
+        --border: #e0e0e0;
+        --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px;
+        --font: "DM Sans", -apple-system, sans-serif;
+        --font-display: "DM Serif Display", Georgia, serif;
+      }
+      body {
+        font-family: var(--font);
+        background-color: var(--gray-6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        color: var(--black);
+      }
+      .login-card {
+        background: var(--white);
+        width: 100%;
+        max-width: 440px;
+        padding: 48px 40px;
+        border-radius: var(--radius-xl);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+        text-align: center;
+      }
+      .logo {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--orange);
+        font-style: italic;
+        letter-spacing: -1px;
+        margin-bottom: 8px;
+        display: inline-block;
+      }
+      .portal-title {
+        font-family: var(--font-display);
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      .portal-sub {
+        color: var(--gray-2);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 32px;
+      }
+      .tab-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--gray-6);
+        padding: 4px;
+        border-radius: var(--radius-md);
+        margin-bottom: 24px;
+      }
+      .tab {
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: calc(var(--radius-md) - 2px);
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+        background: none;
+        color: var(--gray-2);
+      }
+      .tab.active {
+        background: var(--black);
+        color: var(--white);
+      }
+      .form-group {
+        text-align: left;
+        margin-bottom: 16px;
+      }
+      .form-input {
+        width: 100%;
+        padding: 14px 16px;
+        background: #eef4ff; /* Light blueish tint like in image */
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-family: var(--font);
+        transition: all 0.2s;
+      }
+      .form-input:focus {
+        outline: none;
+        border-color: var(--orange);
+        background: var(--white);
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: var(--orange);
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 8px;
+      }
+      .btn-submit:hover {
+        background: var(--orange-hover);
+        transform: translateY(-1px);
+      }
+      .btn-submit:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 24px 0;
+        color: var(--gray-3);
+        font-size: 12px;
+      }
+      .divider::before, .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+      .btn-google {
+        width: 100%;
+        padding: 12px;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-google:hover {
+        background: var(--gray-6);
+      }
+      .btn-google img {
+        width: 18px;
+        height: 18px;
+      }
+      #authError {
+        background: #fdecea;
+        color: #c0392b;
+        padding: 10px;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        margin-bottom: 16px;
+        display: none;
+      }
+      #authError.show { display: block; }
+
+      /* Loading Overlay */
+      #loadingOverlay {
+        position: fixed; inset: 0; background: var(--white); z-index: 9999;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+      }
+      .spinner {
+        width: 40px; height: 40px; border: 3px solid var(--gray-5); border-top-color: var(--orange);
+        border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+
+    <div id="loadingOverlay">
+      <div class="spinner"></div>
+      <p style="font-size: 14px; color: var(--gray-2); font-weight: 500;">Authenticating...</p>
+    </div>
+
+    <div class="login-card">
+      <div class="logo">SokoHub</div>
+      <h1 class="portal-title">Admin Portal</h1>
+      <p class="portal-sub">Sign in to manage your listings, orders, and shop settings.</p>
+
+      <div class="tab-wrap">
+        <button class="tab active" id="tabSignIn" onclick="switchTab('signin')">Sign In</button>
+        <button class="tab" id="tabSignUp" onclick="switchTab('signup')">Register</button>
+      </div>
+
+      <div id="authError"></div>
+
+      <div class="form-group" id="nameFields" style="display:none">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <input type="text" id="firstName" class="form-input" placeholder="First Name" />
+          <input type="text" id="lastName" class="form-input" placeholder="Last Name" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="email" id="email" class="form-input" placeholder="Email address" />
+      </div>
+
+      <div class="form-group">
+        <input type="password" id="password" class="form-input" placeholder="Password" />
+      </div>
+
+      <button class="btn-submit" id="btnSubmit" onclick="handleAuth()">Sign In</button>
+
+      <div class="divider">or</div>
+
+      <button class="btn-google" onclick="handleGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" alt="Google" />
+        Continue with Google
+      </button>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+      import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+      import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDH-1Q9GAH5X0BAi46EN_0bKAdHbbTul30",
+        authDomain: "sokohub-e4660.firebaseapp.com",
+        projectId: "sokohub-e4660",
+        storageBucket: "sokohub-e4660.firebasestorage.app",
+        messagingSenderId: "696413289672",
+        appId: "1:696413289672:web:2072058d2f0efa6983f9fd",
+        measurementId: "G-L0JWVTG22L",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const gProvider = new GoogleAuthProvider();
+
+      let currentTab = 'signin';
+
+      // ── AUTH STATE ──
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          // User is logged in, check role and redirect
+          try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            let role = 'customer';
+            if (userDoc.exists()) {
+              role = userDoc.data().role || 'customer';
+            } else {
+              // Create default user doc if not exists
+              await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid, email: user.email, displayName: user.displayName || user.email.split('@')[0],
+                role: 'customer', createdAt: serverTimestamp()
+              });
+            }
+            
+            
+            // Redirect based on role
+            if (role === 'admin') window.location.href = 'admin-panel.html';
+            else {
+              alert("Access Denied: This portal is for Administrators only.");
+              await auth.signOut();
+              window.location.reload();
+            }
+
+          } catch (e) {
+            console.error("Redirect error:", e);
+            window.location.href = 'create-listing-v2.html';
+          }
+        } else {
+          // User not logged in, show form
+          document.getElementById('loadingOverlay').style.display = 'none';
+        }
+      });
+
+      window.switchTab = (tab) => {
+        currentTab = tab;
+        document.getElementById('tabSignIn').classList.toggle('active', tab === 'signin');
+        document.getElementById('tabSignUp').classList.toggle('active', tab === 'signup');
+        document.getElementById('nameFields').style.display = tab === 'signup' ? 'block' : 'none';
+        document.getElementById('btnSubmit').textContent = tab === 'signin' ? 'Sign In' : 'Create Account';
+        document.getElementById('authError').classList.remove('show');
+      };
+
+      window.handleAuth = async () => {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btnSubmit');
+        const errEl = document.getElementById('authError');
+        
+        if (!email || !password) {
+          errEl.textContent = "Please fill in all fields.";
+          errEl.classList.add('show');
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = currentTab === 'signin' ? 'Signing in...' : 'Creating account...';
+        errEl.classList.remove('show');
+
+        try {
+          if (currentTab === 'signin') {
+            await signInWithEmailAndPassword(auth, email, password);
+          } else {
+            const fName = document.getElementById('firstName').value.trim();
+            const lName = document.getElementById('lastName').value.trim();
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+            if (fName || lName) {
+              await updateProfile(cred.user, { displayName: `${fName} ${lName}`.trim() });
+            }
+          }
+        } catch (e) {
+          btn.disabled = false;
+          btn.textContent = currentTab === 'signin' ? 'Sign In' : 'Create Account';
+          const msgs = {
+            'auth/user-not-found': 'No account found with this email.',
+            'auth/wrong-password': 'Incorrect password.',
+            'auth/email-already-in-use': 'Email already in use.',
+            'auth/weak-password': 'Password should be at least 6 characters.',
+            'auth/invalid-email': 'Invalid email address.'
+          };
+          errEl.textContent = msgs[e.code] || e.message;
+          errEl.classList.add('show');
+        }
+      };
+
+      window.handleGoogle = async () => {
+        try {
+          await signInWithPopup(auth, gProvider);
+        } catch (e) {
+          if (e.code !== 'auth/popup-closed-by-user') {
+            const errEl = document.getElementById('authError');
+            errEl.textContent = e.message;
+            errEl.classList.add('show');
+          }
+        }
+      };
+    </script>
+  </body>
+</html>

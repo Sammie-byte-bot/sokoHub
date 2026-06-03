@@ -1,0 +1,2363 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SokoHub — Buy & Sell Near You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      /* ============================================================
+   TOKENS
+============================================================ */
+      :root {
+        --navy: #1a1f2e;
+        --navy-2: #232938;
+        --amber: #f59e0b;
+        --amber-lt: #fbbf24;
+        --amber-dk: #d97706;
+        --rust: #c45c2b;
+        --rust-lt: #e07040;
+        --sage: #5f7a61;
+        --cream: #faf7f2;
+        --cream-2: #f3ede4;
+        --cream-3: #e8dfd4;
+        --text: #1a1a1a;
+        --text-2: #4a4a4a;
+        --text-3: #7a7a7a;
+        --white: #ffffff;
+        --border: #e0d9d0;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.14);
+        --r-sm: 6px;
+        --r-md: 12px;
+        --r-lg: 20px;
+        --r-full: 999px;
+        --font-head: "DM Serif Display", Georgia, serif;
+        --font-body: "DM Sans", system-ui, sans-serif;
+        --nav-h: 56px;
+        --strip-h: 36px;
+      }
+
+      /* ============================================================
+   RESET & BASE
+============================================================ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--font-body);
+        background: var(--cream);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        object-fit: cover;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        outline: none;
+      }
+      ul {
+        list-style: none;
+      }
+
+      .container {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* ============================================================
+   TOP STRIP (Amazon-style utility bar)
+============================================================ */
+      .top-strip {
+        background: var(--navy);
+        height: var(--strip-h);
+        display: flex;
+        align-items: center;
+      }
+      .top-strip .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      .top-strip-left,
+      .top-strip-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .top-strip a,
+      .top-strip span {
+        font-size: 0.75rem;
+        color: #c8c0b0;
+        transition: color 0.2s;
+      }
+      .top-strip a:hover {
+        color: var(--amber);
+      }
+      .top-strip-location {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--white) !important;
+        font-weight: 600;
+        font-size: 0.75rem !important;
+      }
+
+      /* ============================================================
+   NAVBAR (Amazon-style)
+============================================================ */
+      .navbar {
+        background: var(--navy-2);
+        height: var(--nav-h);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 0 rgba(245, 158, 11, 0.3);
+      }
+      .navbar .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      /* Logo */
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+        border: 1.5px solid transparent;
+        border-radius: var(--r-sm);
+        padding: 4px 8px;
+        transition: border-color 0.2s;
+      }
+      .nav-logo:hover {
+        border-color: var(--white);
+      }
+      .logo-icon {
+        display: flex;
+        align-items: center;
+        color: var(--amber);
+      }
+      .logo-text {
+        font-family: var(--font-head);
+        font-size: 1.4rem;
+        color: var(--white);
+        letter-spacing: -0.5px;
+        line-height: 1;
+      }
+      .logo-text em {
+        color: var(--amber);
+        font-style: normal;
+      }
+
+      /* Deliver to */
+      .nav-location {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 4px 8px;
+        border: 1.5px solid transparent;
+        border-radius: var(--r-sm);
+        transition: border-color 0.2s;
+        color: var(--white);
+      }
+      .nav-location:hover {
+        border-color: var(--white);
+      }
+      .nav-location-sub {
+        font-size: 0.68rem;
+        color: #a0a0a0;
+      }
+      .nav-location-main {
+        font-size: 0.82rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* Search bar */
+      .nav-search {
+        flex: 1;
+        display: flex;
+        height: 40px;
+        border-radius: var(--r-sm);
+        overflow: hidden;
+        box-shadow: 0 0 0 2px var(--amber);
+      }
+      .nav-search-cat {
+        background: var(--cream-3);
+        border: none;
+        padding: 0 10px;
+        font-size: 0.78rem;
+        color: var(--text);
+        border-right: 1px solid var(--border);
+        cursor: pointer;
+        min-width: 110px;
+      }
+      .nav-search input {
+        flex: 1;
+        border: none;
+        padding: 0 14px;
+        font-size: 0.9rem;
+        background: var(--white);
+        color: var(--text);
+        outline: none;
+      }
+      .nav-search-btn {
+        background: var(--amber);
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .nav-search-btn:hover {
+        background: var(--amber-dk);
+      }
+
+      /* Nav right actions */
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .nav-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 4px 10px;
+        border-radius: var(--r-sm);
+        border: 1.5px solid transparent;
+        color: var(--white);
+        transition: border-color 0.2s;
+        cursor: pointer;
+        background: none;
+        white-space: nowrap;
+      }
+      .nav-btn:hover {
+        border-color: var(--white);
+      }
+      .nav-btn-sub {
+        font-size: 0.68rem;
+        color: #a0a0a0;
+      }
+      .nav-btn-main {
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+      .nav-btn-main span {
+        color: var(--amber);
+      }
+
+      /* Cart */
+      .nav-cart {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border: 1.5px solid transparent;
+        border-radius: var(--r-sm);
+        color: var(--white);
+        cursor: pointer;
+        transition: border-color 0.2s;
+        background: none;
+        font-family: inherit;
+      }
+      .nav-cart:hover {
+        border-color: var(--white);
+      }
+      .nav-cart-icon {
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+      .cart-count {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--amber);
+        color: var(--navy);
+        font-size: 0.65rem;
+        font-weight: 800;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .nav-cart-label {
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+
+      /* Sell button */
+      .btn-sell {
+        background: var(--amber);
+        color: var(--navy);
+        font-weight: 700;
+        font-size: 0.84rem;
+        padding: 8px 16px;
+        border-radius: var(--r-sm);
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-shrink: 0;
+      }
+      .btn-sell:hover {
+        background: var(--amber-lt);
+        transform: translateY(-1px);
+      }
+
+      .nav-mobile-toggle {
+        display: none;
+        color: var(--white);
+        background: none;
+        border: none;
+        padding: 8px;
+        cursor: pointer;
+      }
+
+      /* ============================================================
+   SUB-NAV (category strip — Amazon style)
+============================================================ */
+      .subnav {
+        background: var(--rust);
+        height: 38px;
+        overflow: hidden;
+      }
+      .subnav .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .subnav-link {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--white);
+        padding: 0 12px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        transition: background 0.2s;
+        border-radius: 2px;
+      }
+      .subnav-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+      .subnav-link.highlight {
+        border: 1.5px solid var(--white);
+        border-radius: var(--r-sm);
+        padding: 0 10px;
+        margin-left: 4px;
+      }
+
+      /* ============================================================
+   HERO BANNER (Amazon-style full-width carousel feel)
+============================================================ */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          135deg,
+          #1a1f2e 0%,
+          #2d3452 50%,
+          #1a2a1f 100%
+        );
+        min-height: 460px;
+        display: flex;
+        align-items: center;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+      .hero .container {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        padding-top: 48px;
+        padding-bottom: 48px;
+      }
+      .hero-text {
+        color: var(--white);
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: var(--amber);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 5px 14px;
+        border-radius: var(--r-full);
+        margin-bottom: 20px;
+      }
+      .hero-h1 {
+        font-family: var(--font-head);
+        font-size: clamp(2.4rem, 4vw, 3.4rem);
+        line-height: 1.15;
+        margin-bottom: 18px;
+        color: var(--white);
+      }
+      .hero-h1 em {
+        color: var(--amber);
+        font-style: italic;
+      }
+      .hero-sub {
+        font-size: 1rem;
+        color: #b0bac8;
+        line-height: 1.7;
+        margin-bottom: 32px;
+        max-width: 420px;
+      }
+      .hero-cta-row {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        background: var(--amber);
+        color: var(--navy);
+        font-weight: 700;
+        font-size: 0.95rem;
+        padding: 13px 28px;
+        border-radius: var(--r-sm);
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .btn-primary:hover {
+        background: var(--amber-lt);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+      }
+      .btn-outline-white {
+        background: transparent;
+        color: var(--white);
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 12px 26px;
+        border-radius: var(--r-sm);
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .btn-outline-white:hover {
+        border-color: var(--white);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      /* Hero stats */
+      .hero-stats {
+        display: flex;
+        gap: 32px;
+        margin-top: 36px;
+        padding-top: 28px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .hero-stat strong {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--amber);
+        font-family: var(--font-head);
+      }
+      .hero-stat span {
+        font-size: 0.78rem;
+        color: #7a8699;
+      }
+
+      /* Hero card stack (Etsy-ish product preview) */
+      .hero-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 12px;
+        height: 380px;
+      }
+      .hero-card {
+        border-radius: var(--r-md);
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+        box-shadow: var(--shadow-lg);
+      }
+      .hero-card:hover {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      }
+      .hero-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .hero-card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.7) 0%,
+          transparent 60%
+        );
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 14px;
+      }
+      .hero-card-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.3;
+      }
+      .hero-card-price {
+        font-size: 0.78rem;
+        color: var(--amber);
+        font-weight: 600;
+        margin-top: 2px;
+      }
+      .hero-card:nth-child(1) {
+        grid-row: span 2;
+      }
+
+      /* ============================================================
+   PROMO BAND (Amazon "today's deals" row)
+============================================================ */
+      .promo-band {
+        background: var(--cream-2);
+        border-top: 3px solid var(--amber);
+        border-bottom: 1px solid var(--border);
+        padding: 10px 0;
+      }
+      .promo-band .container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .promo-band::-webkit-scrollbar {
+        display: none;
+      }
+      .promo-chip {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-2);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .promo-chip .chip-badge {
+        background: var(--rust);
+        color: var(--white);
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: var(--r-full);
+      }
+
+      /* ============================================================
+   SECTION BASE
+============================================================ */
+      .section {
+        padding: 52px 0;
+      }
+      .section-head {
+        margin-bottom: 32px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .section-head h2 {
+        font-family: var(--font-head);
+        font-size: 1.9rem;
+        color: var(--text);
+        line-height: 1.2;
+      }
+      .section-head p {
+        font-size: 0.88rem;
+        color: var(--text-3);
+        margin-top: 4px;
+      }
+      .see-all {
+        font-size: 0.83rem;
+        font-weight: 700;
+        color: var(--rust);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: gap 0.2s;
+      }
+      .see-all:hover {
+        gap: 8px;
+      }
+
+      /* ============================================================
+   CATEGORIES GRID (Etsy style — warm tiles)
+============================================================ */
+      .categories-section {
+        background: var(--white);
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 20px;
+      }
+      .cat-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        padding: 24px 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .cat-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        border-color: #c4c4c4;
+      }
+      .cat-icon {
+        width: 64px;
+        height: 64px;
+        background: var(--cream);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--navy);
+        margin: 0 auto 12px;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+      .cat-card:hover .cat-icon {
+        transform: scale(1.12);
+        background: var(--amber-lt);
+        color: var(--navy);
+      }
+      .cat-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .cat-count {
+        font-size: 0.75rem;
+        color: var(--text-3);
+        margin-top: 3px;
+      }
+
+      /* ============================================================
+   DEALS BANNER (Amazon Prime-style full-width)
+============================================================ */
+      .deals-banner {
+        background: linear-gradient(120deg, var(--rust) 0%, #8b3a1e 100%);
+        padding: 40px 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .deals-banner::after {
+        content: "🔥";
+        position: absolute;
+        right: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 8rem;
+        opacity: 0.08;
+      }
+      .deals-banner .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .deals-banner-text h2 {
+        font-family: var(--font-head);
+        font-size: 2rem;
+        color: var(--white);
+        margin-bottom: 8px;
+      }
+      .deals-banner-text p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.92rem;
+      }
+      .deals-banner-badges {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+      .deal-badge {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: var(--white);
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 5px 14px;
+        border-radius: var(--r-full);
+      }
+      .btn-deals {
+        background: var(--white);
+        color: var(--rust);
+        font-weight: 800;
+        font-size: 0.95rem;
+        padding: 13px 28px;
+        border-radius: var(--r-sm);
+        border: none;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .btn-deals:hover {
+        background: var(--amber);
+        color: var(--navy);
+        transform: translateY(-2px);
+      }
+
+      /* ============================================================
+   LISTINGS GRID
+============================================================ */
+      .listings-section {
+        background: var(--cream);
+      }
+      .filter-tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+      }
+      .ftab {
+        padding: 7px 16px;
+        border-radius: var(--r-full);
+        font-size: 0.82rem;
+        font-weight: 600;
+        border: 1.5px solid var(--border);
+        background: var(--white);
+        color: var(--text-2);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .ftab:hover {
+        border-color: var(--amber);
+        color: var(--text);
+      }
+      .ftab.active {
+        background: var(--navy);
+        color: var(--white);
+        border-color: var(--navy);
+        box-shadow: 0 3px 10px rgba(26, 31, 46, 0.2);
+      }
+
+      .listings-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      /* Listing card (Etsy warmth + Amazon density) */
+      .listing-card {
+        background: var(--white);
+        border-radius: var(--r-md);
+        overflow: hidden;
+        border: 1.5px solid var(--border);
+        transition: all 0.22s;
+        cursor: pointer;
+        position: relative;
+      }
+      .listing-card:hover {
+        border-color: var(--amber);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+      }
+      .listing-card-img {
+        position: relative;
+        aspect-ratio: 4/3;
+        background: var(--cream-2);
+        overflow: hidden;
+      }
+      .listing-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s;
+      }
+      .listing-card:hover .listing-card-img img {
+        transform: scale(1.05);
+      }
+
+      /* Condition badge */
+      .cond-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 3px 9px;
+        border-radius: var(--r-full);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .cond-new {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .cond-likenew {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+      .cond-good {
+        background: #fef9c3;
+        color: #854d0e;
+      }
+      .cond-fair {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      /* Heart */
+      .fav-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--white);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.2s;
+        cursor: pointer;
+        color: var(--text-3);
+      }
+      .fav-btn:hover,
+      .fav-btn.active {
+        color: #e11d48;
+        transform: scale(1.12);
+      }
+
+      .listing-card-body {
+        padding: 14px 14px 16px;
+      }
+      .listing-cat-tag {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--sage);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 4px;
+      }
+      .listing-title {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.4;
+        margin-bottom: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .listing-price {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--rust);
+        margin-bottom: 8px;
+        font-family: var(--font-head);
+      }
+      .listing-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.72rem;
+        color: var(--text-3);
+      }
+      .listing-location {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+
+      /* "Seller loves" Etsy-style badge */
+      .seller-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--sage);
+        margin-top: 8px;
+        background: #e8f5e8;
+        padding: 2px 8px;
+        border-radius: var(--r-full);
+      }
+
+      /* ============================================================
+   HOW IT WORKS (Etsy style — warm, illustrated)
+============================================================ */
+      .how-section {
+        background: var(--cream-2);
+      }
+      .how-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        position: relative;
+      }
+      .how-grid::before {
+        content: "";
+        position: absolute;
+        top: 36px;
+        left: 12%;
+        right: 12%;
+        height: 2px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--amber) 0,
+          var(--amber) 8px,
+          transparent 8px,
+          transparent 16px
+        );
+      }
+      .how-item {
+        text-align: center;
+        position: relative;
+      }
+      .how-num {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: var(--navy);
+        color: var(--amber);
+        font-family: var(--font-head);
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 18px;
+        box-shadow: 0 4px 16px rgba(26, 31, 46, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+      .how-icon {
+        font-size: 1.5rem;
+      }
+      .how-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .how-desc {
+        font-size: 0.82rem;
+        color: var(--text-3);
+        line-height: 1.6;
+      }
+
+      /* ============================================================
+   TRUST / WHY US
+============================================================ */
+      .trust-section {
+        background: var(--white);
+      }
+      .trust-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+      .trust-card {
+        padding: 28px 22px;
+        border-radius: var(--r-md);
+        background: var(--cream);
+        border: 1.5px solid var(--cream-3);
+        transition: all 0.22s;
+      }
+      .trust-card:hover {
+        border-color: var(--amber);
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.1);
+        transform: translateY(-2px);
+      }
+      .trust-ico {
+        font-size: 2rem;
+        margin-bottom: 14px;
+      }
+      .trust-card h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 8px;
+        font-family: var(--font-head);
+      }
+      .trust-card p {
+        font-size: 0.82rem;
+        color: var(--text-3);
+        line-height: 1.6;
+      }
+
+      /* ============================================================
+   NEWSLETTER / CTA BAND (Etsy-style warm)
+============================================================ */
+      .cta-band {
+        background: var(--navy);
+        padding: 64px 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-band::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: rgba(245, 158, 11, 0.08);
+      }
+      .cta-band::after {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        left: -40px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(197, 92, 43, 0.08);
+      }
+      .cta-band .container {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+      .cta-text h2 {
+        font-family: var(--font-head);
+        font-size: 2rem;
+        color: var(--white);
+        margin-bottom: 12px;
+      }
+      .cta-text p {
+        color: #7a8899;
+        font-size: 0.9rem;
+        line-height: 1.7;
+      }
+      .cta-form {
+        display: flex;
+        gap: 10px;
+        margin-top: 24px;
+      }
+      .cta-input {
+        flex: 1;
+        height: 48px;
+        border-radius: var(--r-sm);
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0 16px;
+        font-size: 0.9rem;
+        color: var(--white);
+        outline: none;
+        transition: border-color 0.2s;
+        font-family: inherit;
+      }
+      .cta-input::placeholder {
+        color: #5a6577;
+      }
+      .cta-input:focus {
+        border-color: var(--amber);
+      }
+      .cta-form .btn-primary {
+        height: 48px;
+      }
+      .cta-sell {
+        text-align: center;
+      }
+      .cta-sell-box {
+        background: rgba(245, 158, 11, 0.08);
+        border: 1.5px solid rgba(245, 158, 11, 0.2);
+        border-radius: var(--r-lg);
+        padding: 36px 32px;
+      }
+      .cta-sell-box .emoji {
+        font-size: 3rem;
+        margin-bottom: 16px;
+      }
+      .cta-sell-box h3 {
+        font-family: var(--font-head);
+        font-size: 1.4rem;
+        color: var(--white);
+        margin-bottom: 10px;
+      }
+      .cta-sell-box p {
+        color: #7a8899;
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+      }
+
+      /* ============================================================
+   FOOTER
+============================================================ */
+      footer {
+        background: #12161f;
+        color: #8899aa;
+        padding: 56px 0 24px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .footer-brand .logo-text,
+      .footer-brand-logo .logo-text {
+        color: var(--white);
+        font-size: 1.3rem;
+      }
+      .footer-brand p {
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: #5a6879;
+        margin-top: 14px;
+        max-width: 260px;
+      }
+      .footer-social {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .social-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.2s;
+        color: var(--white);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .social-btn:hover {
+        background: var(--amber);
+        color: var(--navy);
+        border-color: var(--amber);
+      }
+      .footer-sell-link {
+        display: inline-block;
+        margin-top: 14px;
+        background: var(--amber);
+        color: var(--navy);
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .footer-sell-link:hover {
+        opacity: 0.95;
+        transform: translateY(-1px);
+      }
+      .footer-col h4 {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: var(--white);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .footer-col ul li {
+        margin-bottom: 10px;
+      }
+      .footer-col ul li a {
+        font-size: 0.82rem;
+        color: #5a6879;
+        transition: color 0.2s;
+      }
+      .footer-col ul li a:hover {
+        color: var(--amber);
+      }
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 24px;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .footer-bottom p {
+        font-size: 0.78rem;
+        color: #3a4555;
+      }
+
+      /* ============================================================
+   SKELETON
+============================================================ */
+      @keyframes shimmer {
+        0% {
+          background-position: -400px 0;
+        }
+        100% {
+          background-position: 400px 0;
+        }
+      }
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #e8dfd4 25%,
+          #f3ede4 50%,
+          #e8dfd4 75%
+        );
+        background-size: 800px 100%;
+        animation: shimmer 1.6s infinite;
+        border-radius: var(--r-sm);
+      }
+
+      /* ============================================================
+   TOAST
+============================================================ */
+      #toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .toast {
+        background: var(--navy);
+        color: var(--white);
+        padding: 12px 20px;
+        border-radius: var(--r-md);
+        font-size: 0.85rem;
+        font-weight: 600;
+        box-shadow: var(--shadow-lg);
+        animation: toastIn 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-left: 3px solid var(--amber);
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* ============================================================
+   ANIMATIONS
+============================================================ */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.6s ease both;
+      }
+      .d1 {
+        animation-delay: 0.1s;
+      }
+      .d2 {
+        animation-delay: 0.2s;
+      }
+      .d3 {
+        animation-delay: 0.3s;
+      }
+      .d4 {
+        animation-delay: 0.4s;
+      }
+
+      /* ============================================================
+   RESPONSIVE
+============================================================ */
+      @media (max-width: 1100px) {
+        .cat-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .listings-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 992px) {
+        .hero .container {
+          grid-template-columns: 1fr;
+        }
+        .hero-cards {
+          display: none;
+        }
+        .nav-actions {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: var(--navy-2);
+          justify-content: space-around;
+          padding: 10px;
+          box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+          z-index: 1001;
+        }
+        .nav-actions .btn-sell {
+          display: none;
+        }
+        .how-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .how-grid::before,
+        .nav-location {
+          display: none;
+        }
+        .trust-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .cta-band .container {
+          grid-template-columns: 1fr;
+        }
+        .nav-mobile-toggle {
+          display: block;
+          order: 10;
+        }
+        .nav-search {
+          order: 9;
+          margin-right: 0;
+        }
+      }
+      @media (max-width: 700px) {
+        .top-strip {
+          display: none;
+        }
+        .cat-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .listings-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .subnav {
+          display: none;
+        }
+        .nav-search-cat {
+          display: none;
+        }
+      }
+      @media (max-width: 480px) {
+        .cat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .listings-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .hero-stats {
+          flex-direction: column;
+          gap: 12px;
+        }
+        .trust-grid {
+          grid-template-columns: 1fr;
+        }
+        .how-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+  TOP STRIP
+============================================================ -->
+    <div class="top-strip">
+      <div class="container">
+        <div class="top-strip-left">
+          <span class="top-strip-location"
+            ><i data-lucide="map-pin" size="14"></i> Nairobi, Kenya</span
+          >
+          <a href="#">Change Location</a>
+          <a href="#">Download App</a>
+        </div>
+        <div class="top-strip-right">
+          <a href="#">Help Center</a>
+          <a href="#">Safety Tips</a>
+          <a
+            href="create-listing.html"
+            style="color: var(--amber-lt); font-weight: 700"
+            >Sell for Free</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+  NAVBAR
+============================================================ -->
+    <nav class="navbar">
+      <div class="container">
+        <!-- Logo -->
+        <a href="index.html" class="nav-logo">
+          <span class="logo-icon"
+            ><i data-lucide="shopping-cart" size="28"></i
+          ></span>
+          <span class="logo-text">Soko<em>Hub</em></span>
+        </a>
+
+        <!-- Deliver to -->
+        <div class="nav-location">
+          <span class="nav-location-sub">Deliver to</span>
+          <span class="nav-location-main"
+            ><i data-lucide="map-pin" size="14"></i> Nairobi</span
+          >
+        </div>
+
+        <!-- Search -->
+        <div class="nav-search">
+          <select class="nav-search-cat" id="nav-cat-select">
+            <option value="">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="vehicles">Vehicles</option>
+            <option value="home">Home &amp; Garden</option>
+            <option value="services">Services</option>
+            <option value="property">Property</option>
+            <option value="jobs">Jobs</option>
+          </select>
+          <input
+            type="text"
+            id="nav-search-input"
+            placeholder="Search for anything…"
+            autocomplete="off"
+          />
+          <button
+            class="nav-search-btn"
+            onclick="goSearch()"
+            aria-label="Search"
+          >
+            <i data-lucide="search" size="20" color="#1a1f2e"></i>
+          </button>
+        </div>
+
+        <!-- Right actions -->
+        <div class="nav-actions">
+          <button class="nav-btn" onclick="handleLogin()">
+            <span class="nav-btn-sub">Hello, Sign in</span>
+            <span class="nav-btn-main">Account <span>▾</span></span>
+          </button>
+          <a href="favorites.html" class="nav-btn">
+            <span class="nav-btn-sub">Your</span>
+            <span
+              class="nav-btn-main"
+              style="display: flex; align-items: center; gap: 4px"
+              ><i data-lucide="heart" size="14" color="var(--amber)"></i>
+              Saved</span
+            >
+          </a>
+          <button class="nav-cart" style="position: relative">
+            <span
+              class="nav-cart-icon"
+              style="position: relative; display: inline-block"
+              ><i data-lucide="shopping-bag" size="24"></i>
+              <span class="cart-count">0</span>
+            </span>
+            <span class="nav-cart-label">Cart</span>
+          </button>
+          <!-- Sell button removed from navbar; moved to footer -->
+        </div>
+        <button class="nav-mobile-toggle" aria-label="Menu">
+          <i data-lucide="menu" size="28"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Sub-nav -->
+    <div class="subnav">
+      <div class="container">
+        <a
+          href="#"
+          class="subnav-link"
+          style="font-weight: 800; display: flex; align-items: center; gap: 6px"
+          ><i data-lucide="menu" size="16"></i> All</a
+        >
+        <a href="listings.html?tab=deals" class="subnav-link highlight"
+          >🔥 Today's Deals</a
+        >
+        <a href="listings.html?cat=electronics" class="subnav-link"
+          >💻 Electronics</a
+        >
+        <a href="listings.html?cat=fashion" class="subnav-link">👗 Fashion</a>
+        <a href="listings.html?cat=vehicles" class="subnav-link">🚗 Vehicles</a>
+        <a href="listings.html?cat=home" class="subnav-link"
+          >🏠 Home &amp; Garden</a
+        >
+        <a href="listings.html?cat=property" class="subnav-link">🏢 Property</a>
+        <a href="listings.html?cat=services" class="subnav-link">🔧 Services</a>
+        <a href="listings.html?cat=jobs" class="subnav-link">💼 Jobs</a>
+        <a href="listings.html?cat=agriculture" class="subnav-link"
+          >🌿 Agriculture</a
+        >
+      </div>
+    </div>
+
+    <!-- ============================================================
+  HERO
+============================================================ -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-text">
+          <div class="hero-eyebrow fade-up">
+            🇰🇪 Kenya's #1 Community Marketplace
+          </div>
+          <h1 class="hero-h1 fade-up d1">
+            Buy &amp; Sell <em>Anything</em><br />Near You
+          </h1>
+          <p class="hero-sub fade-up d2">
+            From electronics to fashion, vehicles to handmade crafts — SokoHub
+            connects you with thousands of trusted buyers and sellers across
+            Kenya.
+          </p>
+          <div class="hero-cta-row fade-up d3">
+            <a href="listings.html" class="btn-primary"
+              >Browse Listings <i data-lucide="search" size="18"></i
+            ></a>
+            <a href="create-listing.html" class="btn-outline-white"
+              ><i data-lucide="plus" size="18"></i> List for Free</a
+            >
+          </div>
+          <div class="hero-stats fade-up d4">
+            <div class="hero-stat">
+              <strong>12,400+</strong>
+              <span>Active Listings</span>
+            </div>
+            <div class="hero-stat">
+              <strong>8,200+</strong>
+              <span>Happy Users</span>
+            </div>
+            <div class="hero-stat">
+              <strong>47</strong>
+              <span>Counties Covered</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero cards -->
+        <div class="hero-cards fade-up d2">
+          <div
+            class="hero-card"
+            onclick="window.location.href = 'listing-detail.html?id=s3'"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80"
+              alt="MacBook"
+            />
+            <div class="hero-card-overlay">
+              <div class="hero-card-title">MacBook Pro M2</div>
+              <div class="hero-card-price">KES 145,000</div>
+            </div>
+          </div>
+          <div
+            class="hero-card"
+            onclick="window.location.href = 'listing-detail.html?id=s4'"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80"
+              alt="Shoes"
+            />
+            <div class="hero-card-overlay">
+              <div class="hero-card-title">Nike Air Force 1</div>
+              <div class="hero-card-price">KES 4,500</div>
+            </div>
+          </div>
+          <div
+            class="hero-card"
+            onclick="window.location.href = 'listing-detail.html?id=s5'"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80"
+              alt="Sofa"
+            />
+            <div class="hero-card-overlay">
+              <div class="hero-card-title">L-Shape Sofa</div>
+              <div class="hero-card-price">KES 32,000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+  PROMO BAND
+============================================================ -->
+    <div class="promo-band">
+      <div class="container">
+        <div class="promo-chip">
+          <span class="chip-badge">HOT</span> Flash deals updated daily
+        </div>
+        <div class="promo-chip">🚚 Nationwide delivery available</div>
+        <div class="promo-chip">🔒 Verified sellers only</div>
+        <div class="promo-chip">💯 Free listings — no hidden fees</div>
+        <div class="promo-chip">⭐ 4.8 avg seller rating</div>
+        <div class="promo-chip">📱 Available on mobile</div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+  CATEGORIES
+============================================================ -->
+    <section class="section categories-section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Shop by Category</h2>
+            <p>
+              Find exactly what you need, from electronics to local services
+            </p>
+          </div>
+          <a href="listings.html" class="see-all"
+            >View all <i data-lucide="arrow-right" size="16"></i
+          ></a>
+        </div>
+        <div class="cat-grid" id="cat-grid">
+          <!-- JS populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+  DEALS BANNER
+============================================================ -->
+    <div class="deals-banner">
+      <div class="container">
+        <div class="deals-banner-text">
+          <h2>🔥 Today's Hottest Deals</h2>
+          <p>Hand-picked bargains updated every day. Don't miss out!</p>
+          <div class="deals-banner-badges">
+            <span class="deal-badge">Up to 60% off Electronics</span>
+            <span class="deal-badge">Fashion from KES 500</span>
+            <span class="deal-badge">Vehicles with verified owners</span>
+          </div>
+        </div>
+        <button
+          class="btn-deals"
+          onclick="window.location.href = 'listings.html?tab=deals'"
+        >
+          See All Deals →
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+  LISTINGS
+============================================================ -->
+    <section class="section listings-section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Recent Listings</h2>
+            <p>Fresh items posted by your community</p>
+          </div>
+          <a href="listings.html" class="see-all"
+            >View all <i data-lucide="arrow-right" size="16"></i
+          ></a>
+        </div>
+
+        <div class="filter-tabs">
+          <button class="ftab active" onclick="filterListings('all', this)">
+            All
+          </button>
+          <button class="ftab" onclick="filterListings('electronics', this)">
+            💻 Electronics
+          </button>
+          <button class="ftab" onclick="filterListings('fashion', this)">
+            👗 Fashion
+          </button>
+          <button class="ftab" onclick="filterListings('vehicles', this)">
+            🚗 Vehicles
+          </button>
+          <button class="ftab" onclick="filterListings('home', this)">
+            🏠 Home
+          </button>
+          <button class="ftab" onclick="filterListings('services', this)">
+            🔧 Services
+          </button>
+        </div>
+
+        <div class="listings-grid" id="listings-grid"></div>
+
+        <div style="text-align: center; margin-top: 36px">
+          <a
+            href="listings.html"
+            class="btn-primary"
+            style="display: inline-flex"
+            >View All Listings <i data-lucide="arrow-right" size="18"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+  HOW IT WORKS
+============================================================ -->
+    <section class="section how-section">
+      <div class="container">
+        <div
+          class="section-head"
+          style="
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            gap: 8px;
+          "
+        >
+          <h2>How SokoHub Works</h2>
+          <p>Buying and selling made ridiculously simple</p>
+        </div>
+        <div class="how-grid">
+          <div class="how-item">
+            <div class="how-num">
+              <span class="how-icon"
+                ><i data-lucide="camera" size="28"></i
+              ></span>
+            </div>
+            <div class="how-title">Post Your Listing</div>
+            <div class="how-desc">
+              Snap a photo, write a quick description, and go live in under 2
+              minutes. Always free.
+            </div>
+          </div>
+          <div class="how-item">
+            <div class="how-num">
+              <span class="how-icon"
+                ><i data-lucide="message-square" size="28"></i
+              ></span>
+            </div>
+            <div class="how-title">Chat with Buyers</div>
+            <div class="how-desc">
+              Receive messages directly through our secure built-in chat. No
+              phone number needed.
+            </div>
+          </div>
+          <div class="how-item">
+            <div class="how-num">
+              <span class="how-icon"
+                ><i data-lucide="users" size="28"></i
+              ></span>
+            </div>
+            <div class="how-title">Meet &amp; Deal</div>
+            <div class="how-desc">
+              Arrange a safe meetup or delivery. Get paid via M-Pesa, bank
+              transfer, or cash.
+            </div>
+          </div>
+          <div class="how-item">
+            <div class="how-num">
+              <span class="how-icon"><i data-lucide="star" size="28"></i></span>
+            </div>
+            <div class="how-title">Leave a Review</div>
+            <div class="how-desc">
+              Rate your experience to help build a trustworthy community for
+              everyone.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+  TRUST
+============================================================ -->
+    <section class="section trust-section">
+      <div class="container">
+        <div
+          class="section-head"
+          style="
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            gap: 8px;
+          "
+        >
+          <h2>Why Thousands Choose SokoHub</h2>
+          <p>Built for Kenyans, by Kenyans</p>
+        </div>
+        <div class="trust-grid">
+          <div class="trust-card">
+            <div class="trust-ico">
+              <i data-lucide="shield-check" size="32" color="var(--amber)"></i>
+            </div>
+            <h3>Verified Sellers</h3>
+            <p>
+              Every seller goes through profile verification. Community ratings
+              and reviews keep bad actors out.
+            </p>
+          </div>
+          <div class="trust-card">
+            <div class="trust-ico">
+              <i data-lucide="zap" size="32" color="var(--amber)"></i>
+            </div>
+            <h3>2-Minute Listing</h3>
+            <p>
+              Our streamlined flow lets you go from idea to live listing faster
+              than brewing chai.
+            </p>
+          </div>
+          <div class="trust-card">
+            <div class="trust-ico">
+              <i data-lucide="banknote" size="32" color="var(--amber)"></i>
+            </div>
+            <h3>Zero Fees, Ever</h3>
+            <p>
+              No listing fees, no commission cuts. Every shilling you earn stays
+              in your pocket.
+            </p>
+          </div>
+          <div class="trust-card">
+            <div class="trust-ico">
+              <i data-lucide="map" size="32" color="var(--amber)"></i>
+            </div>
+            <h3>Truly Local</h3>
+            <p>
+              Find buyers and sellers in your estate, town, or county. No more
+              overpriced shipping.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+  CTA BAND
+============================================================ -->
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-text">
+          <h2>Get the Best Deals First</h2>
+          <p>
+            Subscribe to our newsletter and be the first to know when something
+            amazing drops near you — electronics, fashion, vehicles and more.
+          </p>
+          <div class="cta-form">
+            <input
+              class="cta-input"
+              type="email"
+              placeholder="your@email.com"
+            />
+            <button class="btn-primary" onclick="subscribe()">Subscribe</button>
+          </div>
+        </div>
+        <div class="cta-sell">
+          <div class="cta-sell-box">
+            <div class="emoji">🚀</div>
+            <h3>Ready to Sell?</h3>
+            <p>
+              Join thousands of sellers already making money on SokoHub. Post
+              your first listing in under 2 minutes — completely free.
+            </p>
+            <a
+              href="create-listing.html"
+              class="btn-primary"
+              style="justify-content: center; width: 100%"
+              >Post a Free Listing <i data-lucide="rocket" size="18"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+  FOOTER
+============================================================ -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div
+              class="footer-brand-logo"
+              style="display: flex; align-items: center; gap: 8px"
+            >
+              <i data-lucide="shopping-cart" size="24" color="var(--amber)"></i>
+              <span
+                class="logo-text"
+                style="
+                  font-family: var(--font-head);
+                  font-size: 1.3rem;
+                  color: var(--white);
+                "
+                >Soko<em style="color: var(--amber); font-style: normal"
+                  >Hub</em
+                ></span
+              >
+            </div>
+            <p>
+              Kenya's friendliest community marketplace. Buy and sell anything,
+              safely and easily — from Nairobi to Mombasa.
+            </p>
+            <a href="create-listing.html" class="footer-sell-link"
+              >Sell on SokoHub</a
+            >
+            <div class="footer-social">
+              <div class="social-btn">
+                <i data-lucide="twitter" size="16"></i>
+              </div>
+              <div class="social-btn">
+                <i data-lucide="facebook" size="16"></i>
+              </div>
+              <div class="social-btn">
+                <i data-lucide="instagram" size="16"></i>
+              </div>
+              <div class="social-btn">
+                <i data-lucide="message-circle" size="16"></i>
+              </div>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Marketplace</h4>
+            <ul>
+              <li><a href="listings.html">Browse All</a></li>
+              <li><a href="listings.html?cat=electronics">Electronics</a></li>
+              <li><a href="listings.html?cat=fashion">Fashion</a></li>
+              <li><a href="listings.html?cat=vehicles">Vehicles</a></li>
+              <li><a href="listings.html?cat=property">Property</a></li>
+              <li><a href="listings.html?tab=deals">Today's Deals</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Account</h4>
+            <ul>
+              <li><a href="profile.html">My Profile</a></li>
+              <li><a href="dashboard.html">Dashboard</a></li>
+              <li><a href="create-listing.html">Sell an Item</a></li>
+              <li><a href="messages.html">Messages</a></li>
+              <li><a href="favorites.html">Saved Items</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Safety Tips</a></li>
+              <li><a href="#">Community Rules</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2024 SokoHub. Made with ❤️ in Kenya</p>
+          <p>
+            All transactions are between buyers and sellers. SokoHub is not
+            liable for individual transactions.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <!-- ============================================================
+  JS
+============================================================ -->
+    <script>
+      /* ---- Data ---- */
+      const CATEGORIES = [
+        {
+          id: "electronics",
+          label: "Electronics",
+          icon: "laptop",
+          count: "3,200+",
+        },
+        { id: "fashion", label: "Fashion", icon: "shirt", count: "1,800+" },
+        { id: "vehicles", label: "Vehicles", icon: "car", count: "940+" },
+        { id: "home", label: "Home & Garden", icon: "home", count: "1,400+" },
+        {
+          id: "property",
+          label: "Property",
+          icon: "building-2",
+          count: "620+",
+        },
+        { id: "services", label: "Services", icon: "wrench", count: "870+" },
+        { id: "jobs", label: "Jobs", icon: "briefcase", count: "450+" },
+        {
+          id: "agriculture",
+          label: "Agriculture",
+          icon: "leaf",
+          count: "310+",
+        },
+        { id: "sports", label: "Sports", icon: "trophy", count: "280+" },
+        { id: "kids", label: "Kids & Baby", icon: "baby", count: "390+" },
+        { id: "books", label: "Books & Media", icon: "book", count: "510+" },
+        { id: "handmade", label: "Handmade", icon: "palette", count: "240+" },
+      ];
+
+      const LISTINGS = [
+        {
+          id: "s1",
+          title: "iPhone 14 Pro Max 256GB",
+          price: 75000,
+          category: "electronics",
+          condition: "like-new",
+          location: "Westlands",
+          image:
+            "https://images.unsplash.com/photo-1606041011872-596597976b25?w=600&q=80",
+          timeAgo: "2h ago",
+          views: 128,
+          seller: "⭐ Top Seller",
+        },
+        {
+          id: "s2",
+          title: 'Samsung 55" QLED Smart TV',
+          price: 62000,
+          category: "electronics",
+          condition: "good",
+          location: "Kilimani",
+          image:
+            "https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=600&q=80",
+          timeAgo: "4h ago",
+          views: 95,
+        },
+        {
+          id: "s3",
+          title: "MacBook Pro M2 2023",
+          price: 145000,
+          category: "electronics",
+          condition: "like-new",
+          location: "CBD",
+          image:
+            "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+          timeAgo: "1d ago",
+          views: 204,
+          seller: "⭐ Top Seller",
+        },
+        {
+          id: "s4",
+          title: "Nike Air Force 1 Size 42",
+          price: 4500,
+          category: "fashion",
+          condition: "good",
+          location: "Ngong Rd",
+          image:
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+          timeAgo: "5h ago",
+          views: 67,
+        },
+        {
+          id: "s5",
+          title: "Toyota Vitz 2015 KCX",
+          price: 680000,
+          category: "vehicles",
+          condition: "good",
+          location: "Mombasa Rd",
+          image:
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80",
+          timeAgo: "3h ago",
+          views: 312,
+        },
+        {
+          id: "s6",
+          title: "L-Shape Sectional Sofa",
+          price: 32000,
+          category: "home",
+          condition: "good",
+          location: "Karen",
+          image:
+            "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80",
+          timeAgo: "6h ago",
+          views: 43,
+        },
+        {
+          id: "s7",
+          title: "PlayStation 5 + 2 Games",
+          price: 55000,
+          category: "electronics",
+          condition: "like-new",
+          location: "Thika",
+          image:
+            "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=600&q=80",
+          timeAgo: "12h ago",
+          views: 188,
+          seller: "⭐ Verified",
+        },
+        {
+          id: "s8",
+          title: "Zara Dress Collection (5pc)",
+          price: 3500,
+          category: "fashion",
+          condition: "new",
+          location: "Parklands",
+          image:
+            "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80",
+          timeAgo: "8h ago",
+          views: 51,
+        },
+      ];
+
+      const COND = {
+        new: "cond-new",
+        "like-new": "cond-likenew",
+        good: "cond-good",
+        fair: "cond-fair",
+      };
+      const COND_LABEL = {
+        new: "Brand New",
+        "like-new": "Like New",
+        good: "Good",
+        fair: "Fair",
+      };
+
+      /* ---- Categories grid ---- */
+      const catGrid = document.getElementById("cat-grid");
+      CATEGORIES.forEach((cat) => {
+        const card = document.createElement("div");
+        card.className = "category-card cat-card";
+        card.onclick = () =>
+          (window.location.href = `listings.html?cat=${cat.id}`);
+        card.innerHTML = `
+    <div class="cat-icon"><i data-lucide="${cat.icon}" size="28"></i></div>
+    <div class="cat-name">${cat.label}</div>
+    <div class="cat-count">${cat.count}</div>
+  `;
+        catGrid.appendChild(card);
+      });
+
+      /* ---- Listings ---- */
+      let currentCat = "all";
+      let allListings = LISTINGS;
+
+      function fmt(price) {
+        return new Intl.NumberFormat("en-KE", {
+          style: "currency",
+          currency: "KES",
+          maximumFractionDigits: 0,
+        }).format(price);
+      }
+
+      function renderCard(item) {
+        const cat = CATEGORIES.find((c) => c.id === item.category);
+        return `
+    <div class="listing-card fade-up" onclick="window.location.href='listing-detail.html?id=${item.id}'">
+      <div class="listing-card-img">
+        <img src="${item.image}" alt="${item.title}" loading="lazy" />
+        <span class="cond-badge ${COND[item.condition] || "cond-good"}">${COND_LABEL[item.condition] || item.condition}</span>
+        <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(this,'${item.id}')" aria-label="Save"><i data-lucide="heart" size="18"></i></button>
+      </div>
+      <div class="listing-card-body">
+        <div class="listing-cat-tag"><i data-lucide="${cat?.icon || "tag"}" size="12" style="display:inline-block; vertical-align:middle; margin-right:4px;"></i> ${cat?.label || item.category}</div>
+        <div class="listing-title">${item.title}</div>
+        <div class="listing-price">${fmt(item.price)}</div>
+        <div class="listing-meta">
+          <span class="listing-location"><i data-lucide="map-pin" size="12"></i> ${item.location}</span>
+          <span>👁 ${item.views} · ${item.timeAgo}</span>
+        </div>
+        ${item.seller ? `<div class="seller-badge">✅ ${item.seller}</div>` : ""}
+      </div>
+    </div>
+  `;
+      }
+
+      function renderSkeletons(n = 8) {
+        return Array(n)
+          .fill(0)
+          .map(
+            () => `
+    <div class="listing-card" style="pointer-events:none;">
+      <div class="listing-card-img skeleton" style="aspect-ratio:4/3;"></div>
+      <div class="listing-card-body">
+        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
+        <div class="skeleton" style="height:18px;width:85%;margin-bottom:8px;"></div>
+        <div class="skeleton" style="height:22px;width:40%;margin-bottom:10px;"></div>
+        <div class="skeleton" style="height:13px;width:70%;"></div>
+      </div>
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      function renderListings(items) {
+        const el = document.getElementById("listings-grid");
+        if (!el) return;
+        if (!items.length) {
+          el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+      <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
+      <h3 style="color:var(--text-2);">No listings in this category yet</h3>
+      <p style="color:var(--text-3);margin-top:6px;">Check back soon or <a href="create-listing.html" style="color:var(--rust);font-weight:600;">post the first one!</a></p>
+    </div>`;
+          return;
+        }
+        el.innerHTML = items.map(renderCard).join("");
+        lucide.createIcons();
+      }
+
+      // Initial load with skeleton
+      const grid = document.getElementById("listings-grid");
+      if (grid) {
+        grid.innerHTML = renderSkeletons(8);
+        setTimeout(() => renderListings(LISTINGS), 700);
+      }
+
+      window.filterListings = (cat, btn) => {
+        currentCat = cat;
+        document
+          .querySelectorAll(".ftab")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filtered =
+          cat === "all"
+            ? allListings
+            : allListings.filter((l) => l.category === cat);
+        renderListings(filtered);
+      };
+
+      /* ---- Search ---- */
+      window.goSearch = () => {
+        const term = document.getElementById("nav-search-input")?.value || "";
+        const cat = document.getElementById("nav-cat-select")?.value || "";
+        let url = "listings.html?";
+        if (term) url += `q=${encodeURIComponent(term)}&`;
+        if (cat) url += `cat=${cat}`;
+        window.location.href = url;
+      };
+      document
+        .getElementById("nav-search-input")
+        ?.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") goSearch();
+        });
+
+      /* ---- Fav ---- */
+      window.toggleFav = (btn, id) => {
+        btn.classList.toggle("active");
+        const icon = btn.querySelector("i");
+        if (btn.classList.contains("active")) {
+          icon.setAttribute("fill", "#e11d48");
+          icon.setAttribute("color", "#e11d48");
+        } else {
+          icon.setAttribute("fill", "none");
+          icon.setAttribute("color", "currentColor");
+        }
+        showToast(
+          btn.classList.contains("active")
+            ? "Saved to favourites ❤️"
+            : "Removed from saved",
+          2000,
+        );
+      };
+
+      /* ---- Toast ---- */
+      function showToast(msg, ms = 2800) {
+        const tc = document.getElementById("toast-container");
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.textContent = msg;
+        tc.appendChild(t);
+        setTimeout(() => t.remove(), ms);
+      }
+
+      /* ---- Subscribe ---- */
+      window.subscribe = () => {
+        const input = document.querySelector(".cta-input");
+        if (input?.value?.includes("@")) {
+          showToast("🎉 Subscribed! Welcome to SokoHub deals.", 3000);
+          input.value = "";
+        } else {
+          showToast("Please enter a valid email address.");
+        }
+      };
+
+      /* ---- Auth stubs ---- */
+      window.handleLogin = () => {
+        showToast("🔑 Sign in coming soon!", 2500);
+      };
+
+      /* ---- Scroll animations ---- */
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".trust-card, .cat-card, .how-item")
+        .forEach((el) => obs.observe(el));
+
+      // Initialize Lucide
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

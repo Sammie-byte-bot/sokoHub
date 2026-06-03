@@ -1,0 +1,4492 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sell on SokoHub — Create a Listing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --orange: #e8600a;
+        --orange-hover: #c24d08;
+        --orange-light: #fdf3ec;
+        --black: #1a1a1a;
+        --white: #ffffff;
+        --gray-1: #4a4a4a;
+        --gray-2: #717171;
+        --gray-3: #a0a0a0;
+        --gray-4: #d4d4d4;
+        --gray-5: #f0f0f0;
+        --gray-6: #f8f8f8;
+        --green: #1a7f4b;
+        --green-light: #e6f4ed;
+        --red: #c0392b;
+        --red-light: #fdecea;
+        --blue: #1565c0;
+        --blue-light: #e3f2fd;
+        --amber: #b45309;
+        --amber-light: #fffbeb;
+        --border: #e0e0e0;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 16px;
+        --radius-xl: 24px;
+        --radius-full: 999px;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.14);
+        --font: "DM Sans", -apple-system, sans-serif;
+        --font-display: "DM Serif Display", Georgia, serif;
+        --nav-h: 62px;
+        --trans: 0.18s ease;
+      }
+      body {
+        font-family: var(--font);
+        color: var(--black);
+        background: var(--gray-6);
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      input,
+      textarea,
+      select,
+      button {
+        font-family: var(--font);
+      }
+
+      /* ── NAVBAR ── */
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 900;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+      }
+      .nav-inner {
+        max-width: 1260px;
+        margin: 0 auto;
+        padding: 0 24px;
+        height: var(--nav-h);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .nav-logo {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--orange);
+        letter-spacing: -1px;
+        font-style: italic;
+
+        @media (max-width: 900px) {
+          .nav-inner {
+            flex-wrap: wrap;
+            height: auto;
+            padding: 12px 20px;
+            justify-content: flex-start;
+            gap: 10px;
+          }
+          .nav-back,
+          .nav-logo,
+          .nav-title,
+          .nav-right {
+            width: 100%;
+          }
+          .nav-right {
+            margin-left: 0;
+            justify-content: space-between;
+            flex-wrap: wrap;
+          }
+          .nav-title {
+            margin: 0;
+          }
+        }
+        flex-shrink: 0;
+      }
+      .nav-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--gray-1);
+      }
+      .nav-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-user {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--gray-1);
+      }
+      .nav-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--orange);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .nav-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--gray-2);
+        cursor: pointer;
+        transition: color var(--trans);
+      }
+      .nav-back:hover {
+        color: var(--black);
+      }
+      .nav-back svg {
+        width: 16px;
+        height: 16px;
+      }
+      .nav-role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: var(--radius-full);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+      }
+      .badge-vendor {
+        background: var(--green-light);
+        color: var(--green);
+      }
+      .badge-pending {
+        background: var(--amber-light);
+        color: var(--amber);
+      }
+      .badge-customer {
+        background: var(--gray-5);
+        color: var(--gray-2);
+      }
+
+      /* ── SCREEN VISIBILITY ── */
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+      }
+
+      /* ── AUTH WALL ── */
+      #screenAuth {
+        min-height: calc(100vh - var(--nav-h));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+      .auth-card {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        padding: 48px 44px;
+        width: 100%;
+        max-width: 440px;
+        text-align: center;
+      }
+      .auth-icon {
+        font-size: 52px;
+        margin-bottom: 20px;
+      }
+      .auth-headline {
+        font-family: var(--font-display);
+        font-size: 30px;
+        color: var(--black);
+        margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .auth-sub {
+        font-size: 14px;
+        color: var(--gray-2);
+        margin-bottom: 32px;
+        line-height: 1.6;
+      }
+      .auth-tabs {
+        display: flex;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+      .auth-tab {
+        flex: 1;
+        padding: 10px;
+        background: var(--white);
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray-2);
+        transition: all var(--trans);
+      }
+      .auth-tab.active {
+        background: var(--black);
+        color: #fff;
+      }
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .auth-input-wrap {
+        position: relative;
+      }
+      .auth-input {
+        width: 100%;
+        padding: 13px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        color: var(--black);
+        background: var(--white);
+        outline: none;
+        transition:
+          border-color var(--trans),
+          box-shadow var(--trans);
+      }
+      .auth-input:focus {
+        border-color: var(--black);
+        box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+      }
+      .auth-input.error {
+        border-color: var(--red);
+      }
+      .auth-input-icon {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: var(--gray-3);
+        transition: color var(--trans);
+      }
+      .auth-input-icon:hover {
+        color: var(--black);
+      }
+      .btn-auth-primary {
+        width: 100%;
+        padding: 14px;
+        background: var(--orange);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-full);
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background var(--trans);
+        margin-top: 4px;
+      }
+      .btn-auth-primary:hover {
+        background: var(--orange-hover);
+      }
+      .btn-auth-primary:disabled {
+        background: var(--gray-4);
+        cursor: not-allowed;
+      }
+      .auth-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 16px 0;
+        color: var(--gray-3);
+        font-size: 12px;
+      }
+      .auth-divider::before,
+      .auth-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+      .btn-google {
+        width: 100%;
+        padding: 13px;
+        background: var(--white);
+        color: var(--black);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-full);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--trans);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .btn-google:hover {
+        border-color: var(--black);
+        background: var(--gray-6);
+      }
+      .btn-google svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+      .auth-error {
+        background: var(--red-light);
+        color: var(--red);
+        border-radius: var(--radius-md);
+        padding: 10px 14px;
+        font-size: 13px;
+        display: none;
+        margin-top: 4px;
+        text-align: left;
+      }
+      .auth-error.show {
+        display: block;
+      }
+
+      /* ── ROLE GATE (Become a Vendor) ── */
+      #screenBecomeVendor {
+        min-height: calc(100vh - var(--nav-h));
+        padding: 48px 20px;
+      }
+      .vendor-gate-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .gate-hero {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border);
+        padding: 40px 44px 36px;
+        margin-bottom: 24px;
+      }
+      .gate-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--orange-light);
+        color: var(--orange);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: var(--radius-full);
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .gate-title {
+        font-family: var(--font-display);
+        font-size: 32px;
+        color: var(--black);
+        margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .gate-sub {
+        font-size: 15px;
+        color: var(--gray-2);
+        line-height: 1.7;
+        margin-bottom: 28px;
+      }
+      .gate-perks {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 0;
+      }
+      @media (max-width: 560px) {
+        .gate-perks {
+          grid-template-columns: 1fr;
+        }
+      }
+      .perk-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        background: var(--gray-6);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+      }
+      .perk-icon {
+        font-size: 22px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .perk-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 2px;
+      }
+      .perk-desc {
+        font-size: 12px;
+        color: var(--gray-2);
+        line-height: 1.5;
+      }
+
+      .vendor-form-card {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .vendor-form-header {
+        padding: 28px 36px 0;
+      }
+      .vendor-form-title {
+        font-family: var(--font-display);
+        font-size: 22px;
+        color: var(--black);
+        margin-bottom: 6px;
+      }
+      .vendor-form-sub {
+        font-size: 13px;
+        color: var(--gray-2);
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+      .vendor-form-body {
+        padding: 0 36px 32px;
+      }
+      /* ── VENDOR PHOTO SLOTS ── */
+      .vendor-photo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      .vendor-photo-slot {
+        border: 2px dashed var(--border);
+        border-radius: var(--radius-md);
+        aspect-ratio: 4/3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all var(--trans);
+        overflow: hidden;
+        position: relative;
+        background: var(--gray-6);
+      }
+      .vendor-photo-slot:hover {
+        border-color: var(--orange);
+        background: var(--orange-light);
+      }
+      .vendor-photo-slot.filled {
+        border-style: solid;
+        border-color: var(--orange);
+      }
+      .vendor-photo-slot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        inset: 0;
+      }
+      .vendor-photo-slot .slot-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity var(--trans);
+      }
+      .vendor-photo-slot.filled:hover .slot-overlay {
+        opacity: 1;
+      }
+      .slot-remove-btn {
+        background: white;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+      .vendor-photo-slot .slot-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        pointer-events: none;
+        padding: 12px;
+        text-align: center;
+      }
+      .slot-icon {
+        font-size: 24px;
+      }
+      .slot-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--black);
+        line-height: 1.3;
+      }
+      .slot-hint {
+        font-size: 10px;
+        color: var(--gray-3);
+      }
+      .vendor-photo-slot.filled .slot-placeholder {
+        display: none;
+      }
+      @media (max-width: 480px) {
+        .gate-hero,
+        .vendor-form-header {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .vendor-form-body {
+          padding: 0 20px 24px;
+        }
+      }
+
+      /* ── PENDING SCREEN ── */
+      #screenPending {
+        min-height: calc(100vh - var(--nav-h));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+      .pending-card {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        padding: 56px 44px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+      }
+      .pending-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+      }
+      .pending-title {
+        font-family: var(--font-display);
+        font-size: 28px;
+        color: var(--black);
+        margin-bottom: 12px;
+      }
+      .pending-sub {
+        font-size: 14px;
+        color: var(--gray-2);
+        line-height: 1.7;
+        margin-bottom: 28px;
+      }
+      .pending-steps {
+        text-align: left;
+        background: var(--gray-6);
+        border-radius: var(--radius-md);
+        padding: 20px 24px;
+        border: 1px solid var(--border);
+        margin-bottom: 28px;
+      }
+      .pending-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 13px;
+        color: var(--gray-1);
+        padding: 7px 0;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .pending-step:last-child {
+        border-bottom: none;
+      }
+      .pending-step-num {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--orange);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .pending-step.done .pending-step-num {
+        background: var(--green);
+      }
+      .pending-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--amber-light);
+        color: var(--amber);
+        border: 1px solid #fde68a;
+        padding: 10px 20px;
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--amber);
+        animation: pulse 1.2s ease infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.5);
+          opacity: 0.6;
+        }
+      }
+
+      /* ── MAIN APP (Create Listing) ── */
+      #screenCreateListing {
+        display: none;
+      }
+      #screenCreateListing.active {
+        display: block;
+      }
+      .app-wrap {
+        max-width: 1260px;
+        margin: 0 auto;
+        padding: 32px 24px 80px;
+        display: grid;
+        grid-template-columns: 260px 1fr 320px;
+        gap: 28px;
+        align-items: start;
+      }
+      @media (max-width: 1100px) {
+        .app-wrap {
+          grid-template-columns: 1fr 340px;
+        }
+        .steps-sidebar {
+          display: none;
+        }
+      }
+      @media (max-width: 780px) {
+        .app-wrap {
+          grid-template-columns: 1fr;
+        }
+        .preview-panel {
+          display: none;
+        }
+      }
+
+      /* ── STEPS SIDEBAR ── */
+      .steps-sidebar {
+        position: sticky;
+        top: calc(var(--nav-h) + 20px);
+      }
+      .steps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .step-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all var(--trans);
+        color: var(--gray-3);
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .step-link.active {
+        background: var(--orange-light);
+        color: var(--orange);
+        font-weight: 700;
+      }
+      .step-link.done {
+        color: var(--gray-1);
+      }
+      .step-link:hover:not(.active) {
+        background: var(--gray-5);
+        color: var(--gray-1);
+      }
+      .step-bubble {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid currentColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .step-link.active .step-bubble {
+        background: var(--orange);
+        color: #fff;
+        border-color: var(--orange);
+      }
+      .step-link.done .step-bubble {
+        background: var(--green);
+        color: #fff;
+        border-color: var(--green);
+      }
+      .step-connector {
+        width: 2px;
+        height: 20px;
+        background: var(--gray-5);
+        margin-left: 27px;
+      }
+      .progress-pct {
+        font-size: 12px;
+        color: var(--gray-3);
+        padding: 12px 16px 4px;
+        font-weight: 600;
+      }
+      .progress-bar-wrap {
+        padding: 0 16px 20px;
+      }
+      .progress-bar-track {
+        height: 4px;
+        background: var(--gray-5);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: var(--orange);
+        border-radius: 2px;
+        transition: width 0.4s ease;
+      }
+
+      /* ── FORM PANEL ── */
+      .form-panel {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .step-panel {
+        display: none;
+      }
+      .step-panel.active {
+        display: block;
+      }
+      .step-header {
+        padding: 28px 32px 0;
+      }
+      .step-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--orange-light);
+        color: var(--orange);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: var(--radius-full);
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .step-title {
+        font-family: var(--font-display);
+        font-size: 26px;
+        color: var(--black);
+        margin-bottom: 6px;
+      }
+      .step-desc {
+        font-size: 14px;
+        color: var(--gray-2);
+        line-height: 1.6;
+        margin-bottom: 28px;
+      }
+      .step-body {
+        padding: 0 32px 32px;
+      }
+
+      /* FORM ELEMENTS */
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 20px;
+      }
+      .form-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+      }
+      .form-label .opt {
+        font-weight: 400;
+        color: var(--gray-3);
+        font-size: 12px;
+      }
+      .form-label .count {
+        font-weight: 400;
+        color: var(--gray-3);
+        float: right;
+        font-size: 12px;
+      }
+      .form-input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        color: var(--black);
+        background: var(--white);
+        outline: none;
+        transition:
+          border-color var(--trans),
+          box-shadow var(--trans);
+      }
+      .form-input:focus {
+        border-color: var(--black);
+        box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+      }
+      .form-input.error {
+        border-color: var(--red);
+      }
+      .form-textarea {
+        resize: vertical;
+        min-height: 110px;
+        line-height: 1.6;
+      }
+      .form-select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 36px;
+      }
+      .form-hint {
+        font-size: 11px;
+        color: var(--gray-3);
+      }
+      .form-error {
+        font-size: 11px;
+        color: var(--red);
+        display: none;
+      }
+      .form-error.show {
+        display: block;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 500px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* CHAR BAR */
+      .char-bar {
+        height: 2px;
+        background: var(--gray-5);
+        border-radius: 1px;
+        margin-top: 6px;
+        overflow: hidden;
+      }
+      .char-fill {
+        height: 100%;
+        background: var(--orange);
+        border-radius: 1px;
+        transition: width 0.2s;
+      }
+
+      /* CHIPS */
+      .chips-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        padding: 8px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--trans);
+        user-select: none;
+      }
+      .chip:hover {
+        border-color: var(--black);
+      }
+      .chip.selected {
+        background: var(--black);
+        color: #fff;
+        border-color: var(--black);
+      }
+      .chip.color-swatch {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .swatch-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        flex-shrink: 0;
+      }
+
+      /* IMAGE UPLOAD */
+      .image-upload-area {
+        border: 2px dashed var(--border);
+        border-radius: var(--radius-lg);
+        padding: 36px 24px;
+        text-align: center;
+        cursor: pointer;
+        transition: all var(--trans);
+        background: var(--gray-6);
+      }
+      .image-upload-area:hover,
+      .image-upload-area.drag-over {
+        border-color: var(--orange);
+        background: var(--orange-light);
+      }
+      .upload-icon {
+        font-size: 40px;
+        margin-bottom: 12px;
+      }
+      .upload-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 4px;
+      }
+      .upload-sub {
+        font-size: 13px;
+        color: var(--gray-2);
+      }
+      .upload-sub strong {
+        color: var(--orange);
+      }
+      #imageFileInput {
+        display: none;
+      }
+      .images-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .img-thumb {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        background: var(--gray-5);
+        border: 2px solid transparent;
+        transition: border-color var(--trans);
+      }
+      .img-thumb.primary {
+        border-color: var(--orange);
+      }
+      .img-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .img-thumb-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity var(--trans);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .img-thumb:hover .img-thumb-overlay {
+        opacity: 1;
+      }
+      .img-action-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background var(--trans);
+      }
+      .img-action-btn:hover {
+        background: #fff;
+      }
+      .img-primary-badge {
+        position: absolute;
+        bottom: 4px;
+        left: 4px;
+        background: var(--orange);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      .upload-progress {
+        margin-top: 8px;
+        display: none;
+      }
+      .up-bar {
+        height: 4px;
+        background: var(--gray-5);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 4px;
+      }
+      .up-fill {
+        height: 100%;
+        background: var(--orange);
+        border-radius: 2px;
+        transition: width 0.3s;
+      }
+      .up-label {
+        font-size: 11px;
+        color: var(--gray-2);
+      }
+
+      /* PRICE */
+      .price-input-wrap {
+        position: relative;
+      }
+      .price-currency {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--gray-2);
+        pointer-events: none;
+      }
+      .price-input-wrap .form-input {
+        padding-left: 56px;
+      }
+      .price-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 500px) {
+        .price-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* TOGGLE */
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: var(--gray-6);
+        border-radius: var(--radius-md);
+        margin-bottom: 12px;
+        border: 1.5px solid var(--border);
+        cursor: pointer;
+        transition: border-color var(--trans);
+      }
+      .toggle-row:hover {
+        border-color: var(--gray-3);
+      }
+      .toggle-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .toggle-left svg {
+        width: 18px;
+        height: 18px;
+        color: var(--gray-2);
+        flex-shrink: 0;
+      }
+      .toggle-info h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--black);
+      }
+      .toggle-info p {
+        font-size: 12px;
+        color: var(--gray-2);
+        margin-top: 2px;
+      }
+      .toggle-switch {
+        width: 40px;
+        height: 22px;
+        background: var(--gray-4);
+        border-radius: 11px;
+        position: relative;
+        transition: background var(--trans);
+        flex-shrink: 0;
+      }
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fff;
+        transition: transform var(--trans);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+      .toggle-row.on .toggle-switch {
+        background: var(--green);
+      }
+      .toggle-row.on .toggle-switch::after {
+        transform: translateX(18px);
+      }
+
+      /* TIP BOX */
+      .tip-box {
+        background: var(--orange-light);
+        border-radius: var(--radius-md);
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+      }
+      .tip-box svg {
+        width: 18px;
+        height: 18px;
+        color: var(--orange);
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .tip-box p {
+        font-size: 12px;
+        color: var(--gray-1);
+        line-height: 1.6;
+      }
+      .tip-box strong {
+        color: var(--black);
+      }
+
+      /* STEP NAV */
+      .step-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 32px;
+        border-top: 1px solid var(--border);
+        gap: 12px;
+      }
+      .btn-back {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 12px 20px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-full);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        background: var(--white);
+        transition: all var(--trans);
+        color: var(--gray-1);
+      }
+      .btn-back:hover {
+        border-color: var(--black);
+        color: var(--black);
+      }
+      .btn-next {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 12px 28px;
+        background: var(--orange);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-full);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background var(--trans);
+      }
+      .btn-next:hover {
+        background: var(--orange-hover);
+      }
+      .btn-next:disabled {
+        background: var(--gray-4);
+        cursor: not-allowed;
+      }
+      .btn-publish {
+        padding: 14px 36px;
+        background: var(--green);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-full);
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background var(--trans);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-publish:hover {
+        background: #15703f;
+      }
+      .btn-publish:disabled {
+        background: var(--gray-4);
+        cursor: not-allowed;
+      }
+      .step-nav-info {
+        font-size: 12px;
+        color: var(--gray-3);
+      }
+
+      /* LIVE PREVIEW */
+      .preview-panel {
+        position: sticky;
+        top: calc(var(--nav-h) + 20px);
+      }
+      .preview-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gray-3);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        padding-left: 4px;
+      }
+      .preview-card {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .preview-img-wrap {
+        position: relative;
+        aspect-ratio: 1;
+        background: var(--gray-5);
+        overflow: hidden;
+      }
+      .preview-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .preview-card:hover .preview-img-wrap img {
+        transform: scale(1.04);
+      }
+      .preview-placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-3);
+        font-size: 13px;
+        gap: 8px;
+      }
+      .preview-placeholder svg {
+        width: 32px;
+        height: 32px;
+      }
+      .preview-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--black);
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: var(--radius-full);
+        letter-spacing: 0.3px;
+      }
+      .preview-heart {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
+      }
+      .preview-body {
+        padding: 14px 16px 16px;
+      }
+      .preview-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 4px;
+      }
+      .preview-original {
+        font-size: 12px;
+        color: var(--gray-3);
+        text-decoration: line-through;
+        margin-left: 6px;
+      }
+      .preview-title {
+        font-size: 13px;
+        color: var(--gray-1);
+        line-height: 1.45;
+        margin-bottom: 5px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .preview-shop {
+        font-size: 11px;
+        color: var(--gray-3);
+        margin-bottom: 4px;
+      }
+      .preview-stars {
+        font-size: 12px;
+        color: #f59e0b;
+        margin-bottom: 4px;
+      }
+      .preview-freeship {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--green);
+        margin-top: 4px;
+      }
+
+      /* SUCCESS */
+      #successScreen {
+        display: none;
+        min-height: calc(100vh - var(--nav-h));
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        flex-direction: column;
+        text-align: center;
+      }
+      #successScreen.active {
+        display: flex;
+      }
+      .success-anim {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--green);
+        color: #fff;
+        font-size: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        box-shadow: 0 0 0 12px var(--green-light);
+      }
+      .success-title {
+        font-family: var(--font-display);
+        font-size: 34px;
+        color: var(--black);
+        margin-bottom: 12px;
+      }
+      .success-sub {
+        font-size: 15px;
+        color: var(--gray-2);
+        margin-bottom: 36px;
+        line-height: 1.7;
+      }
+      .success-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn-success {
+        padding: 13px 28px;
+        border-radius: var(--radius-full);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all var(--trans);
+        border: 1.5px solid var(--border);
+        background: var(--white);
+      }
+      .btn-success:hover {
+        border-color: var(--black);
+      }
+      .btn-success-primary {
+        background: var(--orange);
+        color: #fff;
+        border-color: var(--orange);
+      }
+      .btn-success-primary:hover {
+        background: var(--orange-hover);
+        border-color: var(--orange-hover);
+      }
+      .listing-id-box {
+        background: var(--gray-6);
+        border-radius: var(--radius-md);
+        padding: 14px 20px;
+        margin: 20px 0 32px;
+        font-size: 13px;
+        color: var(--gray-1);
+        border: 1px solid var(--border);
+      }
+      .listing-id-box strong {
+        color: var(--orange);
+        font-size: 15px;
+        display: block;
+        margin-top: 4px;
+      }
+
+      /* PUBLISHING OVERLAY */
+      #publishingOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+      #publishingOverlay.show {
+        display: flex;
+      }
+
+      /* FIX: ensure overlay buttons/steps are clickable and
+         remove pointer event issues on some browsers */
+      #publishingOverlay {
+        pointer-events: none;
+      }
+      #publishingOverlay.show {
+        pointer-events: auto;
+      }
+
+      .pub-spinner {
+        width: 56px;
+        height: 56px;
+        border: 4px solid var(--gray-4);
+        border-top-color: var(--orange);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .pub-title {
+        font-family: var(--font-display);
+        font-size: 22px;
+        color: var(--black);
+      }
+      .pub-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .pub-step {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--gray-3);
+        transition: color var(--trans);
+      }
+      .pub-step.active {
+        color: var(--black);
+        font-weight: 600;
+      }
+      .pub-step.done {
+        color: var(--green);
+      }
+      .pub-step-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--gray-4);
+        flex-shrink: 0;
+        transition: background var(--trans);
+      }
+      .pub-step.active .pub-step-dot {
+        background: var(--orange);
+        animation: pulse 0.8s ease infinite;
+      }
+      .pub-step.done .pub-step-dot {
+        background: var(--green);
+      }
+
+      /* TOAST */
+      #toaster {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+      }
+      .toast-msg {
+        background: var(--black);
+        color: #fff;
+        padding: 11px 22px;
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: var(--shadow-lg);
+        white-space: nowrap;
+        animation: toastIn 0.2s ease;
+      }
+      .toast-msg.ok {
+        background: var(--green);
+      }
+      .toast-msg.err {
+        background: var(--red);
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* MISC */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in {
+        animation: fadeUp 0.3s ease both;
+      }
+      .section-divider {
+        border: none;
+        border-top: 1px solid var(--gray-5);
+        margin: 20px 0;
+      }
+      .tag-input-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px 12px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-md);
+        min-height: 46px;
+        cursor: text;
+        transition: border-color var(--trans);
+      }
+      .tag-input-wrap:focus-within {
+        border-color: var(--black);
+        box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+      }
+      .tag-pill {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--gray-5);
+        color: var(--gray-1);
+        padding: 3px 10px;
+        border-radius: var(--radius-full);
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .tag-pill button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--gray-3);
+        font-size: 14px;
+        line-height: 1;
+        padding: 0;
+        transition: color var(--trans);
+      }
+      .tag-pill button:hover {
+        color: var(--red);
+      }
+      .tag-actual-input {
+        flex: 1;
+        min-width: 80px;
+        border: none;
+        outline: none;
+        font-size: 13px;
+        font-family: var(--font);
+        background: transparent;
+      }
+      input[type="number"]::-webkit-inner-spin-button {
+        opacity: 0.5;
+      }
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          var(--gray-5) 25%,
+          var(--gray-4) 50%,
+          var(--gray-5) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: var(--radius-md);
+      }
+      @keyframes shimmer {
+        to {
+          background-position: -200% 0;
+        }
+      }
+      .loading-screen {
+        min-height: calc(100vh - var(--nav-h));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--gray-4);
+        border-top-color: var(--orange);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @media (max-width: 480px) {
+        .auth-card {
+          padding: 32px 24px;
+        }
+        .step-header {
+          padding: 20px 20px 0;
+        }
+        .step-body {
+          padding: 0 20px 24px;
+        }
+        .step-nav {
+          padding: 16px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="navbar">
+      <div class="nav-inner">
+        <div class="nav-back" onclick="window.location.href = 'listings.html'">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
+          Back
+        </div>
+        <a href="listings.html" class="nav-logo">SokoHub</a>
+        <span class="nav-title" id="navTitle">Sell in Soko</span>
+        <div class="nav-right">
+          <span
+            id="navRoleBadge"
+            class="nav-role-badge"
+            style="display: none"
+          ></span>
+          <div class="nav-user" id="navUser" style="display: none">
+            <div class="nav-avatar" id="navAvatar">?</div>
+            <span id="navUserName"></span>
+            <button
+              onclick="signOutUser()"
+              style="
+                background: none;
+                border: none;
+                font-size: 12px;
+                color: var(--gray-2);
+                cursor: pointer;
+                margin-left: 4px;
+              "
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ═══ LOADING ═══ -->
+    <div id="screenLoading" class="loading-screen">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <!-- ═══ SCREEN: AUTH WALL ═══ -->
+    <div id="screenAuth" style="display: none">
+      <div class="auth-card fade-in">
+        <div class="auth-icon">🏪</div>
+        <h1 class="auth-headline">Start selling on<br />SokoHub</h1>
+        <p class="auth-sub">
+          Join thousands of Kenyan sellers. Sign in or create an account to get
+          started.
+        </p>
+        <div class="auth-tabs">
+          <button
+            class="auth-tab active"
+            id="tabSignIn"
+            onclick="switchAuthTab('signin')"
+          >
+            Sign In
+          </button>
+          <button
+            class="auth-tab"
+            id="tabSignUp"
+            onclick="switchAuthTab('signup')"
+          >
+            Create Account
+          </button>
+        </div>
+        <div class="auth-form">
+          <div id="signupNameRow" style="display: none" class="form-row">
+            <div class="auth-input-wrap">
+              <input
+                class="auth-input"
+                type="text"
+                id="authFirstName"
+                placeholder="First name"
+              />
+            </div>
+            <div class="auth-input-wrap">
+              <input
+                class="auth-input"
+                type="text"
+                id="authLastName"
+                placeholder="Last name"
+              />
+            </div>
+          </div>
+          <div class="auth-input-wrap">
+            <input
+              class="auth-input"
+              type="email"
+              id="authEmail"
+              placeholder="Email address"
+            />
+          </div>
+          <div class="auth-input-wrap">
+            <input
+              class="auth-input"
+              type="password"
+              id="authPassword"
+              placeholder="Password"
+              minlength="6"
+            />
+            <span
+              class="auth-input-icon"
+              onclick="togglePwdVis('authPassword', this)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </span>
+          </div>
+          <div class="auth-error" id="authError"></div>
+          <button
+            class="btn-auth-primary"
+            id="btnAuthSubmit"
+            onclick="handleAuth()"
+          >
+            Sign In
+          </button>
+        </div>
+        <div class="auth-divider">or continue with</div>
+        <button class="btn-google" onclick="signInWithGoogle()">
+          <svg viewBox="0 0 48 48">
+            <path
+              fill="#EA4335"
+              d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+            />
+            <path
+              fill="#4285F4"
+              d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+            />
+            <path
+              fill="#34A853"
+              d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+            />
+          </svg>
+          Continue with Google
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN: BECOME A VENDOR ═══ -->
+    <div id="screenBecomeVendor" style="display: none">
+      <div class="vendor-gate-wrap fade-in">
+        <!-- Hero -->
+        <div class="gate-hero">
+          <div class="gate-eyebrow">🏪 Vendor Programme</div>
+          <h1 class="gate-title">Become a verified<br />SokoHub Vendor</h1>
+          <p class="gate-sub">
+            SokoHub is a curated marketplace. To list products you need to apply
+            for a vendor account. It takes less than 3 minutes and approval is
+            typically within 24 hours.
+          </p>
+          <div class="gate-perks">
+            <div class="perk-card">
+              <div class="perk-icon">✅</div>
+              <div>
+                <div class="perk-title">Verified seller badge</div>
+                <div class="perk-desc">
+                  Build buyer trust with a verified storefront profile.
+                </div>
+              </div>
+            </div>
+            <div class="perk-card">
+              <div class="perk-icon">📊</div>
+              <div>
+                <div class="perk-title">Seller dashboard</div>
+                <div class="perk-desc">
+                  Track views, saves, and sales from one place.
+                </div>
+              </div>
+            </div>
+            <div class="perk-card">
+              <div class="perk-icon">🔍</div>
+              <div>
+                <div class="perk-title">Search visibility</div>
+                <div class="perk-desc">
+                  Approved vendors rank higher in search results.
+                </div>
+              </div>
+            </div>
+            <div class="perk-card">
+              <div class="perk-icon">💬</div>
+              <div>
+                <div class="perk-title">Priority support</div>
+                <div class="perk-desc">
+                  Dedicated support channel for vendor queries.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vendor Application Form -->
+        <div class="vendor-form-card">
+          <div class="vendor-form-header">
+            <h2 class="vendor-form-title">Vendor application</h2>
+            <p class="vendor-form-sub">
+              Fill in your business details below. Our team reviews every
+              application to maintain marketplace quality.
+            </p>
+          </div>
+          <div class="vendor-form-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Business / Shop name</label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="vBusinessName"
+                  placeholder="e.g. Amani Electronics"
+                />
+                <div class="form-error" id="err-vBusinessName">
+                  Business name is required
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Business type</label>
+                <select class="form-input form-select" id="vBusinessType">
+                  <option value="">— Select type —</option>
+                  <option value="sole_trader">Sole Trader / Individual</option>
+                  <option value="small_business">
+                    Small Business (1–10 staff)
+                  </option>
+                  <option value="sme">SME (11–50 staff)</option>
+                  <option value="company">Registered Company</option>
+                  <option value="ngo">NGO / Non-profit</option>
+                </select>
+                <div class="form-error" id="err-vBusinessType">
+                  Please select a business type
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Primary phone number</label>
+                <input
+                  class="form-input"
+                  type="tel"
+                  id="vPhone"
+                  placeholder="+254 7XX XXX XXX"
+                />
+                <div class="form-error" id="err-vPhone">
+                  A valid phone number is required
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">County / Region</label>
+                <select class="form-input form-select" id="vCounty">
+                  <option value="">— Select county —</option>
+                  <option value="Nairobi">Nairobi</option>
+                  <option value="Mombasa">Mombasa</option>
+                  <option value="Kisumu">Kisumu</option>
+                  <option value="Nakuru">Nakuru</option>
+                  <option value="Eldoret">Eldoret / Uasin Gishu</option>
+                  <option value="Kiambu">Kiambu</option>
+                  <option value="Machakos">Machakos</option>
+                  <option value="Nyeri">Nyeri</option>
+                  <option value="Meru">Meru</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="form-error" id="err-vCounty">
+                  Please select your county
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Main product categories
+                <span class="opt">(what will you sell?)</span></label
+              >
+              <div class="chips-wrap" id="vCategoryChips">
+                <div
+                  class="chip"
+                  data-val="electronics"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  💻 Electronics
+                </div>
+                <div
+                  class="chip"
+                  data-val="fashion"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  👗 Fashion
+                </div>
+                <div
+                  class="chip"
+                  data-val="home"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  🏡 Home & Garden
+                </div>
+                <div
+                  class="chip"
+                  data-val="vehicles"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  🚗 Vehicles
+                </div>
+                <div
+                  class="chip"
+                  data-val="sports"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  🏆 Sports
+                </div>
+                <div
+                  class="chip"
+                  data-val="beauty"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  ✨ Beauty
+                </div>
+                <div
+                  class="chip"
+                  data-val="books"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  📚 Books
+                </div>
+                <div
+                  class="chip"
+                  data-val="food"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  🍎 Food & Agri
+                </div>
+                <div
+                  class="chip"
+                  data-val="art"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  🎨 Art
+                </div>
+                <div
+                  class="chip"
+                  data-val="other"
+                  onclick="toggleVendorCategory(this)"
+                >
+                  📦 Other
+                </div>
+              </div>
+              <div class="form-error" id="err-vCategories">
+                Select at least one category
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Business description
+                <span class="count" id="vDescCount">0/300</span></label
+              >
+              <textarea
+                class="form-input form-textarea"
+                id="vDescription"
+                maxlength="300"
+                placeholder="Tell us about your business — what you sell, how long you've been operating, and why customers love you."
+                oninput="
+                  document.getElementById('vDescCount').textContent =
+                    this.value.length + '/300'
+                "
+              ></textarea>
+              <div class="form-error" id="err-vDescription">
+                Please provide a short business description (min 30 chars)
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >KRA PIN / Business registration number
+                <span class="opt"
+                  >(optional but speeds up approval)</span
+                ></label
+              >
+              <input
+                class="form-input"
+                type="text"
+                id="vKraPin"
+                placeholder="e.g. A000000000X"
+              />
+            </div>
+            <!-- ── BUSINESS PHOTOS ── -->
+            <div class="form-group">
+              <label class="form-label"
+                >Business photos
+                <span class="opt">(optional but recommended)</span></label
+              >
+              <div class="vendor-photo-grid" id="vendorPhotoGrid">
+                <div
+                  class="vendor-photo-slot"
+                  id="vSlot-0"
+                  onclick="triggerVendorPhotoInput(0)"
+                >
+                  <div class="slot-placeholder">
+                    <div class="slot-icon">🏪</div>
+                    <div class="slot-label">Cover Photo</div>
+                    <div class="slot-hint">Main storefront or logo</div>
+                  </div>
+                  <div class="slot-overlay">
+                    <button
+                      class="slot-remove-btn"
+                      onclick="removeVendorPhoto(event, 0)"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style="display: none"
+                    id="vPhotoInput-0"
+                    onchange="handleVendorPhoto(event, 0)"
+                  />
+                </div>
+
+                <div
+                  class="vendor-photo-slot"
+                  id="vSlot-1"
+                  onclick="triggerVendorPhotoInput(1)"
+                >
+                  <div class="slot-placeholder">
+                    <div class="slot-icon">🏬</div>
+                    <div class="slot-label">Interior / Space</div>
+                    <div class="slot-hint">Inside your shop or workspace</div>
+                  </div>
+                  <div class="slot-overlay">
+                    <button
+                      class="slot-remove-btn"
+                      onclick="removeVendorPhoto(event, 1)"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style="display: none"
+                    id="vPhotoInput-1"
+                    onchange="handleVendorPhoto(event, 1)"
+                  />
+                </div>
+
+                <div
+                  class="vendor-photo-slot"
+                  id="vSlot-2"
+                  onclick="triggerVendorPhotoInput(2)"
+                >
+                  <div class="slot-placeholder">
+                    <div class="slot-icon">📦</div>
+                    <div class="slot-label">Products on Display</div>
+                    <div class="slot-hint">Show what you sell</div>
+                  </div>
+                  <div class="slot-overlay">
+                    <button
+                      class="slot-remove-btn"
+                      onclick="removeVendorPhoto(event, 2)"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style="display: none"
+                    id="vPhotoInput-2"
+                    onchange="handleVendorPhoto(event, 2)"
+                  />
+                </div>
+
+                <div
+                  class="vendor-photo-slot"
+                  id="vSlot-3"
+                  onclick="triggerVendorPhotoInput(3)"
+                >
+                  <div class="slot-placeholder">
+                    <div class="slot-icon">👥</div>
+                    <div class="slot-label">Team / Staff</div>
+                    <div class="slot-hint">Put a face to your business</div>
+                  </div>
+                  <div class="slot-overlay">
+                    <button
+                      class="slot-remove-btn"
+                      onclick="removeVendorPhoto(event, 3)"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style="display: none"
+                    id="vPhotoInput-3"
+                    onchange="handleVendorPhoto(event, 3)"
+                  />
+                </div>
+              </div>
+              <div class="form-hint">
+                Photos are reviewed by the SokoHub team. Max 2MB each. JPG or
+                PNG.
+              </div>
+            </div>
+            <div
+              style="
+                background: var(--blue-light);
+                border: 1px solid #bbdefb;
+                border-radius: var(--radius-md);
+                padding: 14px 16px;
+                margin-bottom: 20px;
+                font-size: 13px;
+                color: var(--blue);
+                line-height: 1.6;
+              "
+            >
+              <strong>Privacy notice:</strong> Your application details are
+              reviewed by the SokoHub team only. We do not share your
+              information with third parties. By applying you agree to our
+              <a href="#" style="color: var(--blue); text-decoration: underline"
+                >Vendor Terms</a
+              >
+              and
+              <a href="#" style="color: var(--blue); text-decoration: underline"
+                >Marketplace Policies</a
+              >.
+            </div>
+
+            <div
+              style="
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                margin-bottom: 24px;
+              "
+            >
+              <input
+                type="checkbox"
+                id="vTerms"
+                style="
+                  margin-top: 3px;
+                  width: 16px;
+                  height: 16px;
+                  accent-color: var(--orange);
+                  flex-shrink: 0;
+                "
+              />
+              <label
+                for="vTerms"
+                style="
+                  font-size: 13px;
+                  color: var(--gray-1);
+                  line-height: 1.6;
+                  cursor: pointer;
+                "
+                >I confirm that the information provided is accurate and I agree
+                to SokoHub's Vendor Terms of Service.</label
+              >
+            </div>
+            <div class="auth-error" id="vendorFormError"></div>
+            <button
+              class="btn-next"
+              style="width: 100%; justify-content: center; padding: 14px"
+              id="btnApplyVendor"
+              onclick="submitVendorApplication()"
+            >
+              Submit Application
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN: PENDING APPROVAL ═══ -->
+    <div id="screenPending" style="display: none">
+      <div class="pending-card fade-in">
+        <div class="pending-icon">⏳</div>
+        <div class="pending-status-badge">
+          <div class="pulse-dot"></div>
+          Application under review
+        </div>
+        <h1 class="pending-title">You're in the queue!</h1>
+        <p class="pending-sub">
+          Your vendor application has been received. Our team reviews every
+          application to maintain marketplace quality. You'll receive an email
+          notification once approved.
+        </p>
+        <div class="pending-steps">
+          <div class="pending-step done">
+            <div class="pending-step-num">✓</div>
+            <span>Application submitted</span>
+          </div>
+          <div class="pending-step active" id="pendingStep2">
+            <div class="pending-step-num">2</div>
+            <span>Team review (usually within 24 hours)</span>
+          </div>
+          <div class="pending-step">
+            <div class="pending-step-num">3</div>
+            <span>Email notification sent</span>
+          </div>
+          <div class="pending-step">
+            <div class="pending-step-num">4</div>
+            <span>Access to create listings unlocked</span>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: var(--gray-2); margin-bottom: 16px">
+          Need to update your application? Contact
+          <a href="mailto:vendors@sokohub.co.ke" style="color: var(--orange)"
+            >vendors@sokohub.co.ke</a
+          >
+        </p>
+        <button
+          class="btn-back"
+          onclick="window.location.href = 'listings.html'"
+          style="margin: 0 auto"
+        >
+          Browse listings while you wait
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN: CREATE LISTING (6-step form) ═══ -->
+    <div id="screenCreateListing" style="display: none">
+      <div class="app-wrap fade-in" id="appWrap">
+        <!-- LEFT: STEPS SIDEBAR -->
+        <aside class="steps-sidebar">
+          <div class="progress-pct" id="progressPct">0% complete</div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-track">
+              <div
+                class="progress-bar-fill"
+                id="progressFill"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+          <div class="steps-list" id="stepsList"></div>
+        </aside>
+
+        <!-- CENTER: FORM STEPS -->
+        <div class="form-panel" id="formPanel">
+          <!-- ── STEP 1: PHOTOS ── -->
+          <div class="step-panel active" id="stepPanel-1">
+            <div class="step-header">
+              <div class="step-badge">📸 Step 1 of 6</div>
+              <h2 class="step-title">Add photos</h2>
+              <p class="step-desc">
+                Great photos are the #1 driver of sales. Upload up to 10 clear,
+                well-lit images.
+              </p>
+            </div>
+            <div class="step-body">
+              <div class="tip-box">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4M12 16h.01" />
+                </svg>
+                <p>
+                  <strong>Tips:</strong> Use natural light, shoot from multiple
+                  angles, include size references. The first image becomes your
+                  cover photo.
+                </p>
+              </div>
+              <div
+                class="image-upload-area"
+                id="dropZone"
+                onclick="document.getElementById('imageFileInput').click()"
+                ondragover="handleDragOver(event)"
+                ondragleave="handleDragLeave(event)"
+                ondrop="handleDrop(event)"
+              >
+                <div class="upload-icon">📷</div>
+                <div class="upload-title">Drag &amp; drop images here</div>
+                <div class="upload-sub">
+                  or <strong>browse files</strong> · JPG, PNG, WEBP · Max 10
+                  images, 10MB each
+                </div>
+              </div>
+              <input
+                type="file"
+                id="imageFileInput"
+                multiple
+                accept="image/*"
+                onchange="handleImageSelect(event)"
+              />
+              <div class="upload-progress" id="uploadProgress">
+                <div class="up-bar">
+                  <div class="up-fill" id="upFill" style="width: 0%"></div>
+                </div>
+                <div class="up-label" id="upLabel">Uploading...</div>
+              </div>
+              <div class="images-grid" id="imagesGrid"></div>
+              <div
+                style="margin-top: 12px; font-size: 12px; color: var(--gray-3)"
+                id="imgCountLabel"
+              >
+                0 / 10 images added.
+                <span style="color: var(--orange)"
+                  >First image = cover photo.</span
+                >
+              </div>
+            </div>
+            <div class="step-nav">
+              <span class="step-nav-info">Photos required</span>
+              <button class="btn-next" onclick="nextStep(1)" id="next-1">
+                Photos added — Next
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 2: TITLE & DESCRIPTION ── -->
+          <div class="step-panel" id="stepPanel-2">
+            <div class="step-header">
+              <div class="step-badge">📝 Step 2 of 6</div>
+              <h2 class="step-title">Title &amp; description</h2>
+              <p class="step-desc">
+                Help buyers find your item. Be specific and use keywords they'd
+                search for.
+              </p>
+            </div>
+            <div class="step-body">
+              <div class="form-group">
+                <label class="form-label"
+                  >Listing title
+                  <span class="count" id="titleCount">0/80</span></label
+                >
+                <input
+                  class="form-input"
+                  type="text"
+                  id="listingTitle"
+                  maxlength="80"
+                  placeholder="e.g. iPhone 15 Pro Max 256GB Natural Titanium — Like New"
+                  oninput="
+                    updateTitleCount();
+                    updatePreview();
+                  "
+                />
+                <div class="char-bar">
+                  <div class="char-fill" id="titleBar" style="width: 0%"></div>
+                </div>
+                <div class="form-error" id="err-title">
+                  Title is required (min 10 characters)
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <select
+                  class="form-input form-select"
+                  id="listingCategory"
+                  onchange="updatePreview()"
+                >
+                  <option value="">— Select a category —</option>
+                  <option value="electronics">💻 Electronics &amp; Tech</option>
+                  <option value="fashion">👗 Fashion &amp; Clothing</option>
+                  <option value="home">🏡 Home &amp; Garden</option>
+                  <option value="vehicles">🚗 Vehicles &amp; Parts</option>
+                  <option value="sports">🏆 Sports &amp; Outdoors</option>
+                  <option value="books">📚 Books &amp; Media</option>
+                  <option value="toys">🧸 Toys &amp; Kids</option>
+                  <option value="beauty">✨ Beauty &amp; Health</option>
+                  <option value="art">🎨 Art &amp; Collectibles</option>
+                  <option value="food">🍎 Food &amp; Agriculture</option>
+                  <option value="other">📦 Other</option>
+                </select>
+                <div class="form-error" id="err-category">
+                  Please select a category
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label"
+                  >Description
+                  <span class="count" id="descCount">0/2000</span></label
+                >
+                <textarea
+                  class="form-input form-textarea"
+                  id="listingDesc"
+                  maxlength="2000"
+                  placeholder="Describe your item in detail — what it is, why you're selling, any flaws, what's included, etc."
+                  oninput="updateDescCount()"
+                ></textarea>
+                <div class="form-error" id="err-desc">
+                  Description is required (min 20 characters)
+                </div>
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn-back" onclick="prevStep(2)">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M19 12H5M12 5l-7 7 7 7" /></svg
+                >Back
+              </button>
+              <button class="btn-next" onclick="nextStep(2)">
+                Next
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 3: ITEM DETAILS ── -->
+          <div class="step-panel" id="stepPanel-3">
+            <div class="step-header">
+              <div class="step-badge">🏷 Step 3 of 6</div>
+              <h2 class="step-title">Item details</h2>
+              <p class="step-desc">
+                Tell buyers exactly what they're getting. More detail = more
+                trust.
+              </p>
+            </div>
+            <div class="step-body">
+              <div class="form-group">
+                <label class="form-label">Condition</label>
+                <div class="chips-wrap" id="conditionChips">
+                  <div
+                    class="chip"
+                    data-val="new"
+                    onclick="selectChip('conditionChips', this, 'condition')"
+                  >
+                    ✨ Brand New
+                  </div>
+                  <div
+                    class="chip"
+                    data-val="like-new"
+                    onclick="selectChip('conditionChips', this, 'condition')"
+                  >
+                    🌟 Like New
+                  </div>
+                  <div
+                    class="chip"
+                    data-val="good"
+                    onclick="selectChip('conditionChips', this, 'condition')"
+                  >
+                    👍 Good
+                  </div>
+                  <div
+                    class="chip"
+                    data-val="fair"
+                    onclick="selectChip('conditionChips', this, 'condition')"
+                  >
+                    📦 Fair
+                  </div>
+                  <div
+                    class="chip"
+                    data-val="for-parts"
+                    onclick="selectChip('conditionChips', this, 'condition')"
+                  >
+                    🔧 For parts
+                  </div>
+                </div>
+                <div class="form-error" id="err-condition">
+                  Please select condition
+                </div>
+              </div>
+              <hr class="section-divider" />
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label"
+                    >Brand <span class="opt">(optional)</span></label
+                  >
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="listingBrand"
+                    placeholder="e.g. Apple, Nike, Samsung"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label"
+                    >Model / Size <span class="opt">(optional)</span></label
+                  >
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="listingModel"
+                    placeholder="e.g. iPhone 15 Pro, Size 42"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label"
+                  >Color <span class="opt">(optional)</span></label
+                >
+                <div class="chips-wrap" id="colorChips">
+                  <div
+                    class="chip color-swatch"
+                    data-val="black"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div class="swatch-dot" style="background: #222"></div>
+                    Black
+                  </div>
+                  <div
+                    class="chip color-swatch"
+                    data-val="white"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div
+                      class="swatch-dot"
+                      style="background: #eee; border: 1px solid #ddd"
+                    ></div>
+                    White
+                  </div>
+                  <div
+                    class="chip color-swatch"
+                    data-val="silver"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div class="swatch-dot" style="background: #ccc"></div>
+                    Silver
+                  </div>
+                  <div
+                    class="chip color-swatch"
+                    data-val="gold"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div class="swatch-dot" style="background: #d4af37"></div>
+                    Gold
+                  </div>
+                  <div
+                    class="chip color-swatch"
+                    data-val="red"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div class="swatch-dot" style="background: #c0392b"></div>
+                    Red
+                  </div>
+                  <div
+                    class="chip color-swatch"
+                    data-val="blue"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div class="swatch-dot" style="background: #1565c0"></div>
+                    Blue
+                  </div>
+                  <div
+                    class="chip color-swatch"
+                    data-val="green"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div class="swatch-dot" style="background: #2e7d32"></div>
+                    Green
+                  </div>
+                  <div
+                    class="chip color-swatch"
+                    data-val="other"
+                    onclick="selectChip('colorChips', this, 'color')"
+                  >
+                    <div
+                      class="swatch-dot"
+                      style="
+                        background: linear-gradient(135deg, #f00, #0f0, #00f);
+                      "
+                    ></div>
+                    Other
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label"
+                  >Tags <span class="opt">(up to 13)</span></label
+                >
+                <div
+                  class="tag-input-wrap"
+                  id="tagWrap"
+                  onclick="document.getElementById('tagInput').focus()"
+                >
+                  <input
+                    type="text"
+                    id="tagInput"
+                    class="tag-actual-input"
+                    placeholder="Type a tag and press Enter..."
+                    onkeydown="handleTagInput(event)"
+                    maxlength="20"
+                  />
+                </div>
+                <div class="form-hint">
+                  Tags help buyers find your listing. e.g. "nairobi
+                  electronics", "iphone 15"
+                </div>
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn-back" onclick="prevStep(3)">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M19 12H5M12 5l-7 7 7 7" /></svg
+                >Back
+              </button>
+              <button class="btn-next" onclick="nextStep(3)">
+                Next
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 4: PRICING ── -->
+          <div class="step-panel" id="stepPanel-4">
+            <div class="step-header">
+              <div class="step-badge">💰 Step 4 of 6</div>
+              <h2 class="step-title">Pricing</h2>
+              <p class="step-desc">
+                Set a fair price. Check similar listings to stay competitive.
+              </p>
+            </div>
+            <div class="step-body">
+              <div class="tip-box">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4M12 16h.01" />
+                </svg>
+                <p>
+                  SokoHub charges <strong>no listing fees</strong>. A small
+                  <strong>3% transaction fee</strong> applies only when you make
+                  a sale.
+                </p>
+              </div>
+              <div class="price-row">
+                <div class="form-group">
+                  <label class="form-label">Listing price</label>
+                  <div class="price-input-wrap">
+                    <span class="price-currency">KES</span>
+                    <input
+                      class="form-input"
+                      type="number"
+                      id="listingPrice"
+                      min="1"
+                      placeholder="0"
+                      oninput="
+                        updatePreview();
+                        calcFee();
+                      "
+                    />
+                  </div>
+                  <div class="form-error" id="err-price">
+                    Enter a valid price
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label"
+                    >Original price <span class="opt">(optional)</span></label
+                  >
+                  <div class="price-input-wrap">
+                    <span class="price-currency">KES</span>
+                    <input
+                      class="form-input"
+                      type="number"
+                      id="listingOriginalPrice"
+                      min="1"
+                      placeholder="0 (show savings)"
+                      oninput="updatePreview()"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Quantity</label>
+                  <input
+                    class="form-input"
+                    type="number"
+                    id="listingQty"
+                    min="1"
+                    max="999"
+                    placeholder="1"
+                    value="1"
+                  />
+                </div>
+              </div>
+              <div
+                id="feeBox"
+                style="
+                  display: none;
+                  background: var(--gray-6);
+                  border: 1px solid var(--border);
+                  border-radius: var(--radius-md);
+                  padding: 16px;
+                  margin-top: 4px;
+                "
+              >
+                <div
+                  style="font-size: 13px; font-weight: 700; margin-bottom: 10px"
+                >
+                  Price breakdown
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 7px;
+                    font-size: 13px;
+                    color: var(--gray-1);
+                  "
+                >
+                  <div style="display: flex; justify-content: space-between">
+                    <span>Listing price</span><span id="fb-price">—</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between">
+                    <span>SokoHub fee (3%)</span
+                    ><span id="fb-fee" style="color: var(--red)">—</span>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      font-weight: 700;
+                      color: var(--black);
+                      border-top: 1px solid var(--border);
+                      padding-top: 7px;
+                    "
+                  >
+                    <span>You receive</span
+                    ><span id="fb-earn" style="color: var(--green)">—</span>
+                  </div>
+                </div>
+              </div>
+              <hr class="section-divider" />
+              <div
+                class="toggle-row"
+                id="tog-swap"
+                onclick="toggleRow(this, 'swap')"
+              >
+                <div class="toggle-left">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M7 16V4m0 0L3 8m4-4 4 4M17 8v12m0 0 4-4m-4 4-4-4"
+                    />
+                  </svg>
+                  <div class="toggle-info">
+                    <h4>Open to swap</h4>
+                    <p>Allow buyers to offer item exchanges</p>
+                  </div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+              <div
+                class="toggle-row"
+                id="tog-negotiate"
+                onclick="toggleRow(this, 'negotiate')"
+              >
+                <div class="toggle-left">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                    />
+                  </svg>
+                  <div class="toggle-info">
+                    <h4>Price negotiable</h4>
+                    <p>Let buyers know you're open to offers</p>
+                  </div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn-back" onclick="prevStep(4)">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M19 12H5M12 5l-7 7 7 7" /></svg
+                >Back
+              </button>
+              <button class="btn-next" onclick="nextStep(4)">
+                Next
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 5: LOCATION & DELIVERY ── -->
+          <div class="step-panel" id="stepPanel-5">
+            <div class="step-header">
+              <div class="step-badge">📍 Step 5 of 6</div>
+              <h2 class="step-title">Location &amp; delivery</h2>
+              <p class="step-desc">
+                Buyers nearby will see your listing first. Set up how you'll
+                sell.
+              </p>
+            </div>
+            <div class="step-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Area / Neighbourhood</label>
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="listingArea"
+                    placeholder="e.g. Westlands, Kilimani"
+                  />
+                  <div class="form-error" id="err-area">
+                    Location is required
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">City</label>
+                  <select class="form-input form-select" id="listingCity">
+                    <option value="Nairobi" selected>Nairobi</option>
+                    <option value="Mombasa">Mombasa</option>
+                    <option value="Kisumu">Kisumu</option>
+                    <option value="Nakuru">Nakuru</option>
+                    <option value="Eldoret">Eldoret</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <hr class="section-divider" />
+              <div
+                style="font-size: 13px; font-weight: 700; margin-bottom: 14px"
+              >
+                Selling options
+              </div>
+              <div
+                class="toggle-row on"
+                id="tog-meetup"
+                onclick="toggleRow(this, 'meetup')"
+              >
+                <div class="toggle-left">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path
+                      d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                    />
+                  </svg>
+                  <div class="toggle-info">
+                    <h4>Safe meetup</h4>
+                    <p>Meet in a public place — free for buyers</p>
+                  </div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+              <div
+                class="toggle-row"
+                id="tog-delivery"
+                onclick="toggleRow(this, 'delivery')"
+              >
+                <div class="toggle-left">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="1" y="3" width="15" height="13" />
+                    <path d="M16 8h5l3 5v4h-8V8z" />
+                    <circle cx="5.5" cy="18.5" r="2.5" />
+                    <circle cx="18.5" cy="18.5" r="2.5" />
+                  </svg>
+                  <div class="toggle-info">
+                    <h4>Offer delivery</h4>
+                    <p>Ship or courier to buyer's address</p>
+                  </div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+              <div id="deliveryExtras" style="display: none; margin-top: 12px">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Shipping cost (KES)</label>
+                    <div class="price-input-wrap">
+                      <span class="price-currency">KES</span
+                      ><input
+                        class="form-input"
+                        type="number"
+                        id="shippingCost"
+                        placeholder="0 = Free"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Processing time</label>
+                    <select class="form-input form-select" id="processingTime">
+                      <option value="same-day">Same day</option>
+                      <option value="1-3" selected>1–3 business days</option>
+                      <option value="3-5">3–5 business days</option>
+                      <option value="1-week">Up to 1 week</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="toggle-row"
+                id="tog-freeship"
+                onclick="toggleRow(this, 'freeShip')"
+              >
+                <div class="toggle-left">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                  <div class="toggle-info">
+                    <h4>Free local delivery</h4>
+                    <p>Offer free delivery to boost visibility</p>
+                  </div>
+                </div>
+                <div class="toggle-switch"></div>
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn-back" onclick="prevStep(5)">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M19 12H5M12 5l-7 7 7 7" /></svg
+                >Back
+              </button>
+              <button class="btn-next" onclick="nextStep(5)">
+                Next
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 6: REVIEW & PUBLISH ── -->
+          <div class="step-panel" id="stepPanel-6">
+            <div class="step-header">
+              <div class="step-badge">🚀 Step 6 of 6</div>
+              <h2 class="step-title">Review &amp; publish</h2>
+              <p class="step-desc">
+                Everything looks good? Check your listing summary then go live!
+              </p>
+            </div>
+            <div class="step-body">
+              <div
+                id="reviewSummary"
+                style="
+                  background: var(--gray-6);
+                  border-radius: var(--radius-md);
+                  padding: 20px;
+                  border: 1px solid var(--border);
+                "
+              ></div>
+              <hr class="section-divider" />
+              <div class="form-group">
+                <label class="form-label">Listing visibility</label>
+                <div class="chips-wrap" id="visibilityChips">
+                  <div
+                    class="chip selected"
+                    data-val="active"
+                    onclick="selectChip('visibilityChips', this, 'visibility')"
+                  >
+                    🟢 Publish now
+                  </div>
+                  <div
+                    class="chip"
+                    data-val="draft"
+                    onclick="selectChip('visibilityChips', this, 'visibility')"
+                  >
+                    📄 Save as draft
+                  </div>
+                  <div
+                    class="chip"
+                    data-val="scheduled"
+                    onclick="selectChip('visibilityChips', this, 'visibility')"
+                  >
+                    ⏰ Schedule
+                  </div>
+                </div>
+              </div>
+              <div id="scheduleGroup" style="display: none" class="form-group">
+                <label class="form-label">Publish date &amp; time</label>
+                <input
+                  class="form-input"
+                  type="datetime-local"
+                  id="scheduleDate"
+                />
+              </div>
+              <div
+                style="
+                  margin-top: 20px;
+                  padding: 16px;
+                  background: var(--green-light);
+                  border-radius: var(--radius-md);
+                  font-size: 13px;
+                  color: var(--gray-1);
+                  line-height: 1.6;
+                  border: 1px solid #b2dfdb;
+                "
+              >
+                By publishing you agree to SokoHub's
+                <a
+                  href="#"
+                  style="color: var(--green); text-decoration: underline"
+                  >Seller Terms</a
+                >
+                and confirm this listing is accurate and allowed under our
+                <a
+                  href="#"
+                  style="color: var(--green); text-decoration: underline"
+                  >Marketplace Policies</a
+                >.
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn-back" onclick="prevStep(6)">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M19 12H5M12 5l-7 7 7 7" /></svg
+                >Back
+              </button>
+              <button
+                class="btn-publish"
+                id="btnPublish"
+                onclick="publishListing()"
+              >
+                🚀 Publish listing
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: LIVE PREVIEW -->
+        <div class="preview-panel">
+          <div class="preview-label">Live preview</div>
+          <div class="preview-card">
+            <div class="preview-img-wrap" id="prevImgWrap">
+              <div class="preview-placeholder" id="prevPlaceholder">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="m21 15-5-5L5 21" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                </svg>
+                Add photos to see preview
+              </div>
+              <img src="" alt="" id="prevImg" style="display: none" />
+              <div class="preview-badge" id="prevBadge" style="display: none">
+                Bestseller
+              </div>
+              <div class="preview-heart">❤️</div>
+            </div>
+            <div class="preview-body">
+              <div>
+                <span class="preview-price" id="prevPrice">KES —</span>
+                <span
+                  class="preview-original"
+                  id="prevOriginal"
+                  style="display: none"
+                ></span>
+              </div>
+              <div class="preview-title" id="prevTitle">
+                Your listing title will appear here…
+              </div>
+              <div class="preview-shop" id="prevShop">Your shop · Nairobi</div>
+              <div class="preview-stars">
+                ★★★★★
+                <span
+                  style="
+                    font-size: 12px;
+                    color: var(--gray-2);
+                    font-weight: 600;
+                    margin-left: 2px;
+                  "
+                  >New listing</span
+                >
+              </div>
+              <div
+                class="preview-freeship"
+                id="prevFreeship"
+                style="display: none"
+              >
+                FREE local delivery
+              </div>
+              <div
+                class="preview-cond"
+                id="prevCond"
+                style="display: none"
+              ></div>
+            </div>
+          </div>
+          <div
+            style="
+              margin-top: 12px;
+              font-size: 11px;
+              color: var(--gray-3);
+              text-align: center;
+            "
+          >
+            This is how buyers will see your listing
+          </div>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div
+        id="successScreen"
+        style="
+          display: none;
+          min-height: calc(100vh - var(--nav-h));
+          align-items: center;
+          justify-content: center;
+          padding: 40px 20px;
+          flex-direction: column;
+          text-align: center;
+        "
+      >
+        <div class="success-anim">✓</div>
+        <h1 class="success-title">Listing published!</h1>
+        <p class="success-sub">
+          Your item is now live on SokoHub.<br />Buyers can find it immediately
+          through search and category browsing.
+        </p>
+        <div class="listing-id-box">
+          Listing reference<strong id="listingRef">—</strong>
+        </div>
+        <div class="success-actions">
+          <button
+            class="btn-success"
+            onclick="window.location.href = 'listings.html'"
+          >
+            Browse listings
+          </button>
+          <button class="btn-success btn-success-primary" onclick="resetForm()">
+            List another item
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PUBLISHING OVERLAY -->
+    <div id="publishingOverlay">
+      <div class="pub-card">
+        <div class="pub-title">Publishing your listing...</div>
+        <div class="pub-steps">
+          <div class="pub-step" id="pub-step-1">
+            <div class="pub-step-dot"></div>
+            <span>Optimizing images</span>
+          </div>
+          <div class="pub-step" id="pub-step-2">
+            <div class="pub-step-dot"></div>
+            <span>Preparing data</span>
+          </div>
+          <div class="pub-step" id="pub-step-3">
+            <div class="pub-step-dot"></div>
+            <span>Saving to SokoHub</span>
+          </div>
+          <div class="pub-step" id="pub-step-4">
+            <div class="pub-step-dot"></div>
+            <span>Finalizing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="toaster"></div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-analytics.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signInWithPopup,
+        GoogleAuthProvider,
+        signOut,
+        onAuthStateChanged,
+        updateProfile,
+      } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        serverTimestamp,
+        doc,
+        updateDoc,
+        setDoc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+      // ── Firebase init ──────────────────────────────────────────────
+      const firebaseConfig = {
+        apiKey: "AIzaSyDH-1Q9GAH5X0BAi46EN_0bKAdHbbTul30",
+        authDomain: "sokohub-e4660.firebaseapp.com",
+        projectId: "sokohub-e4660",
+        storageBucket: "sokohub-e4660.firebasestorage.app",
+        messagingSenderId: "696413289672",
+        appId: "1:696413289672:web:2072058d2f0efa6983f9fd",
+        measurementId: "G-L0JWVTG22L",
+      };
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const gProvider = new GoogleAuthProvider();
+
+      // ── State ──────────────────────────────────────────────────────
+      let currentUser = null;
+      let currentUserRole = null;
+      let currentStep = 1;
+      const TOTAL_STEPS = 6;
+      let imageFiles = [];
+      let imagePreviewURLs = [];
+      let vendorCategories = [];
+      let tagList = [];
+      let formData = {
+        title: "",
+        category: "",
+        description: "",
+        condition: "",
+        brand: "",
+        model: "",
+        color: "",
+        tags: [],
+        price: null,
+        originalPrice: null,
+        qty: 1,
+        area: "",
+        city: "Nairobi",
+        swap: false,
+        negotiate: false,
+        meetup: true,
+        delivery: false,
+        freeShip: false,
+        shippingCost: 0,
+        processingTime: "1-3",
+        visibility: "active",
+        scheduleDate: null,
+      };
+
+      // ── IMAGE COMPRESSION (Base64 Alternative) ───────────────────
+      async function compressImage(file, maxWidth = 800, quality = 0.7) {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+              const canvas = document.createElement("canvas");
+              let width = img.width;
+              let height = img.height;
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0, width, height);
+              // Convert to Base64 (JPEG for better compression)
+              resolve(canvas.toDataURL("image/jpeg", quality));
+            };
+          };
+        });
+      }
+
+      // ── SCREEN ROUTER ──────────────────────────────────────────────
+      function showScreen(id) {
+        const screens = [
+          "screenLoading",
+          "screenAuth",
+          "screenBecomeVendor",
+          "screenPending",
+          "screenCreateListing",
+        ];
+        screens.forEach((s) => {
+          const el = document.getElementById(s);
+          if (el) {
+            el.style.display =
+              s === id
+                ? s === "screenCreateListing"
+                  ? "block"
+                  : "flex"
+                : "none";
+          }
+        });
+        if (id === "screenAuth") {
+          const el = document.getElementById("screenAuth");
+          if (el) el.style.display = "flex";
+        }
+        if (id === "screenPending") {
+          const el = document.getElementById("screenPending");
+          if (el) el.style.display = "flex";
+        }
+        if (id === "screenBecomeVendor") {
+          const el = document.getElementById("screenBecomeVendor");
+          if (el) el.style.display = "block";
+        }
+        if (id === "screenCreateListing") {
+          const el = document.getElementById("screenCreateListing");
+          if (el) el.style.display = "block";
+        }
+        if (id === "screenLoading") {
+          const el = document.getElementById("screenLoading");
+          if (el) el.style.display = "flex";
+        }
+      }
+
+      function updateNavBadge(role) {
+        const badge = document.getElementById("navRoleBadge");
+        if (!role) {
+          badge.style.display = "none";
+          return;
+        }
+        badge.style.display = "inline-flex";
+        const map = {
+          vendor: { cls: "badge-vendor", label: "✅ Verified Vendor" },
+          vendor_pending: {
+            cls: "badge-pending",
+            label: "⏳ Pending Approval",
+          },
+          customer: { cls: "badge-customer", label: "👤 Customer" },
+          admin: { cls: "badge-vendor", label: "🔑 Admin" },
+        };
+        const info = map[role] || map.customer;
+        badge.className = "nav-role-badge " + info.cls;
+        badge.textContent = info.label;
+      }
+
+      // ── AUTH STATE ─────────────────────────────────────────────────
+      onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
+        if (!user) {
+          updateNavBadge(null);
+          document.getElementById("navUser").style.display = "none";
+          showScreen("screenAuth");
+          return;
+        }
+        document.getElementById("navUser").style.display = "flex";
+        const name = user.displayName || user.email.split("@")[0];
+        document.getElementById("navUserName").textContent = name;
+        const av = document.getElementById("navAvatar");
+        if (user.photoURL)
+          av.innerHTML = `<img src="${user.photoURL}" alt="avatar"/>`;
+        else av.textContent = name[0].toUpperCase();
+        showScreen("screenLoading");
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            currentUserRole = userDoc.data().role || "customer";
+          } else {
+            await setDoc(doc(db, "users", user.uid), {
+              uid: user.uid,
+              email: user.email,
+              displayName: user.displayName || name,
+              photoURL: user.photoURL || null,
+              role: "customer",
+              createdAt: serverTimestamp(),
+            });
+            currentUserRole = "customer";
+          }
+        } catch (e) {
+          console.error("Error fetching user role:", e);
+          currentUserRole = "customer";
+        }
+        updateNavBadge(currentUserRole);
+        routeByRole(currentUserRole, user, name);
+      });
+
+      function routeByRole(role, user, name) {
+        if (role === "vendor" || role === "admin") {
+          document.getElementById("prevShop").textContent =
+            (user.displayName || name) + " · Nairobi";
+          buildStepsList();
+          updateProgress();
+          showScreen("screenCreateListing");
+          showToast("Welcome back! Ready to list? 🚀", "ok");
+        } else if (role === "vendor_pending") showScreen("screenPending");
+        else showScreen("screenBecomeVendor");
+      }
+
+      // ── AUTH FUNCTIONS ─────────────────────────────────────────────
+      window.switchAuthTab = function (tab) {
+        document
+          .getElementById("tabSignIn")
+          .classList.toggle("active", tab === "signin");
+        document
+          .getElementById("tabSignUp")
+          .classList.toggle("active", tab === "signup");
+        document.getElementById("signupNameRow").style.display =
+          tab === "signup" ? "grid" : "none";
+        document.getElementById("authPassword").placeholder =
+          tab === "signup" ? "Create password (min 6 chars)" : "Password";
+        document.getElementById("btnAuthSubmit").textContent =
+          tab === "signin" ? "Sign In" : "Create Account";
+        document.getElementById("authError").classList.remove("show");
+      };
+      window.handleAuth = async function () {
+        const tab = document
+          .getElementById("tabSignIn")
+          .classList.contains("active")
+          ? "signin"
+          : "signup";
+        const email = document.getElementById("authEmail").value.trim();
+        const password = document.getElementById("authPassword").value;
+        const errEl = document.getElementById("authError");
+        const btn = document.getElementById("btnAuthSubmit");
+        errEl.classList.remove("show");
+        if (!email || !password) {
+          errEl.textContent = "Please fill in all fields.";
+          errEl.classList.add("show");
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent =
+          tab === "signin" ? "Signing in…" : "Creating account…";
+        try {
+          if (tab === "signin")
+            await signInWithEmailAndPassword(auth, email, password);
+          else {
+            const firstName = document
+              .getElementById("authFirstName")
+              .value.trim();
+            const lastName = document
+              .getElementById("authLastName")
+              .value.trim();
+            const cred = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+            if (firstName || lastName)
+              await updateProfile(cred.user, {
+                displayName: `${firstName} ${lastName}`.trim(),
+              });
+          }
+          showToast("Welcome to SokoHub! 🎉", "ok");
+        } catch (e) {
+          const msgs = {
+            "auth/user-not-found": "No account found with that email.",
+            "auth/wrong-password": "Incorrect password.",
+            "auth/email-already-in-use":
+              "An account with this email already exists.",
+            "auth/weak-password": "Password must be at least 6 characters.",
+            "auth/invalid-email": "Please enter a valid email address.",
+            "auth/too-many-requests":
+              "Too many attempts. Please try again later.",
+            "auth/invalid-credential": "Invalid email or password.",
+          };
+          errEl.textContent = msgs[e.code] || e.message;
+          errEl.classList.add("show");
+          btn.disabled = false;
+          btn.textContent = tab === "signin" ? "Sign In" : "Create Account";
+        }
+      };
+      window.signInWithGoogle = async function () {
+        try {
+          await signInWithPopup(auth, gProvider);
+          showToast("Signed in with Google! 🎉", "ok");
+        } catch (e) {
+          if (e.code !== "auth/popup-closed-by-user")
+            showToast(e.message, "err");
+        }
+      };
+      window.signOutUser = async function () {
+        await signOut(auth);
+        currentUserRole = null;
+        showToast("Signed out");
+      };
+      window.togglePwdVis = function (id, icon) {
+        const inp = document.getElementById(id);
+        inp.type = inp.type === "password" ? "text" : "password";
+        icon.style.color =
+          inp.type === "text" ? "var(--black)" : "var(--gray-3)";
+      };
+
+      // ── VENDOR APPLICATION ─────────────────────────────────────────
+      window.toggleVendorCategory = function (el) {
+        el.classList.toggle("selected");
+        const val = el.dataset.val;
+        if (el.classList.contains("selected")) {
+          if (!vendorCategories.includes(val)) vendorCategories.push(val);
+        } else vendorCategories = vendorCategories.filter((v) => v !== val);
+      };
+      window.submitVendorApplication = async function () {
+        const errEl = document.getElementById("vendorFormError");
+        errEl.classList.remove("show");
+        const businessName = document
+          .getElementById("vBusinessName")
+          .value.trim();
+        const businessType = document.getElementById("vBusinessType").value;
+        const phone = document.getElementById("vPhone").value.trim();
+        const county = document.getElementById("vCounty").value;
+        const description = document
+          .getElementById("vDescription")
+          .value.trim();
+        const terms = document.getElementById("vTerms").checked;
+        const showErr = (id, show) => {
+          const e = document.getElementById(id);
+          if (e) e.classList.toggle("show", show);
+        };
+        let valid = true;
+        showErr("err-vBusinessName", !businessName);
+        if (!businessName) valid = false;
+        showErr("err-vBusinessType", !businessType);
+        if (!businessType) valid = false;
+        showErr("err-vPhone", !phone || phone.length < 9);
+        if (!phone || phone.length < 9) valid = false;
+        showErr("err-vCounty", !county);
+        if (!county) valid = false;
+        showErr("err-vDescription", description.length < 30);
+        if (description.length < 30) valid = false;
+        showErr("err-vCategories", vendorCategories.length === 0);
+        if (vendorCategories.length === 0) valid = false;
+        if (!terms) {
+          errEl.textContent =
+            "Please accept the Vendor Terms of Service to continue.";
+          errEl.classList.add("show");
+          return;
+        }
+        if (!valid) {
+          errEl.textContent = "Please fill in all required fields above.";
+          errEl.classList.add("show");
+          return;
+        }
+        const btn = document.getElementById("btnApplyVendor");
+        btn.disabled = true;
+        btn.textContent = "Submitting…";
+        try {
+          await setDoc(doc(db, "vendorApplications", currentUser.uid), {
+            uid: currentUser.uid,
+            email: currentUser.email,
+            displayName: currentUser.displayName || currentUser.email,
+            businessName,
+            businessType,
+            phone,
+            county,
+            categories: vendorCategories,
+            description,
+            kraPin: document.getElementById("vKraPin").value.trim() || null,
+            businessPhotos: {
+              cover: vendorPhotoSlots[0] || null,
+              interior: vendorPhotoSlots[1] || null,
+              products: vendorPhotoSlots[2] || null,
+              team: vendorPhotoSlots[3] || null,
+            },
+            status: "pending",
+            submittedAt: serverTimestamp(),
+          });
+          await updateDoc(doc(db, "users", currentUser.uid), {
+            role: "vendor_pending",
+            businessName,
+            updatedAt: serverTimestamp(),
+          });
+          currentUserRole = "vendor_pending";
+          updateNavBadge("vendor_pending");
+          showToast("Application submitted! 🎉", "ok");
+          showScreen("screenPending");
+        } catch (e) {
+          errEl.textContent = "Error: " + e.message;
+          errEl.classList.add("show");
+          btn.disabled = false;
+          btn.textContent = "Submit Application";
+        }
+      };
+
+      // ── STEPS ──────────────────────────────────────────────────────
+      const STEP_META = [
+        { label: "Photos", icon: "📸" },
+        { label: "Title & Description", icon: "📝" },
+        { label: "Item Details", icon: "🏷" },
+        { label: "Pricing", icon: "💰" },
+        { label: "Location & Delivery", icon: "📍" },
+        { label: "Review & Publish", icon: "🚀" },
+      ];
+      function buildStepsList() {
+        const el = document.getElementById("stepsList");
+        el.innerHTML = "";
+        STEP_META.forEach((s, i) => {
+          const n = i + 1;
+          if (n > 1) {
+            const c = document.createElement("div");
+            c.className = "step-connector";
+            el.appendChild(c);
+          }
+          const d = document.createElement("div");
+          d.className =
+            "step-link" +
+            (n === currentStep ? " active" : n < currentStep ? " done" : "");
+          d.id = `stepLink-${n}`;
+          d.onclick = () => {
+            if (n < currentStep) jumpToStep(n);
+          };
+          d.innerHTML = `<div class="step-bubble">${n < currentStep ? "✓" : n}</div><span>${s.icon} ${s.label}</span>`;
+          el.appendChild(d);
+        });
+      }
+      function updateProgress() {
+        const pct = Math.round(((currentStep - 1) / TOTAL_STEPS) * 100);
+        document.getElementById("progressFill").style.width = pct + "%";
+        document.getElementById("progressPct").textContent = pct + "% complete";
+        buildStepsList();
+      }
+      function jumpToStep(n) {
+        document
+          .getElementById(`stepPanel-${currentStep}`)
+          .classList.remove("active");
+        currentStep = n;
+        document.getElementById(`stepPanel-${n}`).classList.add("active");
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      window.nextStep = function (from) {
+        if (!validateStep(from)) return;
+        if (from === TOTAL_STEPS) {
+          publishListing();
+          return;
+        }
+        document.getElementById(`stepPanel-${from}`).classList.remove("active");
+        currentStep = from + 1;
+        document
+          .getElementById(`stepPanel-${currentStep}`)
+          .classList.add("active");
+        if (currentStep === 6) buildReview();
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      window.prevStep = function (from) {
+        if (from <= 1) return;
+        document.getElementById(`stepPanel-${from}`).classList.remove("active");
+        currentStep = from - 1;
+        document
+          .getElementById(`stepPanel-${currentStep}`)
+          .classList.add("active");
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      // ── VALIDATION ─────────────────────────────────────────────────
+      function validateStep(n) {
+        const show = (id, show) => {
+          const e = document.getElementById(id);
+          if (e) {
+            e.classList.toggle("show", show);
+            const inp = e.previousElementSibling;
+            if (inp && inp.classList.contains("form-input"))
+              inp.classList.toggle("error", show);
+          }
+        };
+        if (n === 1) {
+          if (imageFiles.length === 0) {
+            showToast("Please add at least 1 photo", "err");
+            return false;
+          }
+          return true;
+        }
+        if (n === 2) {
+          const t = document.getElementById("listingTitle").value.trim();
+          const d = document.getElementById("listingDesc").value.trim();
+          const c = document.getElementById("listingCategory").value;
+          show("err-title", t.length < 10);
+          show("err-desc", d.length < 20);
+          show("err-category", !c);
+          if (t.length < 10 || d.length < 20 || !c) return false;
+          formData.title = t;
+          formData.description = d;
+          formData.category = c;
+          return true;
+        }
+        if (n === 3) {
+          const cond = document.querySelector("#conditionChips .chip.selected");
+          show("err-condition", !cond);
+          if (!cond) return false;
+          formData.condition = cond.dataset.val;
+          formData.brand = document.getElementById("listingBrand").value.trim();
+          formData.model = document.getElementById("listingModel").value.trim();
+          const colEl = document.querySelector("#colorChips .chip.selected");
+          formData.color = colEl ? colEl.dataset.val : "";
+          formData.tags = [...tagList];
+          return true;
+        }
+        if (n === 4) {
+          const p = parseFloat(document.getElementById("listingPrice").value);
+          if (!p || p <= 0) {
+            show("err-price", true);
+            showToast("Please enter a valid price", "err");
+            return false;
+          }
+          show("err-price", false);
+          formData.price = p;
+          formData.originalPrice =
+            parseFloat(document.getElementById("listingOriginalPrice").value) ||
+            null;
+          formData.qty =
+            parseInt(document.getElementById("listingQty").value) || 1;
+          return true;
+        }
+        if (n === 5) {
+          const area = document.getElementById("listingArea").value.trim();
+          show("err-area", !area);
+          if (!area) return false;
+          formData.area = area;
+          formData.city = document.getElementById("listingCity").value;
+          formData.shippingCost =
+            parseFloat(document.getElementById("shippingCost")?.value) || 0;
+          formData.processingTime =
+            document.getElementById("processingTime")?.value || "1-3";
+          return true;
+        }
+        return true;
+      }
+
+      // ── IMAGE HANDLING ─────────────────────────────────────────────
+      window.handleDragOver = function (e) {
+        e.preventDefault();
+        document.getElementById("dropZone").classList.add("drag-over");
+      };
+      window.handleDragLeave = function () {
+        document.getElementById("dropZone").classList.remove("drag-over");
+      };
+      window.handleDrop = function (e) {
+        e.preventDefault();
+        document.getElementById("dropZone").classList.remove("drag-over");
+        addImageFiles([...e.dataTransfer.files]);
+      };
+      window.handleImageSelect = function (e) {
+        addImageFiles([...e.target.files]);
+      };
+      function addImageFiles(files) {
+        const allowed = files.filter((f) => f.type.startsWith("image/"));
+        const remaining = 10 - imageFiles.length;
+        const toAdd = allowed.slice(0, remaining);
+        if (!toAdd.length) {
+          showToast("Max 10 images");
+          return;
+        }
+        toAdd.forEach((f) => {
+          imageFiles.push(f);
+          imagePreviewURLs.push(URL.createObjectURL(f));
+        });
+        renderImgGrid();
+        updatePreview();
+        showToast(`${toAdd.length} photo(s) added ✓`, "ok");
+      }
+      function renderImgGrid() {
+        const grid = document.getElementById("imagesGrid");
+        grid.innerHTML = imagePreviewURLs
+          .map(
+            (url, i) => `
+          <div class="img-thumb ${i === 0 ? "primary" : ""}" id="imgThumb-${i}">
+            <img src="${url}" alt="Image ${i + 1}"/>
+            <div class="img-thumb-overlay">
+              <button class="img-action-btn" onclick="setPrimaryImg(${i})" title="Set as cover">⭐</button>
+              <button class="img-action-btn" onclick="removeImg(${i})" title="Remove">🗑</button>
+            </div>
+            ${i === 0 ? '<div class="img-primary-badge">Cover</div>' : ""}
+          </div>`,
+          )
+          .join("");
+        document.getElementById("imgCountLabel").innerHTML =
+          `${imageFiles.length} / 10 images.`;
+      }
+      window.setPrimaryImg = function (i) {
+        [imageFiles[0], imageFiles[i]] = [imageFiles[i], imageFiles[0]];
+        [imagePreviewURLs[0], imagePreviewURLs[i]] = [
+          imagePreviewURLs[i],
+          imagePreviewURLs[0],
+        ];
+        renderImgGrid();
+        updatePreview();
+      };
+      window.removeImg = function (i) {
+        URL.revokeObjectURL(imagePreviewURLs[i]);
+        imageFiles.splice(i, 1);
+        imagePreviewURLs.splice(i, 1);
+        renderImgGrid();
+        updatePreview();
+      };
+
+      // ── PREVIEW ────────────────────────────────────────────────────
+      window.updatePreview = function () {
+        const title = document.getElementById("listingTitle")?.value || "";
+        const price =
+          parseFloat(document.getElementById("listingPrice")?.value) || 0;
+        const origP =
+          parseFloat(document.getElementById("listingOriginalPrice")?.value) ||
+          0;
+        const cond = document.querySelector("#conditionChips .chip.selected");
+        const freeShip = document
+          .getElementById("tog-freeship")
+          ?.classList.contains("on");
+        document.getElementById("prevTitle").textContent =
+          title || "Your listing title will appear here…";
+        document.getElementById("prevPrice").textContent = price
+          ? new Intl.NumberFormat("en-KE", {
+              style: "currency",
+              currency: "KES",
+              maximumFractionDigits: 0,
+            }).format(price)
+          : "KES —";
+        const origEl = document.getElementById("prevOriginal");
+        if (origP > price) {
+          origEl.style.display = "inline";
+          origEl.textContent = new Intl.NumberFormat("en-KE", {
+            style: "currency",
+            currency: "KES",
+            maximumFractionDigits: 0,
+          }).format(origP);
+        } else origEl.style.display = "none";
+        const imgEl = document.getElementById("prevImg");
+        const ph = document.getElementById("prevPlaceholder");
+        if (imagePreviewURLs.length) {
+          imgEl.src = imagePreviewURLs[0];
+          imgEl.style.display = "block";
+          ph.style.display = "none";
+        } else {
+          imgEl.style.display = "none";
+          ph.style.display = "flex";
+        }
+        const condEl = document.getElementById("prevCond");
+        if (cond) {
+          condEl.style.display = "inline-block";
+          const clrs = {
+            new: "background:#e8f5e9;color:#2e7d32",
+            "like-new": "background:#e3f2fd;color:#1565c0",
+            good: "background:#f3e5f5;color:#7b1fa2",
+            fair: "background:#fff3e0;color:#e65100",
+            "for-parts": "background:#fce4ec;color:#c2185b",
+          };
+          condEl.style.cssText =
+            (clrs[cond.dataset.val] ||
+              "background:var(--gray-5);color:var(--gray-1)") +
+            ";display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-top:5px";
+          condEl.textContent = cond.textContent.trim();
+        } else condEl.style.display = "none";
+        document.getElementById("prevFreeship").style.display = freeShip
+          ? "block"
+          : "none";
+        const area = document.getElementById("listingArea")?.value || "Nairobi";
+        document.getElementById("prevShop").textContent =
+          (currentUser?.displayName || "Your shop") + " · " + area;
+      };
+
+      // ── CHAR COUNTERS ──────────────────────────────────────────────
+      window.updateTitleCount = function () {
+        const v = document.getElementById("listingTitle").value.length;
+        document.getElementById("titleCount").textContent = `${v}/80`;
+        document.getElementById("titleBar").style.width = (v / 80) * 100 + "%";
+      };
+      window.updateDescCount = function () {
+        const v = document.getElementById("listingDesc").value.length;
+        document.getElementById("descCount").textContent = `${v}/2000`;
+      };
+
+      // ── CHIPS ──────────────────────────────────────────────────────
+      window.selectChip = function (groupId, el, key) {
+        document
+          .querySelectorAll(`#${groupId} .chip`)
+          .forEach((c) => c.classList.remove("selected"));
+        el.classList.add("selected");
+        formData[key] = el.dataset.val;
+        if (key === "visibility")
+          document.getElementById("scheduleGroup").style.display =
+            el.dataset.val === "scheduled" ? "flex" : "none";
+        updatePreview();
+      };
+
+      // ── TAGS ───────────────────────────────────────────────────────
+      window.handleTagInput = function (e) {
+        if ((e.key === "Enter" || e.key === ",") && tagList.length < 13) {
+          e.preventDefault();
+          const v = document
+            .getElementById("tagInput")
+            .value.trim()
+            .replace(/,$/, "");
+          if (v && !tagList.includes(v)) {
+            tagList.push(v);
+            renderTags();
+          }
+          document.getElementById("tagInput").value = "";
+        }
+      };
+      function renderTags() {
+        const wrap = document.getElementById("tagWrap");
+        wrap.querySelectorAll(".tag-pill").forEach((t) => t.remove());
+        const inp = document.getElementById("tagInput");
+        tagList.forEach((t, i) => {
+          const p = document.createElement("div");
+          p.className = "tag-pill";
+          p.innerHTML = `${t}<button onclick="removeTag(${i})">×</button>`;
+          wrap.insertBefore(p, inp);
+        });
+      }
+      window.removeTag = function (i) {
+        tagList.splice(i, 1);
+        renderTags();
+      };
+
+      // ── TOGGLES ────────────────────────────────────────────────────
+      window.toggleRow = function (el, key) {
+        el.classList.toggle("on");
+        formData[key] = el.classList.contains("on");
+        if (key === "delivery") {
+          const ex = document.getElementById("deliveryExtras");
+          if (ex) ex.style.display = formData[key] ? "block" : "none";
+        }
+        updatePreview();
+      };
+
+      // ── PRICING FEE CALC ───────────────────────────────────────────
+      window.calcFee = function () {
+        const p =
+          parseFloat(document.getElementById("listingPrice").value) || 0;
+        const box = document.getElementById("feeBox");
+        if (!p) {
+          box.style.display = "none";
+          return;
+        }
+        box.style.display = "block";
+        const fmt = (n) =>
+          new Intl.NumberFormat("en-KE", {
+            style: "currency",
+            currency: "KES",
+            maximumFractionDigits: 0,
+          }).format(n);
+        const fee = p * 0.03;
+        document.getElementById("fb-price").textContent = fmt(p);
+        document.getElementById("fb-fee").textContent = "-" + fmt(fee);
+        document.getElementById("fb-earn").textContent = fmt(p - fee);
+      };
+
+      // ── REVIEW SUMMARY ─────────────────────────────────────────────
+      function buildReview() {
+        const fmt = (n) =>
+          n
+            ? new Intl.NumberFormat("en-KE", {
+                style: "currency",
+                currency: "KES",
+                maximumFractionDigits: 0,
+              }).format(n)
+            : "—";
+        const rows = [
+          ["Title", document.getElementById("listingTitle").value || "—"],
+          [
+            "Category",
+            document.getElementById("listingCategory").options[
+              document.getElementById("listingCategory").selectedIndex
+            ]?.text || "—",
+          ],
+          [
+            "Condition",
+            document
+              .querySelector("#conditionChips .chip.selected")
+              ?.textContent.trim() || "—",
+          ],
+          [
+            "Price",
+            fmt(parseFloat(document.getElementById("listingPrice").value) || 0),
+          ],
+          ["Quantity", document.getElementById("listingQty").value || 1],
+          [
+            "Location",
+            `${document.getElementById("listingArea").value || "—"}, ${document.getElementById("listingCity").value}`,
+          ],
+          ["Photos", `${imageFiles.length} image(s)`],
+        ];
+        document.getElementById("reviewSummary").innerHTML = `
+          <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--black)">Listing summary</div>
+          ${rows.map(([k, v]) => `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--gray-5);font-size:13px"><span style="color:var(--gray-2)">${k}</span><span style="font-weight:500;color:var(--black);text-align:right;max-width:65%">${v}</span></div>`).join("")}`;
+      }
+
+      // ── PUBLISH ────────────────────────────────────────────────────
+      window.publishListing = async function () {
+        if (!currentUser) {
+          showToast("Please sign in first", "err");
+          return;
+        }
+        if (currentUserRole !== "vendor" && currentUserRole !== "admin") {
+          showToast("Only approved vendors can publish", "err");
+          return;
+        }
+
+        // VALIDATION: Check required fields
+        const title = document.getElementById("listingTitle")?.value.trim();
+        const desc = document.getElementById("listingDesc")?.value.trim();
+        const category = document.getElementById("listingCategory")?.value;
+        const price = parseFloat(
+          document.getElementById("listingPrice")?.value,
+        );
+
+        if (!title || title.length < 5) {
+          showToast("Title must be at least 5 characters", "err");
+          return;
+        }
+        if (!desc || desc.length < 20) {
+          showToast("Description must be at least 20 characters", "err");
+          return;
+        }
+        if (!category) {
+          showToast("Please select a category", "err");
+          return;
+        }
+        if (!price || price <= 0) {
+          showToast("Please enter a valid price", "err");
+          return;
+        }
+        if (imageFiles.length === 0) {
+          showToast("Please add at least 1 image", "err");
+          return;
+        }
+
+        const btn = document.getElementById("btnPublish");
+        if (!btn) {
+          showToast("Publish button not found. Please reload the page.", "err");
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = "Publishing…";
+        const overlay = document.getElementById("publishingOverlay");
+        if (overlay) overlay.classList.add("show");
+
+        const advPStep = (n) => {
+          const steps = document.querySelectorAll(".pub-step");
+          if (steps.length > 0) {
+            steps.forEach((el, i) => {
+              if (i < n - 1) el.className = "pub-step done";
+              else if (i === n - 1) el.className = "pub-step active";
+              else el.className = "pub-step";
+            });
+          }
+        };
+
+        try {
+          advPStep(1);
+          // 1. COMPRESS IMAGES TO BASE64 WITH SIZE LIMIT
+          const base64Images = [];
+          for (let i = 0; i < imageFiles.length; i++) {
+            try {
+              const b64 = await compressImage(imageFiles[i], 800, 0.6);
+              // Check Base64 size (Firestore has 1MB per document limit, but we allow multiple docs)
+              if (b64.length > 5 * 1024 * 1024) {
+                showToast(`Image ${i + 1} too large after compression`, "err");
+                throw new Error(`Image ${i + 1} exceeds size limit`);
+              }
+              base64Images.push(b64);
+            } catch (imgErr) {
+              throw new Error(
+                `Failed to compress image ${i + 1}: ${imgErr.message}`,
+              );
+            }
+          }
+          console.log(`✓ Compressed ${base64Images.length} images to Base64`);
+
+          advPStep(2);
+          const visibility =
+            document.querySelector("#visibilityChips .chip.selected")?.dataset
+              .val || "active";
+          let businessName = currentUser.displayName || currentUser.email;
+          try {
+            const uDoc = await getDoc(doc(db, "users", currentUser.uid));
+            if (uDoc.exists() && uDoc.data().businessName)
+              businessName = uDoc.data().businessName;
+          } catch (userErr) {
+            console.warn("Could not fetch business name:", userErr);
+          }
+
+          const listing = {
+            title: title,
+            description: desc,
+            category: category,
+            condition:
+              document.querySelector("#conditionChips .chip.selected")?.dataset
+                .val || "",
+            brand: document.getElementById("listingBrand")?.value.trim() || "",
+            model: document.getElementById("listingModel")?.value.trim() || "",
+            color:
+              document.querySelector("#colorChips .chip.selected")?.dataset
+                .val || "",
+            tags: tagList || [],
+            price: price,
+            originalPrice:
+              parseFloat(
+                document.getElementById("listingOriginalPrice")?.value,
+              ) || null,
+            qty: parseInt(document.getElementById("listingQty")?.value) || 1,
+            area:
+              document.getElementById("listingArea")?.value.trim() || "Nairobi",
+            city: document.getElementById("listingCity")?.value || "Nairobi",
+            freeShip:
+              document
+                .getElementById("tog-freeship")
+                ?.classList.contains("on") || false,
+            delivery:
+              document
+                .getElementById("tog-delivery")
+                ?.classList.contains("on") || false,
+            meetup:
+              document.getElementById("tog-meetup")?.classList.contains("on") ||
+              true,
+            swap:
+              document.getElementById("tog-swap")?.classList.contains("on") ||
+              false,
+            negotiate:
+              document
+                .getElementById("tog-negotiate")
+                ?.classList.contains("on") || false,
+            shippingCost:
+              parseFloat(document.getElementById("shippingCost")?.value) || 0,
+            processingTime:
+              document.getElementById("processingTime")?.value || "1-3",
+            images: base64Images, // STORED AS BASE64 STRINGS IN FIRESTORE
+            coverImage: base64Images[0] || "",
+            imageCount: base64Images.length,
+            sellerId: currentUser.uid,
+            sellerName: currentUser.displayName || currentUser.email,
+            sellerEmail: currentUser.email,
+            businessName: businessName,
+            visibility: visibility,
+            status: visibility === "draft" ? "draft" : "active",
+            views: 0,
+            saves: 0,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          };
+
+          console.log("📝 Listing object prepared:", {
+            title: listing.title,
+            images: listing.imageCount,
+            price: listing.price,
+            category: listing.category,
+          });
+
+          advPStep(3);
+          const docRef = await addDoc(collection(db, "listings"), listing);
+          console.log("✓ Listing saved to Firestore with ID:", docRef.id);
+
+          await new Promise((r) => setTimeout(r, 400));
+          advPStep(4);
+          await new Promise((r) => setTimeout(r, 400));
+
+          if (overlay) overlay.classList.remove("show");
+          document.getElementById("appWrap").style.display = "none";
+          document.getElementById("successScreen").style.display = "flex";
+          document.getElementById("listingRef").textContent =
+            `SKH-${docRef.id.substring(0, 8).toUpperCase()}`;
+          showToast("Listing published! 🎉", "ok");
+          resetForm();
+        } catch (e) {
+          if (overlay) overlay.classList.remove("show");
+          btn.disabled = false;
+          btn.textContent = "🚀 Publish listing";
+          console.error("❌ Publish error:", e);
+          showToast(
+            "Error: " + (e.message || "Failed to publish listing"),
+            "err",
+          );
+        }
+      };
+
+      // ── RESET ──────────────────────────────────────────────────────
+      window.resetForm = function () {
+        imageFiles = [];
+        imagePreviewURLs = [];
+        tagList = [];
+        currentStep = 1;
+        document
+          .querySelectorAll(".step-panel")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById("stepPanel-1").classList.add("active");
+        [
+          "listingTitle",
+          "listingDesc",
+          "listingPrice",
+          "listingOriginalPrice",
+          "listingBrand",
+          "listingModel",
+          "listingArea",
+        ].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        document.getElementById("listingCategory").value = "";
+        document
+          .querySelectorAll(".chip.selected")
+          .forEach((c) => c.classList.remove("selected"));
+        document.getElementById("imagesGrid").innerHTML = "";
+        document
+          .getElementById("tagWrap")
+          .querySelectorAll(".tag-pill")
+          .forEach((t) => t.remove());
+        document.getElementById("feeBox").style.display = "none";
+        document.getElementById("appWrap").style.display = "grid";
+        document.getElementById("successScreen").style.display = "none";
+        updateProgress();
+        updatePreview();
+      };
+
+      window.showToast = function (msg, type = "") {
+        const t = document.createElement("div");
+        t.className = `toast-msg ${type}`;
+        t.textContent = msg;
+        document.getElementById("toaster").appendChild(t);
+        setTimeout(() => t.remove(), 2800);
+      };
+      window.addEventListener("scroll", () => {
+        document.querySelector(".navbar").style.boxShadow =
+          window.scrollY > 4 ? "0 2px 8px rgba(0,0,0,.1)" : "";
+      });
+
+      // ── VENDOR APPLICATION PHOTOS ──────────────────────────────────────
+      const vendorPhotoSlots = [null, null, null, null]; // base64 strings per slot
+      const SLOT_LABELS = [
+        "Cover Photo",
+        "Interior / Space",
+        "Products on Display",
+        "Team / Staff",
+      ];
+
+      window.triggerVendorPhotoInput = function (index) {
+        document.getElementById(`vPhotoInput-${index}`).click();
+      };
+
+      window.handleVendorPhoto = async function (e, index) {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) {
+          showToast(`${SLOT_LABELS[index]}: max 2MB`, "err");
+          return;
+        }
+        const b64 = await compressImage(file, 900, 0.75);
+        vendorPhotoSlots[index] = b64;
+        const slot = document.getElementById(`vSlot-${index}`);
+        // Remove any existing img
+        slot.querySelectorAll("img").forEach((i) => i.remove());
+        const img = document.createElement("img");
+        img.src = b64;
+        slot.insertBefore(img, slot.firstChild);
+        slot.classList.add("filled");
+        showToast(`${SLOT_LABELS[index]} added ✓`, "ok");
+      };
+
+      window.removeVendorPhoto = function (e, index) {
+        e.stopPropagation();
+        vendorPhotoSlots[index] = null;
+        const slot = document.getElementById(`vSlot-${index}`);
+        slot.querySelectorAll("img").forEach((i) => i.remove());
+        slot.classList.remove("filled");
+        document.getElementById(`vPhotoInput-${index}`).value = "";
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,2099 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SokoHub — Handmade, Vintage & Unique Items</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Graphik:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>"
+    />
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --orange: #e8600a;
+        --orange-hover: #c24d08;
+        --orange-light: #fdf0e8;
+        --orange-mid: #f5956a;
+        --black: #222222;
+        --gray-1: #595959;
+        --gray-2: #757575;
+        --gray-3: #9b9b9b;
+        --gray-4: #d7d7d7;
+        --gray-5: #f1f1f1;
+        --gray-6: #fafafa;
+        --white: #ffffff;
+        --border: #d7d7d7;
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-full: 999px;
+        --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 2px 16px rgba(0, 0, 0, 0.12);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+        --font:
+          "Graphik", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial,
+          sans-serif;
+        --nav-h: 60px;
+        --trans: 0.15s ease;
+      }
+
+      body {
+        font-family: var(--font);
+        color: var(--black);
+        background: var(--white);
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ── TOP BAR ── */
+      .topbar {
+        background: var(--black);
+        color: #fff;
+        font-size: 12px;
+        text-align: center;
+        padding: 8px 16px;
+        letter-spacing: 0.2px;
+      }
+      .topbar a {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      /* ── NAVBAR ── */
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 900;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-main {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: var(--nav-h);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .nav-logo {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--orange);
+        letter-spacing: -1px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-style: italic;
+      }
+      .nav-search-wrap {
+        flex: 1;
+        max-width: 700px;
+        display: flex;
+        border: 2px solid var(--black);
+        border-radius: var(--radius-full);
+        overflow: hidden;
+        transition:
+          border-color var(--trans),
+          box-shadow var(--trans);
+      }
+      .nav-search-wrap:focus-within {
+        border-color: var(--orange);
+        box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.15);
+      }
+      .nav-search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-family: var(--font);
+        color: var(--black);
+        background: transparent;
+      }
+      .nav-search-input::placeholder {
+        color: var(--gray-3);
+      }
+      .nav-search-btn {
+        padding: 0 22px;
+        background: var(--orange);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: var(--font);
+        transition: background var(--trans);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav-search-btn:hover {
+        background: var(--orange-hover);
+      }
+      .nav-search-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
+      .nav-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 6px 8px;
+        color: var(--gray-1);
+        font-size: 11px;
+        cursor: pointer;
+        border-radius: var(--radius-sm);
+        transition: color var(--trans);
+        white-space: nowrap;
+      }
+      .nav-link:hover {
+        color: var(--orange);
+      }
+      .nav-link svg {
+        width: 22px;
+        height: 22px;
+      }
+      .nav-cart-badge {
+        position: relative;
+      }
+      .cart-count {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--orange);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-sell {
+        background: var(--orange);
+        color: #fff;
+        padding: 8px 20px;
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 600;
+        font-family: var(--font);
+        border: none;
+        cursor: pointer;
+        transition: background var(--trans);
+        white-space: nowrap;
+      }
+      .btn-sell:hover {
+        background: var(--orange-hover);
+      }
+
+      /* ── CATEGORY NAV ── */
+      .cat-nav {
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .cat-nav::-webkit-scrollbar {
+        display: none;
+      }
+      .cat-nav-inner {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        gap: 0;
+      }
+      .cat-tab {
+        padding: 12px 18px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--gray-1);
+        white-space: nowrap;
+        cursor: pointer;
+        @media (max-width: 900px) {
+          .nav-main {
+            flex-wrap: wrap;
+            height: auto;
+            padding: 12px 20px;
+            justify-content: center;
+          }
+          .nav-search-wrap {
+            width: 100%;
+            max-width: none;
+            order: 2;
+          }
+          .nav-links {
+            width: 100%;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            gap: 8px;
+            order: 3;
+          }
+          .nav-link {
+            min-width: 96px;
+            justify-content: center;
+          }
+          .btn-sell {
+            width: 100%;
+            text-align: center;
+          }
+        }
+        border-bottom: 3px solid transparent;
+        transition: all var(--trans);
+        background: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        font-family: var(--font);
+      }
+      .cat-tab:hover {
+        color: var(--black);
+        border-bottom-color: var(--gray-4);
+      }
+      .cat-tab.active {
+        color: var(--black);
+        border-bottom-color: var(--black);
+        font-weight: 600;
+      }
+
+      /* ── BREADCRUMB ── */
+      .breadcrumb {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 12px 20px;
+        font-size: 12px;
+        color: var(--gray-2);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .breadcrumb a {
+        color: var(--gray-2);
+      }
+      .breadcrumb a:hover {
+        text-decoration: underline;
+        color: var(--black);
+      }
+      .breadcrumb-sep {
+        color: var(--gray-4);
+      }
+
+      /* ── PAGE LAYOUT ── */
+      .page-wrap {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+      }
+      .page-heading {
+        margin-bottom: 20px;
+      }
+      .page-heading h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 4px;
+      }
+      .page-heading p {
+        font-size: 13px;
+        color: var(--gray-2);
+      }
+
+      /* ── FILTERS TOOLBAR ── */
+      .filters-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .filter-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--black);
+        background: var(--white);
+        cursor: pointer;
+        font-family: var(--font);
+        transition: all var(--trans);
+        white-space: nowrap;
+      }
+      .filter-pill:hover {
+        border-color: var(--black);
+      }
+      .filter-pill.active {
+        background: var(--black);
+        color: var(--white);
+        border-color: var(--black);
+      }
+      .filter-pill svg {
+        width: 14px;
+        height: 14px;
+      }
+      .filter-pill-chevron {
+        width: 12px;
+        height: 12px;
+        opacity: 0.6;
+      }
+      .results-info {
+        margin-left: auto;
+        font-size: 13px;
+        color: var(--gray-2);
+        white-space: nowrap;
+      }
+      .sort-select {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        padding: 8px 14px;
+        font-size: 13px;
+        font-family: var(--font);
+        color: var(--black);
+        background: var(--white);
+        outline: none;
+        cursor: pointer;
+        transition: border-color var(--trans);
+      }
+      .sort-select:focus {
+        border-color: var(--black);
+      }
+
+      /* ── ACTIVE FILTER CHIPS ── */
+      .active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .act-chip {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--black);
+        color: var(--white);
+        padding: 5px 12px;
+        border-radius: var(--radius-full);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background var(--trans);
+      }
+      .act-chip:hover {
+        background: var(--gray-1);
+      }
+      .act-chip-x {
+        font-size: 14px;
+        opacity: 0.7;
+      }
+
+      /* ── TWO-COL LAYOUT ── */
+      .content-area {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 28px;
+      }
+
+      /* ── SIDEBAR ── */
+      .sidebar {
+        position: sticky;
+        top: calc(var(--nav-h) + 10px);
+        height: fit-content;
+      }
+      .sidebar-section {
+        padding: 16px 0;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .sidebar-section:last-child {
+        border-bottom: none;
+      }
+      .sidebar-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 12px;
+      }
+      .sidebar-opt {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px 0;
+        font-size: 13px;
+        color: var(--gray-1);
+        cursor: pointer;
+        transition: color var(--trans);
+      }
+      .sidebar-opt:hover {
+        color: var(--black);
+      }
+      .sidebar-opt.active {
+        color: var(--black);
+        font-weight: 600;
+      }
+      .sidebar-opt-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .sidebar-count {
+        font-size: 12px;
+        color: var(--gray-3);
+      }
+      .sidebar-opt.active .sidebar-count {
+        color: var(--black);
+      }
+
+      /* Checkbox style */
+      .check-opt {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        font-size: 13px;
+        color: var(--gray-1);
+        cursor: pointer;
+        transition: color var(--trans);
+      }
+      .check-opt:hover {
+        color: var(--black);
+      }
+      .fake-check {
+        width: 16px;
+        height: 16px;
+        border: 1.5px solid var(--border);
+        border-radius: 3px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--trans);
+      }
+      .check-opt.active .fake-check {
+        background: var(--black);
+        border-color: var(--black);
+        color: #fff;
+      }
+
+      /* Price inputs */
+      .price-inputs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .price-field {
+        flex: 1;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px;
+        font-size: 13px;
+        font-family: var(--font);
+        color: var(--black);
+        background: var(--white);
+        outline: none;
+        transition: border-color var(--trans);
+      }
+      .price-field:focus {
+        border-color: var(--black);
+      }
+      .price-dash {
+        color: var(--gray-3);
+        font-size: 12px;
+      }
+      .price-apply {
+        width: 100%;
+        margin-top: 10px;
+        padding: 9px;
+        background: var(--white);
+        border: 1px solid var(--black);
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--black);
+        cursor: pointer;
+        font-family: var(--font);
+        transition: all var(--trans);
+      }
+      .price-apply:hover {
+        background: var(--black);
+        color: #fff;
+      }
+
+      /* Condition dots */
+      .cond-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .cond-new {
+        background: #2e7d32;
+      }
+      .cond-like-new {
+        background: #1565c0;
+      }
+      .cond-good {
+        background: #7b1fa2;
+      }
+      .cond-fair {
+        background: #e65100;
+      }
+
+      /* Stars */
+      .star-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .stars {
+        color: #f59e0b;
+        font-size: 14px;
+        letter-spacing: -1px;
+      }
+
+      /* ── GRID ── */
+      .listings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+      }
+
+      /* ── LISTING CARD — Etsy style ── */
+      .lcard {
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .lcard-img {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--radius-md);
+        aspect-ratio: 1;
+        background: var(--gray-5);
+      }
+      .lcard-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .lcard:hover .lcard-img img {
+        transform: scale(1.04);
+      }
+
+      /* Etsy heart button */
+      .lcard-heart {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 5;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--trans);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      }
+      .lcard-heart:hover {
+        background: #fff;
+        transform: scale(1.1);
+      }
+      .lcard-heart svg {
+        width: 16px;
+        height: 16px;
+        color: var(--gray-2);
+      }
+      .lcard-heart.saved svg {
+        color: #e8600a;
+        fill: #e8600a;
+      }
+
+      /* Bestseller/promoted badge */
+      .lcard-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 4;
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--black);
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: var(--radius-full);
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      .lcard-body {
+        padding: 10px 0 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .lcard-price {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 3px;
+      }
+      .lcard-original {
+        font-size: 12px;
+        color: var(--gray-3);
+        text-decoration: line-through;
+        display: inline-block;
+        margin-left: 6px;
+      }
+      .lcard-title {
+        font-size: 13px;
+        color: var(--gray-1);
+        line-height: 1.4;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .lcard-shop {
+        font-size: 11px;
+        color: var(--gray-3);
+      }
+      .lcard-stars {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin-top: 4px;
+      }
+      .lcard-stars .s-val {
+        font-size: 12px;
+        color: var(--gray-2);
+        font-weight: 600;
+      }
+      .lcard-stars .s-count {
+        font-size: 11px;
+        color: var(--gray-3);
+      }
+      .lcard-free-ship {
+        font-size: 11px;
+        color: #2e7d32;
+        font-weight: 600;
+        margin-top: 3px;
+      }
+
+      /* ── LIST VIEW ── */
+      .listings-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .llist {
+        display: flex;
+        gap: 16px;
+        cursor: pointer;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--gray-5);
+      }
+      .llist:last-child {
+        border-bottom: none;
+      }
+      .llist-img {
+        width: 140px;
+        height: 140px;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        flex-shrink: 0;
+        background: var(--gray-5);
+      }
+      .llist-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .llist:hover .llist-img img {
+        transform: scale(1.04);
+      }
+      .llist-body {
+        flex: 1;
+      }
+      .llist-title {
+        font-size: 14px;
+        color: var(--black);
+        margin-bottom: 6px;
+        line-height: 1.4;
+      }
+      .llist-shop {
+        font-size: 12px;
+        color: var(--gray-3);
+        margin-bottom: 8px;
+      }
+      .llist-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--black);
+      }
+      .llist-meta {
+        display: flex;
+        gap: 16px;
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--gray-2);
+        flex-wrap: wrap;
+      }
+      .llist-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      /* ── EMPTY STATE ── */
+      .empty-state {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 80px 40px;
+        color: var(--gray-2);
+      }
+      .empty-state h3 {
+        font-size: 18px;
+        color: var(--black);
+        margin-bottom: 8px;
+      }
+      .empty-state p {
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      .empty-btn {
+        padding: 12px 28px;
+        background: var(--black);
+        color: #fff;
+        border-radius: var(--radius-full);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        font-family: var(--font);
+        transition: background var(--trans);
+      }
+      .empty-btn:hover {
+        background: var(--gray-1);
+      }
+
+      /* ── PAGINATION ── */
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        margin-top: 40px;
+      }
+      .pag-btn {
+        min-width: 36px;
+        height: 36px;
+        padding: 0 8px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        background: var(--white);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--black);
+        cursor: pointer;
+        font-family: var(--font);
+        transition: all var(--trans);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pag-btn:hover:not(:disabled) {
+        border-color: var(--black);
+      }
+      .pag-btn.active {
+        background: var(--black);
+        border-color: var(--black);
+        color: #fff;
+      }
+      .pag-btn:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+
+      /* ── FILTER DROPDOWN ── */
+      .filter-dropdown-wrap {
+        position: relative;
+      }
+      .filter-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        z-index: 200;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        padding: 20px;
+        min-width: 280px;
+        display: none;
+      }
+      .filter-dropdown.open {
+        display: block;
+      }
+
+      /* ── VIEW TOGGLE ── */
+      .view-tog {
+        display: flex;
+        gap: 0;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+      }
+      .view-togbtn {
+        padding: 7px 10px;
+        background: var(--white);
+        border: none;
+        cursor: pointer;
+        color: var(--gray-3);
+        transition: all var(--trans);
+        font-family: var(--font);
+        display: flex;
+        align-items: center;
+      }
+      .view-togbtn.active {
+        background: var(--gray-5);
+        color: var(--black);
+      }
+      .view-togbtn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* ── TOAST ── */
+      #toaster {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+      }
+      .toast-msg {
+        background: var(--black);
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: var(--radius-full);
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: var(--shadow-lg);
+        white-space: nowrap;
+        animation: toastIn 0.2s ease;
+      }
+      .toast-msg.ok {
+        background: #2e7d32;
+      }
+      .toast-msg.error {
+        background: #c62828;
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── MOBILE FILTER BTN ── */
+      .mob-filter-btn {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        background: var(--white);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--font);
+        transition: border-color var(--trans);
+      }
+      .mob-filter-btn:hover {
+        border-color: var(--black);
+      }
+
+      /* ── MOBILE FILTER DRAWER ── */
+      .drawer-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 800;
+      }
+      .filter-drawer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        background: var(--white);
+        border-radius: 12px 12px 0 0;
+        padding: 20px 20px 40px;
+        max-height: 85vh;
+        overflow-y: auto;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+      }
+      .filter-drawer.open {
+        transform: translateY(0);
+      }
+      .drawer-handle {
+        width: 36px;
+        height: 4px;
+        background: var(--gray-4);
+        border-radius: 2px;
+        margin: 0 auto 16px;
+      }
+
+      /* ── RESPONSIVENESS ── */
+      @media (max-width: 900px) {
+        .content-area {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .mob-filter-btn {
+          display: flex;
+        }
+      }
+      @media (max-width: 640px) {
+        .listings-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+        .nav-search-wrap {
+          display: none;
+        }
+      }
+
+      /* ── ANIMATION ── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in {
+        animation: fadeUp 0.25s ease both;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TOP BAR -->
+    <div class="topbar">
+      Free local delivery on orders over KES 5,000 — <a href="#">Learn more</a>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-main">
+        <a href="index.html" class="nav-logo">SokoHub</a>
+        <div class="nav-search-wrap">
+          <input
+            class="nav-search-input"
+            id="searchInput"
+            type="text"
+            placeholder="Search for anything"
+            autocomplete="off"
+            onkeydown="if (event.key === 'Enter') doSearch();"
+          />
+          <button class="nav-search-btn" onclick="doSearch()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            Search
+          </button>
+        </div>
+        <div class="nav-links">
+          <div
+            class="nav-link"
+            onclick="window.location.href = 'admin-login.html'"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            Sign in
+          </div>
+          <div
+            class="nav-link"
+            onclick="window.location.href = 'cart.html#saved'"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              />
+            </svg>
+            Saved
+          </div>
+          <div
+            class="nav-link nav-cart-badge"
+            onclick="window.location.href = 'cart.html'"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path
+                d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+              />
+            </svg>
+            <span class="cart-count">0</span>
+            Cart
+          </div>
+          <!-- Sell button removed from navbar; moved to footer -->
+        </div>
+      </div>
+
+      <div class="cat-nav">
+        <div class="cat-nav-inner" id="catStrip"></div>
+      </div>
+    </nav>
+
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span id="breadcrumbCurrent">All categories</span>
+    </div>
+
+    <div class="page-wrap">
+      <div class="page-heading">
+        <h1 id="pageTitle">Browse Listings</h1>
+        <p id="pageSubtitle"></p>
+      </div>
+
+      <div class="filters-bar">
+        <button class="mob-filter-btn" onclick="openDrawer()">
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+          </svg>
+          Filters
+        </button>
+
+        <div class="filter-dropdown-wrap">
+          <button class="filter-pill" onclick="toggleDrop('catDrop')">
+            Category
+            <svg
+              class="filter-pill-chevron"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="filter-dropdown" id="catDrop">
+            <div id="catDropList"></div>
+          </div>
+        </div>
+
+        <div class="filter-dropdown-wrap">
+          <button class="filter-pill" onclick="toggleDrop('priceDrop')">
+            Price
+            <svg
+              class="filter-pill-chevron"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="filter-dropdown" id="priceDrop">
+            <div class="sidebar-title">Price range (KES)</div>
+            <div class="price-inputs">
+              <input
+                class="price-field"
+                type="number"
+                id="priceMin"
+                placeholder="Min"
+              />
+              <span class="price-dash">—</span>
+              <input
+                class="price-field"
+                type="number"
+                id="priceMax"
+                placeholder="Max"
+              />
+            </div>
+            <button
+              class="price-apply"
+              onclick="
+                state.priceMin =
+                  +document.getElementById('priceMin').value || null;
+                state.priceMax =
+                  +document.getElementById('priceMax').value || null;
+                applyFilters();
+              "
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-dropdown-wrap">
+          <button class="filter-pill" onclick="toggleDrop('condDrop')">
+            Condition
+            <svg
+              class="filter-pill-chevron"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <div class="filter-dropdown" id="condDrop">
+            <div
+              class="check-opt"
+              data-cond=""
+              onclick="setCondition('', this)"
+            >
+              <div class="fake-check"></div>
+              All conditions
+            </div>
+            <div
+              class="check-opt"
+              data-cond="new"
+              onclick="setCondition('new', this)"
+            >
+              <div class="fake-check"></div>
+              Brand New
+            </div>
+            <div
+              class="check-opt"
+              data-cond="like-new"
+              onclick="setCondition('like-new', this)"
+            >
+              <div class="fake-check"></div>
+              Like New
+            </div>
+            <div
+              class="check-opt"
+              data-cond="good"
+              onclick="setCondition('good', this)"
+            >
+              <div class="fake-check"></div>
+              Good
+            </div>
+            <div
+              class="check-opt"
+              data-cond="fair"
+              onclick="setCondition('fair', this)"
+            >
+              <div class="fake-check"></div>
+              Fair
+            </div>
+          </div>
+        </div>
+
+        <div class="results-info" id="resultsInfo">0 results</div>
+
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span style="font-size: 13px; color: var(--gray-2)">Sort by:</span>
+          <select class="sort-select" id="sortSel" onchange="applyFilters()">
+            <option value="newest">Newest</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="views">Most Popular</option>
+          </select>
+        </div>
+
+        <div class="view-tog">
+          <button
+            class="view-togbtn active"
+            id="togGrid"
+            onclick="setView('grid')"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg>
+          </button>
+          <button class="view-togbtn" id="togList" onclick="setView('list')">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="active-filters" id="activeFilters"></div>
+
+      <div class="content-area">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+          <div class="sidebar-section">
+            <div class="sidebar-title">Categories</div>
+            <div id="sidebarCats"></div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-title">Price (KES)</div>
+            <div class="price-inputs">
+              <input
+                class="price-field"
+                type="number"
+                id="priceMinSide"
+                placeholder="Min"
+                onchange="syncSidebarPrice()"
+              />
+              <span class="price-dash">—</span>
+              <input
+                class="price-field"
+                type="number"
+                id="priceMaxSide"
+                placeholder="Max"
+                onchange="syncSidebarPrice()"
+              />
+            </div>
+            <button class="price-apply" onclick="applyFilters()">Apply</button>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-title">Item Condition</div>
+            <div
+              class="check-opt"
+              data-cond=""
+              onclick="setCondition('', this)"
+            >
+              <div class="fake-check"></div>
+              All conditions
+            </div>
+            <div
+              class="check-opt"
+              data-cond="new"
+              onclick="setCondition('new', this)"
+            >
+              <div class="fake-check"></div>
+              Brand New
+            </div>
+            <div
+              class="check-opt"
+              data-cond="like-new"
+              onclick="setCondition('like-new', this)"
+            >
+              <div class="fake-check"></div>
+              Like New
+            </div>
+            <div
+              class="check-opt"
+              data-cond="good"
+              onclick="setCondition('good', this)"
+            >
+              <div class="fake-check"></div>
+              Good
+            </div>
+            <div
+              class="check-opt"
+              data-cond="fair"
+              onclick="setCondition('fair', this)"
+            >
+              <div class="fake-check"></div>
+              Fair
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-title">Options</div>
+            <div
+              class="check-opt"
+              id="chk-free-ship"
+              onclick="toggleCheck(this, 'freeShip')"
+            >
+              <div class="fake-check"></div>
+              Free local delivery
+            </div>
+            <div
+              class="check-opt"
+              id="chk-sale"
+              onclick="toggleCheck(this, 'onSale')"
+            >
+              <div class="fake-check"></div>
+              On Sale
+            </div>
+          </div>
+        </aside>
+
+        <!-- LISTINGS MAIN -->
+        <div>
+          <div id="listingsOutput"></div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRAWER OVERLAY -->
+    <div
+      class="drawer-overlay"
+      id="drawerOverlay"
+      onclick="closeDrawer()"
+    ></div>
+
+    <!-- MOBILE FILTER DRAWER -->
+    <div class="filter-drawer" id="filterDrawer">
+      <div class="drawer-handle"></div>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 16px;
+        "
+      >
+        <strong style="font-size: 16px">Filters</strong>
+        <button
+          onclick="closeDrawer()"
+          style="
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--gray-2);
+          "
+        >
+          ✕
+        </button>
+      </div>
+      <div id="drawerContent"></div>
+      <button
+        onclick="closeDrawer()"
+        style="
+          width: 100%;
+          margin-top: 20px;
+          padding: 14px;
+          background: var(--black);
+          color: #fff;
+          border: none;
+          border-radius: var(--radius-full);
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          font-family: var(--font);
+        "
+      >
+        Show results
+      </button>
+    </div>
+
+    <div id="toaster"></div>
+
+    <script>
+      // ── FIREBASE CONFIGURATION ───────────────────────────────────────────────────
+      // TODO: Replace with your actual Firebase project configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDH-1Q9GAH5X0BAi46EN_0bKAdHbbTul30",
+        authDomain: "sokohub-e4660.firebaseapp.com",
+        projectId: "sokohub-e4660",
+        storageBucket: "sokohub-e4660.firebasestorage.app",
+        messagingSenderId: "696413289672",
+        appId: "1:696413289672:web:2072058d2f0efa6983f9fd",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      // ── DATA ─────────────────────────────────────────────────────────────────────
+      const CATS = [
+        { id: "electronics", label: "Electronics", emoji: "💻" },
+        { id: "fashion", label: "Fashion", emoji: "👗" },
+        { id: "home", label: "Home & Garden", emoji: "🏡" },
+        { id: "vehicles", label: "Vehicles", emoji: "🚗" },
+        { id: "sports", label: "Sports", emoji: "🏆" },
+        { id: "books", label: "Books", emoji: "📚" },
+        { id: "toys", label: "Toys & Kids", emoji: "🧸" },
+        { id: "beauty", label: "Beauty & Health", emoji: "✨" },
+      ];
+
+      const COND_LABEL = {
+        new: "Brand New",
+        "like-new": "Like New",
+        good: "Good",
+        fair: "Fair",
+      };
+
+      // ── STATE ────────────────────────────────────────────────────────────────────
+      let all = [],
+        filtered = [];
+      let state = {
+        cat: "",
+        cond: "",
+        sort: "newest",
+        view: "grid",
+        page: 1,
+        q: "",
+        priceMin: null,
+        priceMax: null,
+        freeShip: false,
+        onSale: false,
+        swap: false,
+      };
+      const PER = 16;
+      const saved = new Set();
+
+      // ── FORMAT ───────────────────────────────────────────────────────────────────
+      const fmt = (n) =>
+        n
+          ? new Intl.NumberFormat("en-KE", {
+              style: "currency",
+              currency: "KES",
+              maximumFractionDigits: 0,
+            }).format(n)
+          : "Free";
+
+      // ── FIREBASE FETCH ───────────────────────────────────────────────────────────
+      async function fetchListings() {
+        try {
+          showToast("Loading listings...");
+
+          const snapshot = await db.collection("listings").get();
+          const listings = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            // Map Firestore fields to our internal structure
+            listings.push({
+              id: doc.id,
+              title: data.title || "No Title",
+              price: data.price || 0,
+              originalPrice: data.originalPrice || null,
+              category: data.category || "",
+              condition: data.condition || "",
+              location: data.area || data.city || "Unknown",
+              shop: data.businessName || data.sellerName || "SokoHub Seller",
+              rating: data.rating || 0,
+              reviews: data.reviews || 0,
+              image:
+                data.coverImage ||
+                (data.images && data.images[0]) ||
+                "https://via.placeholder.com/300",
+              views: data.views || 0,
+              timeAgo: data.updatedAt ? "Updated recently" : "", // You can add more complex time parsing here
+              freeShip: data.freeShip || false,
+              onSale: data.originalPrice > data.price,
+              swap: data.swap || false,
+            });
+          });
+
+          all = listings;
+          filtered = [...all];
+          console.log(`Loaded ${listings.length} listings from Firestore.`);
+        } catch (error) {
+          console.error("Error fetching listings from Firestore:", error);
+          showToast("Error loading from Firestore", "error");
+        }
+      }
+
+      // ── INIT ─────────────────────────────────────────────────────────────────────
+      async function init() {
+        buildCatStrip();
+        buildSidebarCats();
+        buildCatDropList();
+        buildDrawerContent();
+
+        await fetchListings();
+
+        const params = new URLSearchParams(location.search);
+        const cat = params.get("cat");
+        const q = params.get("q");
+        if (cat) {
+          state.cat = cat;
+          highlightCat(cat);
+          updateTitle(cat);
+        }
+        if (q) {
+          state.q = q;
+          document.getElementById("searchInput").value = q;
+        }
+        applyFilters();
+      }
+
+      function buildCatStrip() {
+        const el = document.getElementById("catStrip");
+        el.innerHTML =
+          `<button class="cat-tab active" data-cat="" onclick="setCat('',this)">All categories</button>` +
+          CATS.map(
+            (c) =>
+              `<button class="cat-tab" data-cat="${c.id}" onclick="setCat('${c.id}',this)">${c.emoji} ${c.label}</button>`,
+          ).join("");
+      }
+
+      function buildSidebarCats() {
+        const el = document.getElementById("sidebarCats");
+        el.innerHTML =
+          `<div class="sidebar-opt active" data-cat="" onclick="setCat('',this)"><div class="sidebar-opt-left">All Categories</div><span class="sidebar-count" id="sc-all">—</span></div>` +
+          CATS.map(
+            (c) =>
+              `<div class="sidebar-opt" data-cat="${c.id}" onclick="setCat('${c.id}',this)"><div class="sidebar-opt-left">${c.emoji} ${c.label}</div><span class="sidebar-count" id="sc-${c.id}">—</span></div>`,
+          ).join("");
+      }
+
+      function buildCatDropList() {
+        const el = document.getElementById("catDropList");
+        el.innerHTML =
+          `<div class="check-opt active" data-cat="" onclick="setCat('',this)"><div class="fake-check active"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div> All categories</div>` +
+          CATS.map(
+            (c) =>
+              `<div class="check-opt" data-cat="${c.id}" onclick="setCat('${c.id}',this)"><div class="fake-check"></div> ${c.emoji} ${c.label}</div>`,
+          ).join("");
+      }
+
+      function buildDrawerContent() {
+        document.getElementById("drawerContent").innerHTML = `
+    <div style="margin-bottom:20px">
+      <div class="sidebar-title" style="margin-bottom:10px">Category</div>
+      ${["", ...CATS.map((c) => c.id)]
+        .map((id) => {
+          const c = CATS.find((x) => x.id === id);
+          return `<div class="check-opt" data-dcat="${id}" onclick="setCat('${id}',this)"><div class="fake-check ${id === state.cat ? "active" : ""}"></div> ${c ? c.emoji + " " + c.label : "All categories"}</div>`;
+        })
+        .join("")}
+    </div>
+    <div style="margin-bottom:20px">
+      <div class="sidebar-title" style="margin-bottom:10px">Condition</div>
+      ${[
+        ["", "All conditions"],
+        ["new", "Brand New"],
+        ["like-new", "Like New"],
+        ["good", "Good"],
+        ["fair", "Fair"],
+      ]
+        .map(
+          ([id, lbl]) =>
+            `<div class="check-opt" data-dcond="${id}" onclick="setCondition('${id}',this)"><div class="fake-check ${id === state.cond ? "active" : ""}"></div> ${lbl}</div>`,
+        )
+        .join("")}
+    </div>
+    <div>
+      <div class="sidebar-title" style="margin-bottom:10px">Price range (KES)</div>
+      <div class="price-inputs">
+        <input class="price-field" type="number" id="dMin" placeholder="Min" value="${state.priceMin || ""}" />
+        <span class="price-dash">—</span>
+        <input class="price-field" type="number" id="dMax" placeholder="Max" value="${state.priceMax || ""}" />
+      </div>
+      <button class="price-apply" onclick="state.priceMin=+document.getElementById('dMin').value||null; state.priceMax=+document.getElementById('dMax').value||null; applyFilters()">Apply</button>
+    </div>
+  `;
+      }
+
+      // ── FILTER ACTIONS ────────────────────────────────────────────────────────────
+      function setCat(id, el) {
+        state.cat = id;
+        state.page = 1;
+        highlightCat(id);
+        updateTitle(id);
+        applyFilters();
+        closeAllDrops();
+      }
+
+      function setCondition(id, el) {
+        state.cond = id;
+        state.page = 1;
+        document.querySelectorAll("[data-cond]").forEach((b) => {
+          b.classList.toggle("active", b.dataset.cond === id);
+          const fc = b.querySelector(".fake-check");
+          if (fc) {
+            if (b.dataset.cond === id) {
+              fc.classList.add("active");
+              fc.innerHTML = `<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
+            } else {
+              fc.classList.remove("active");
+              fc.innerHTML = "";
+            }
+          }
+        });
+        applyFilters();
+        closeAllDrops();
+      }
+
+      function toggleCheck(el, key) {
+        state[key] = !state[key];
+        el.classList.toggle("active", state[key]);
+        const fc = el.querySelector(".fake-check");
+        if (state[key]) {
+          fc.classList.add("active");
+          fc.innerHTML = `<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
+        } else {
+          fc.classList.remove("active");
+          fc.innerHTML = "";
+        }
+        applyFilters();
+      }
+
+      function syncSidebarPrice() {
+        state.priceMin = +document.getElementById("priceMinSide").value || null;
+        state.priceMax = +document.getElementById("priceMaxSide").value || null;
+        const tb = document.getElementById("priceMin");
+        const tb2 = document.getElementById("priceMax");
+        if (tb) tb.value = state.priceMin || "";
+        if (tb2) tb2.value = state.priceMax || "";
+      }
+
+      function doSearch() {
+        state.q = document
+          .getElementById("searchInput")
+          .value.trim()
+          .toLowerCase();
+        state.page = 1;
+        applyFilters();
+      }
+
+      function applyFilters() {
+        const sort = document.getElementById("sortSel").value;
+        state.sort = sort;
+        filtered = all.filter((l) => {
+          if (state.cat && l.category !== state.cat) return false;
+          if (state.cond && l.condition !== state.cond) return false;
+          if (state.priceMin && l.price < state.priceMin) return false;
+          if (state.priceMax && l.price > state.priceMax) return false;
+          if (state.freeShip && !l.freeShip) return false;
+          if (state.onSale && !l.onSale) return false;
+          if (
+            state.q &&
+            !l.title.toLowerCase().includes(state.q) &&
+            !l.shop.toLowerCase().includes(state.q)
+          )
+            return false;
+          return true;
+        });
+        if (sort === "price-asc") filtered.sort((a, b) => a.price - b.price);
+        if (sort === "price-desc") filtered.sort((a, b) => b.price - a.price);
+        if (sort === "views") filtered.sort((a, b) => b.views - a.views);
+        updateCounts();
+        buildChips();
+        renderPage(state.page);
+        renderPag();
+        document.getElementById("resultsInfo").textContent =
+          `${filtered.length.toLocaleString()} result${filtered.length !== 1 ? "s" : ""}`;
+      }
+
+      function highlightCat(id) {
+        document.querySelectorAll("[data-cat]").forEach((b) => {
+          b.classList.toggle("active", b.dataset.cat === id);
+          const fc = b.querySelector(".fake-check");
+          if (fc) {
+            if (b.dataset.cat === id) {
+              fc.classList.add("active");
+              fc.innerHTML = `<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
+            } else {
+              fc.classList.remove("active");
+              fc.innerHTML = "";
+            }
+          }
+        });
+      }
+
+      function updateTitle(id) {
+        const cat = CATS.find((c) => c.id === id);
+        const title = cat ? `${cat.label}` : "Browse Listings";
+        const sub = cat
+          ? `Explore all ${cat.label} listings from sellers near you`
+          : "";
+        document.getElementById("pageTitle").textContent = title;
+        const ps = document.getElementById("pageSubtitle");
+        ps.textContent = sub;
+        ps.style.display = sub ? "block" : "none";
+        document.getElementById("breadcrumbCurrent").textContent = cat
+          ? cat.label
+          : "All categories";
+        document.title = `${title} — SokoHub`;
+      }
+
+      function updateCounts() {
+        const allSc = document.getElementById("sc-all");
+        if (allSc) allSc.textContent = all.length;
+        CATS.forEach((c) => {
+          const el = document.getElementById(`sc-${c.id}`);
+          if (el)
+            el.textContent = all.filter((l) => l.category === c.id).length;
+        });
+      }
+
+      function buildChips() {
+        const el = document.getElementById("activeFilters");
+        el.innerHTML = "";
+        const add = (label, fn) => {
+          const ch = document.createElement("div");
+          ch.className = "act-chip";
+          ch.innerHTML = `${label} <span class="act-chip-x">✕</span>`;
+          ch.onclick = fn;
+          el.appendChild(ch);
+        };
+        if (state.cat) {
+          const c = CATS.find((x) => x.id === state.cat);
+          add(c?.label || state.cat, () => {
+            state.cat = "";
+            highlightCat("");
+            updateTitle("");
+            state.page = 1;
+            applyFilters();
+          });
+        }
+        if (state.cond)
+          add(COND_LABEL[state.cond] || state.cond, () => {
+            setCondition("");
+          });
+        if (state.priceMin)
+          add(`Min KES ${state.priceMin.toLocaleString()}`, () => {
+            state.priceMin = null;
+            document.getElementById("priceMin").value = "";
+            document.getElementById("priceMinSide").value = "";
+            applyFilters();
+          });
+        if (state.priceMax)
+          add(`Max KES ${state.priceMax.toLocaleString()}`, () => {
+            state.priceMax = null;
+            document.getElementById("priceMax").value = "";
+            document.getElementById("priceMaxSide").value = "";
+            applyFilters();
+          });
+        if (state.freeShip)
+          add("Free shipping", () => {
+            state.freeShip = false;
+            document.getElementById("chk-free-ship").classList.remove("active");
+            document
+              .querySelector("#chk-free-ship .fake-check")
+              .classList.remove("active");
+            document.querySelector("#chk-free-ship .fake-check").innerHTML = "";
+            applyFilters();
+          });
+        if (state.q)
+          add(`"${state.q}"`, () => {
+            state.q = "";
+            document.getElementById("searchInput").value = "";
+            applyFilters();
+          });
+      }
+
+      function clearAll() {
+        state = {
+          ...state,
+          cat: "",
+          cond: "",
+          priceMin: null,
+          priceMax: null,
+          freeShip: false,
+          onSale: false,
+          swap: false,
+          q: "",
+          page: 1,
+        };
+        document.getElementById("searchInput").value = "";
+        document.getElementById("priceMin").value = "";
+        document.getElementById("priceMax").value = "";
+        document.getElementById("priceMinSide").value = "";
+        document.getElementById("priceMaxSide").value = "";
+        document.querySelectorAll("[data-cond]").forEach((b) => {
+          b.classList.remove("active");
+          const fc = b.querySelector(".fake-check");
+          if (fc) {
+            fc.classList.remove("active");
+            fc.innerHTML = "";
+          }
+        });
+        ["chk-free-ship", "chk-sale", "chk-swap"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.classList.remove("active");
+            const fc = el.querySelector(".fake-check");
+            if (fc) {
+              fc.classList.remove("active");
+              fc.innerHTML = "";
+            }
+          }
+        });
+        highlightCat("");
+        updateTitle("");
+        applyFilters();
+      }
+
+      // ── RENDER ────────────────────────────────────────────────────────────────────
+      function renderPage(page) {
+        state.page = page;
+        const start = (page - 1) * PER;
+        const items = filtered.slice(start, start + PER);
+        const out = document.getElementById("listingsOutput");
+        if (!filtered.length) {
+          out.innerHTML = `<div class="empty-state"><div style="font-size:48px;margin-bottom:16px">🔍</div><h3>No results found</h3><p>Try adjusting your filters or search terms.</p><button class="empty-btn" onclick="clearAll()">Clear all filters</button></div>`;
+          return;
+        }
+        if (state.view === "grid") {
+          out.innerHTML = `<div class="listings-grid">${items.map((l, i) => gridCard(l, i)).join("")}</div>`;
+        } else {
+          out.innerHTML = `<div class="listings-list">${items.map((l) => listCard(l)).join("")}</div>`;
+        }
+      }
+
+      function gridCard(l, i) {
+        const badge = i < 3 ? `<div class="lcard-badge">Bestseller</div>` : "";
+        const salePct = l.originalPrice
+          ? `<span style="color:#C0392B;font-size:12px;font-weight:600;margin-left:4px">-${Math.round((1 - l.price / l.originalPrice) * 100)}%</span>`
+          : "";
+        return `
+  <div class="lcard fade-in" style="animation-delay:${i * 0.04}s" onclick="window.location.href='listing-detail.html?id=${l.id}'">
+    <div class="lcard-img">
+      ${badge}
+      <img src="${l.image}" alt="${l.title}" loading="lazy" />
+      <button class="lcard-heart ${saved.has(l.id) ? "saved" : ""}" onclick="event.stopPropagation();toggleSave('${l.id}',this)" aria-label="Save">
+        <svg viewBox="0 0 24 24" fill="${saved.has(l.id) ? "#E8600A" : "none"}" stroke="${saved.has(l.id) ? "#E8600A" : "currentColor"}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+    </div>
+    <div class="lcard-body">
+      <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap">
+        <span class="lcard-price">${fmt(l.price)}</span>
+        ${l.originalPrice ? `<span class="lcard-original">${fmt(l.originalPrice)}</span>` : ""}
+        ${salePct}
+      </div>
+      <div class="lcard-title">${l.title}</div>
+      <div class="lcard-shop">${l.shop} · ${l.location}</div>
+      <div class="lcard-stars">
+        <span class="stars" style="font-size:12px">${"★".repeat(Math.round(l.rating || 0))}</span>
+        <span class="s-val">${(l.rating || 0).toFixed(1)}</span>
+        <span class="s-count">(${(l.reviews || 0).toLocaleString()})</span>
+      </div>
+      ${l.freeShip ? `<div class="lcard-free-ship">FREE local delivery</div>` : ""}
+    </div>
+  </div>`;
+      }
+
+      function listCard(l) {
+        return `
+  <div class="llist fade-in" onclick="window.location.href='listing-detail.html?id=${l.id}'">
+    <div class="llist-img">
+      <img src="${l.image}" alt="${l.title}" loading="lazy" />
+    </div>
+    <div class="llist-body">
+      <div class="llist-title">${l.title}</div>
+      <div class="llist-shop">${l.shop} · ${l.location}</div>
+      <div class="llist-price">${fmt(l.price)}</div>
+      <div class="llist-meta">
+        <span>${COND_LABEL[l.condition] || l.condition}</span>
+        <span>${l.views} views</span>
+        <span>${l.timeAgo}</span>
+      </div>
+    </div>
+    <div class="llist-right">
+       <button class="lcard-heart ${saved.has(l.id) ? "saved" : ""}" onclick="event.stopPropagation();toggleSave('${l.id}',this)">
+        <svg viewBox="0 0 24 24" fill="${saved.has(l.id) ? "#E8600A" : "none"}" stroke="${saved.has(l.id) ? "#E8600A" : "currentColor"}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+    </div>
+  </div>`;
+      }
+
+      function renderPag() {
+        const total = Math.ceil(filtered.length / PER);
+        const el = document.getElementById("pagination");
+        if (total <= 1) {
+          el.innerHTML = "";
+          return;
+        }
+        let h = `<button class="pag-btn" ${state.page === 1 ? "disabled" : ""} onclick="renderPage(${state.page - 1})">Prev</button>`;
+        for (let i = 1; i <= total; i++) {
+          h += `<button class="pag-btn ${i === state.page ? "active" : ""}" onclick="renderPage(${i})">${i}</button>`;
+        }
+        h += `<button class="pag-btn" ${state.page === total ? "disabled" : ""} onclick="renderPage(${state.page + 1})">Next</button>`;
+        el.innerHTML = h;
+      }
+
+      function setView(v) {
+        state.view = v;
+        document
+          .getElementById("togGrid")
+          .classList.toggle("active", v === "grid");
+        document
+          .getElementById("togList")
+          .classList.toggle("active", v === "list");
+        renderPage(state.page);
+      }
+
+      // ── SAVE / HEART ─────────────────────────────────────────────────────────────
+      function toggleSave(id, btn) {
+        if (saved.has(id)) {
+          saved.delete(id);
+          btn.classList.remove("saved");
+          btn.querySelector("svg").setAttribute("fill", "none");
+          btn.querySelector("svg").setAttribute("stroke", "currentColor");
+          showToast("Removed from saved items");
+        } else {
+          saved.add(id);
+          btn.classList.add("saved");
+          btn.querySelector("svg").setAttribute("fill", "#E8600A");
+          btn.querySelector("svg").setAttribute("stroke", "#E8600A");
+          showToast("Added to saved items ❤️", "ok");
+        }
+      }
+
+      // ── DROPDOWNS ─────────────────────────────────────────────────────────────────
+      function toggleDrop(id) {
+        const el = document.getElementById(id);
+        const open = el.classList.contains("open");
+        closeAllDrops();
+        if (!open) el.classList.add("open");
+      }
+      function closeAllDrops() {
+        document
+          .querySelectorAll(".filter-dropdown")
+          .forEach((d) => d.classList.remove("open"));
+      }
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".filter-dropdown-wrap")) closeAllDrops();
+      });
+
+      // ── DRAWER ────────────────────────────────────────────────────────────────────
+      function openDrawer() {
+        buildDrawerContent();
+        document.getElementById("filterDrawer").classList.add("open");
+        document.getElementById("drawerOverlay").style.display = "block";
+        document.body.style.overflow = "hidden";
+      }
+      function closeDrawer() {
+        document.getElementById("filterDrawer").classList.remove("open");
+        document.getElementById("drawerOverlay").style.display = "none";
+        document.body.style.overflow = "";
+      }
+
+      // ── TOAST ─────────────────────────────────────────────────────────────────────
+      function showToast(msg, type = "") {
+        const t = document.createElement("div");
+        t.className = `toast-msg ${type}`;
+        t.textContent = msg;
+        document.getElementById("toaster").appendChild(t);
+        setTimeout(() => t.remove(), 2600);
+      }
+
+      // ── SCROLL SHADOW ─────────────────────────────────────────────────────────────
+      window.addEventListener("scroll", () => {
+        const nav = document.querySelector(".navbar");
+        nav.style.boxShadow =
+          window.scrollY > 4 ? "0 2px 8px rgba(0,0,0,.1)" : "";
+      });
+
+      init();
+    </script>
+    <script>
+      // Update header cart counts from localStorage so icons show correct numbers
+      function updateHeaderCounts() {
+        try {
+          const cart = JSON.parse(localStorage.getItem("sokohub_cart") || "[]");
+          const qty = cart.reduce((s, i) => s + (i.qty || 1), 0);
+          document
+            .querySelectorAll(".cart-count")
+            .forEach((el) => (el.textContent = qty));
+        } catch (e) {
+          // ignore
+        }
+      }
+      document.addEventListener("DOMContentLoaded", updateHeaderCounts);
+      window.addEventListener("storage", updateHeaderCounts);
+      updateHeaderCounts();
+    </script>
+  </body>
+</html>
