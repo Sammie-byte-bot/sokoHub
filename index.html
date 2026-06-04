@@ -3019,6 +3019,92 @@
         window.location.href = "customer-login.html";
       };
 
+      // Use this for any “go to profile if logged in, else login” action.
+      window.goProfileOrLogin = () => {
+        window.location.href = "customer-login.html";
+      };
+
+      /* ---- Responsive Sign-in Button (will be updated by Firebase) ---- */
+      // This will be overridden by the Firebase module script below
+    </script>
+
+    <!-- Firebase Module Script for Auth & Firestore -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDH-1Q9GAH5X0BAi46EN_0bKAdHbbTul30",
+        authDomain: "sokohub-e4660.firebaseapp.com",
+        projectId: "sokohub-e4660",
+        storageBucket: "sokohub-e4660.firebasestorage.app",
+        messagingSenderId: "696413289672",
+        appId: "1:696413289672:web:2072058d2f0efa6983f9fd",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // Update sign-in button based on authentication state
+      onAuthStateChanged(auth, async (user) => {
+        const signInBtn = document.querySelector(
+          '.nav-btn[onclick="handleLogin()"]',
+        );
+        if (!signInBtn) return;
+
+        if (user) {
+          // User is logged in - fetch displayName from Firestore
+          try {
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.exists() ? userSnap.data() : {};
+
+            // Get displayName from Firestore, fallback to Firebase auth displayName or email
+            const displayName =
+              userData.displayName ||
+              user.displayName ||
+              user.email?.split("@")[0] ||
+              "Account";
+            const firstName = displayName.split(" ")[0];
+
+            // Update button text to show greeting
+            const subSpan = signInBtn.querySelector(".nav-btn-sub");
+            if (subSpan) subSpan.textContent = `Hello, ${firstName}`;
+
+            // Change click handler to redirect to profile page
+            signInBtn.onclick = () => {
+              window.location.href = "profile.html";
+            };
+          } catch (e) {
+            console.error("Error fetching user data:", e);
+            // Fallback: still redirect to profile on click
+            signInBtn.onclick = () => {
+              window.location.href = "profile.html";
+            };
+          }
+        } else {
+          // User is not logged in - show default sign-in button
+          const subSpan = signInBtn.querySelector(".nav-btn-sub");
+          if (subSpan) subSpan.textContent = "Hello, Sign in";
+
+          // Ensure click handler redirects to login page
+          signInBtn.onclick = () => {
+            window.location.href = "customer-login.html";
+          };
+        }
+      });
+    </script>
+
+    <script>
       /* ---- Scroll animations ---- */
       const obs = new IntersectionObserver(
         (entries) => {

@@ -1544,7 +1544,43 @@
         </div>
 
         <div class="nav-actions">
-          <button class="nav-btn" id="signInBtn" onclick="handleLogin()">
+          <button class="nav-btn" id="accountBtn" onclick="handleLogin()">
+            <span class="nav-btn-sub" id="accountHello">Hello, Sign in</span>
+            <span
+              class="nav-btn-main"
+              style="display: flex; align-items: center; gap: 8px"
+              id="accountMain"
+            >
+              <img
+                id="accountAvatar"
+                alt=""
+                style="
+                  display: none;
+                  width: 26px;
+                  height: 26px;
+                  border-radius: 50%;
+                  object-fit: cover;
+                "
+              />
+              <span
+                id="accountInitials"
+                style="
+                  display: none;
+                  width: 26px;
+                  height: 26px;
+                  border-radius: 50%;
+                  background: var(--amber);
+                  color: var(--navy);
+                  font-weight: 800;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 12px;
+                "
+              ></span>
+              <span id="accountLabel">Account <span>▾</span></span>
+            </span>
+          <button class="nav-btn" onclick="handleLogin()">
             <span class="nav-btn-sub">Hello, Sign in</span>
             <span class="nav-btn-main">Account <span>▾</span></span>
           </button>
@@ -1758,7 +1794,7 @@
         getDocs,
         serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-      import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
       // --- FIREBASE CONFIGURATION ---
       // PLEASE REPLACE THIS WITH YOUR ACTUAL CONFIG FROM FIREBASE CONSOLE
@@ -2334,7 +2370,7 @@
                   ${l.rating.toFixed(1)} · ${l.reviews.toLocaleString()} reviews
                 </div>
               </div>
-              <button class="btn-visit-shop" onclick="window.location.href='listings.html?shop=${encodeURIComponent(l.shop)}'">Visit shop</button>
+              <button class="btn-visit-shop" onclick="window.location.href='shop-profile.html?seller=${l.sellerId}'">Visit shop</button>
             </div>
           </div>
         `;
@@ -2465,12 +2501,44 @@
         setTimeout(() => (window.location.href = "checkout.html"), 500);
       };
 
-      /* ---- Auth stubs (Matched with homepage) ---- */
+      // --- Header account auth/nav state ---
+      // Ensure onclick handler exists even before auth state is resolved
+      window.handleLogin =
+        window.handleLogin ||
+        (() => {
+          window.location.href = "customer-login.html";
+        });
       window.handleLogin = () => {
         window.location.href = "customer-login.html";
       };
 
+      onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
+        const signInBtn = document.querySelector('.nav-btn[onclick="handleLogin()"]');
+        if (!signInBtn) return;
+
+        if (user) {
+          try {
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.exists() ? userSnap.data() : {};
+            const displayName = userData.displayName || user.displayName || user.email?.split("@")[0] || "Account";
+            const firstName = displayName.split(" ")[0];
+            const subSpan = signInBtn.querySelector(".nav-btn-sub");
+            if (subSpan) subSpan.textContent = `Hello, ${firstName}`;
+            signInBtn.onclick = () => { window.location.href = "profile.html"; };
+          } catch (e) {
+            signInBtn.onclick = () => { window.location.href = "profile.html"; };
+          }
+        } else {
+          const subSpan = signInBtn.querySelector(".nav-btn-sub");
+          if (subSpan) subSpan.textContent = "Hello, Sign in";
+          signInBtn.onclick = () => { window.location.href = "customer-login.html"; };
+        }
+      });
+
       /* ---- Search (Matched with homepage) ---- */
+
       window.goSearch = () => {
         const term = document.getElementById("nav-search-input")?.value || "";
         const cat = document.getElementById("nav-cat-select")?.value || "";

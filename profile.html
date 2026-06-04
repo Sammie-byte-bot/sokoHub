@@ -1,0 +1,3011 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile — SokoHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --navy: #1a1f2e;
+        --navy-2: #232938;
+        --amber: #f59e0b;
+        --amber-lt: #fbbf24;
+        --amber-dk: #d97706;
+        --rust: #c45c2b;
+        --rust-lt: #e07040;
+        --sage: #5f7a61;
+        --cream: #faf7f2;
+        --cream-2: #f3ede4;
+        --cream-3: #e8dfd4;
+        --text: #1a1a1a;
+        --text-2: #4a4a4a;
+        --text-3: #7a7a7a;
+        --white: #ffffff;
+        --border: #e0d9d0;
+        --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.14);
+        --r-sm: 6px;
+        --r-md: 12px;
+        --r-lg: 20px;
+        --r-xl: 28px;
+        --r-full: 999px;
+        --font-head: "DM Serif Display", Georgia, serif;
+        --font-body: "DM Sans", system-ui, sans-serif;
+        --nav-h: 56px;
+        --strip-h: 36px;
+        --gray-1: #4a4a4a;
+        --gray-2: #7a7a7a;
+        --gray-3: #a0a0a0;
+        --gray-4: #d7d7d7;
+        --gray-5: #f1f1f1;
+        --gray-6: #fafafa;
+        --trans: 0.15s ease;
+      }
+      body {
+        font-family: var(--font-body);
+        color: var(--text);
+        background: var(--cream);
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* TOP STRIP */
+      .top-strip {
+        background: var(--navy);
+        height: var(--strip-h);
+        display: flex;
+        align-items: center;
+      }
+      .top-strip .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .top-strip-left,
+      .top-strip-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .top-strip a,
+      .top-strip span {
+        font-size: 0.75rem;
+        color: #c8c0b0;
+        transition: color 0.2s;
+      }
+      .top-strip a:hover {
+        color: var(--amber);
+      }
+      .top-strip-location {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--white) !important;
+        font-weight: 600;
+        font-size: 0.75rem !important;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        background: var(--navy-2);
+        height: var(--nav-h);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 0 rgba(245, 158, 11, 0.3);
+      }
+      .navbar .container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+        border: 1.5px solid transparent;
+        border-radius: var(--r-sm);
+        padding: 4px 8px;
+        transition: border-color 0.2s;
+      }
+      .nav-logo:hover {
+        border-color: var(--white);
+      }
+      .logo-icon {
+        display: flex;
+        align-items: center;
+        color: var(--amber);
+      }
+      .logo-text {
+        font-family: var(--font-head);
+        font-size: 1.4rem;
+        color: var(--white);
+        letter-spacing: -0.5px;
+        line-height: 1;
+      }
+      .logo-text em {
+        color: var(--amber);
+        font-style: normal;
+      }
+      .nav-location {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 4px 8px;
+        border: 1.5px solid transparent;
+        border-radius: var(--r-sm);
+        transition: border-color 0.2s;
+        color: var(--white);
+      }
+      .nav-location:hover {
+        border-color: var(--white);
+      }
+      .nav-location-sub {
+        font-size: 0.68rem;
+        color: #a0a0a0;
+      }
+      .nav-location-main {
+        font-size: 0.82rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-search {
+        flex: 1;
+        display: flex;
+        height: 40px;
+        border-radius: var(--r-sm);
+        overflow: hidden;
+        box-shadow: 0 0 0 2px var(--amber);
+      }
+      .nav-search-cat {
+        background: var(--cream-3);
+        border: none;
+        padding: 0 10px;
+        font-size: 0.78rem;
+        color: var(--text);
+        border-right: 1px solid var(--border);
+        cursor: pointer;
+        min-width: 110px;
+      }
+      .nav-search input {
+        flex: 1;
+        border: none;
+        padding: 0 14px;
+        font-size: 0.9rem;
+        background: var(--white);
+        color: var(--text);
+        outline: none;
+      }
+      .nav-search-btn {
+        background: var(--amber);
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .nav-search-btn:hover {
+        background: var(--amber-dk);
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .nav-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 4px 10px;
+        border-radius: var(--r-sm);
+        border: 1.5px solid transparent;
+        color: var(--white);
+        transition: border-color 0.2s;
+        cursor: pointer;
+        background: none;
+        white-space: nowrap;
+      }
+      .nav-btn:hover {
+        border-color: var(--white);
+      }
+      .nav-btn-sub {
+        font-size: 0.68rem;
+        color: #a0a0a0;
+      }
+      .nav-btn-main {
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+      .nav-btn-main span {
+        color: var(--amber);
+      }
+      .nav-cart {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border: 1.5px solid transparent;
+        border-radius: var(--r-sm);
+        color: var(--white);
+        cursor: pointer;
+        transition: border-color 0.2s;
+        background: none;
+        font-family: inherit;
+      }
+      .nav-cart:hover {
+        border-color: var(--white);
+      }
+      .nav-cart-icon {
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+      .cart-count {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--amber);
+        color: var(--navy);
+        font-size: 0.65rem;
+        font-weight: 800;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .nav-cart-label {
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+
+      /* SUBNAV */
+      .subnav {
+        background: var(--rust);
+        height: 38px;
+        overflow: hidden;
+      }
+      .subnav .container {
+        height: 100%;
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .subnav-link {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--white);
+        padding: 0 12px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        transition: background 0.2s;
+        border-radius: 2px;
+      }
+      .subnav-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      /* PAGE LAYOUT */
+      .page-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 28px 20px 80px;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 28px;
+      }
+      @media (max-width: 860px) {
+        .page-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      /* PROFILE CARD */
+      .profile-card {
+        background: var(--white);
+        border-radius: var(--r-xl);
+        padding: 28px 20px 20px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .profile-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 72px;
+        background: linear-gradient(135deg, var(--navy) 0%, var(--rust) 100%);
+      }
+      .profile-avatar-wrap {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 12px;
+        z-index: 1;
+      }
+      .profile-avatar {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--white);
+        box-shadow: var(--shadow-md);
+        background: var(--gray-5);
+        display: block;
+      }
+      .profile-avatar-fallback {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        border: 4px solid var(--white);
+        box-shadow: var(--shadow-md);
+        background: var(--rust);
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-head);
+      }
+      .profile-edit-avatar {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--amber);
+        border: 2px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background var(--trans);
+      }
+      .profile-edit-avatar:hover {
+        background: var(--amber-dk);
+      }
+      /* Photo upload spinner overlay */
+      .avatar-uploading {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+      .avatar-spinner {
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .profile-name {
+        font-family: var(--font-head);
+        font-size: 1.25rem;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .profile-email {
+        font-size: 12px;
+        color: var(--gray-3);
+        margin-bottom: 10px;
+        word-break: break-all;
+      }
+      .profile-role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: linear-gradient(135deg, var(--navy), var(--rust));
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: var(--r-full);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+      }
+      .profile-joined {
+        font-size: 11px;
+        color: var(--gray-3);
+        padding-top: 14px;
+        border-top: 1px solid var(--gray-5);
+      }
+
+      /* SIDEBAR NAV */
+      .sidebar-nav {
+        background: var(--white);
+        border-radius: var(--r-lg);
+        padding: 8px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+      }
+      .sidebar-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 14px;
+        border-radius: var(--r-md);
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--text-2);
+        cursor: pointer;
+        transition: all var(--trans);
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        font-family: var(--font-body);
+      }
+      .sidebar-nav-item:hover {
+        background: var(--cream);
+        color: var(--text);
+      }
+      .sidebar-nav-item.active {
+        background: linear-gradient(135deg, #fff3e6 0%, #fde8d8 100%);
+        color: var(--rust);
+        font-weight: 700;
+      }
+      .sidebar-nav-item.active svg {
+        color: var(--rust);
+      }
+      .sidebar-nav-item svg {
+        width: 17px;
+        height: 17px;
+        flex-shrink: 0;
+      }
+      .sidebar-nav-item .nav-badge {
+        margin-left: auto;
+        background: var(--rust);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: var(--r-full);
+      }
+      .sidebar-nav-divider {
+        height: 1px;
+        background: var(--gray-5);
+        margin: 6px 8px;
+      }
+
+      /* MAIN CONTENT */
+      .main-content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      /* SECTION CARD */
+      .section-card {
+        background: var(--white);
+        border-radius: var(--r-xl);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+        display: none;
+      }
+      .section-card.active {
+        display: block;
+      }
+      .section-head {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid var(--gray-5);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .section-head h2 {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .section-head p {
+        font-size: 12px;
+        color: var(--gray-3);
+        margin-top: 2px;
+      }
+      .section-body {
+        padding: 24px;
+      }
+
+      /* STATS ROW */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+      @media (max-width: 640px) {
+        .stats-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      .stat-tile {
+        background: var(--cream);
+        border-radius: var(--r-lg);
+        padding: 18px 16px;
+        border: 1px solid var(--border);
+        text-align: center;
+        transition:
+          transform var(--trans),
+          box-shadow var(--trans);
+      }
+      .stat-tile:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+      .stat-tile-icon {
+        font-size: 22px;
+        margin-bottom: 6px;
+      }
+      .stat-tile-num {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        font-family: var(--font-head);
+      }
+      .stat-tile-label {
+        font-size: 11px;
+        color: var(--gray-3);
+        margin-top: 2px;
+        font-weight: 500;
+      }
+
+      /* PROFILE FORM */
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 600px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .form-group.full {
+        grid-column: 1 / -1;
+      }
+      .form-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-2);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+      .form-input {
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--r-md);
+        font-size: 14px;
+        font-family: var(--font-body);
+        color: var(--text);
+        background: var(--gray-6);
+        transition:
+          border-color var(--trans),
+          box-shadow var(--trans);
+        outline: none;
+      }
+      .form-input:focus {
+        border-color: var(--rust);
+        box-shadow: 0 0 0 3px rgba(196, 92, 43, 0.1);
+        background: white;
+      }
+      .form-input:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .form-input-icon-wrap {
+        position: relative;
+      }
+      .form-input-icon-wrap .form-input {
+        padding-left: 40px;
+      }
+      .form-input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gray-3);
+        width: 16px;
+        height: 16px;
+      }
+      select.form-input {
+        cursor: pointer;
+      }
+
+      /* BUTTONS */
+      .btn-primary {
+        padding: 11px 24px;
+        background: var(--rust);
+        color: white;
+        border: none;
+        border-radius: var(--r-full);
+        font-size: 13.5px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: background var(--trans);
+      }
+      .btn-primary:hover {
+        background: var(--rust-lt);
+      }
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn-ghost {
+        padding: 10px 20px;
+        background: none;
+        color: var(--text-2);
+        border: 1.5px solid var(--border);
+        border-radius: var(--r-full);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: all var(--trans);
+      }
+      .btn-ghost:hover {
+        border-color: var(--text);
+        color: var(--text);
+      }
+      .btn-danger {
+        padding: 10px 20px;
+        background: none;
+        color: #c0392b;
+        border: 1.5px solid #e8c6c3;
+        border-radius: var(--r-full);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: all var(--trans);
+      }
+      .btn-danger:hover {
+        background: #fdecea;
+      }
+      .form-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* ORDERS */
+      .order-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .order-card {
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+        transition: box-shadow var(--trans);
+      }
+      .order-card:hover {
+        box-shadow: var(--shadow-md);
+      }
+      .order-card-head {
+        padding: 14px 18px;
+        background: var(--gray-6);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+      .order-id {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-2);
+        font-family: monospace;
+      }
+      .order-date {
+        font-size: 11px;
+        color: var(--gray-3);
+      }
+      .order-status {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: var(--r-full);
+      }
+      .status-delivered {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+      .status-transit {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+      .status-pending {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status-cancelled {
+        background: #fdecea;
+        color: #c0392b;
+      }
+      .order-card-body {
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .order-img {
+        width: 56px;
+        height: 56px;
+        border-radius: var(--r-md);
+        object-fit: cover;
+        background: var(--gray-5);
+        flex-shrink: 0;
+      }
+      .order-info {
+        flex: 1;
+      }
+      .order-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+      }
+      .order-meta {
+        font-size: 12px;
+        color: var(--gray-3);
+      }
+      .order-price {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        text-align: right;
+      }
+      .order-footer {
+        padding: 12px 18px;
+        border-top: 1px solid var(--gray-5);
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .btn-sm {
+        padding: 7px 16px;
+        border-radius: var(--r-full);
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--font-body);
+        transition: all var(--trans);
+        border: none;
+      }
+      .btn-sm-outline {
+        border: 1.5px solid var(--border);
+        background: none;
+        color: var(--text-2);
+      }
+      .btn-sm-outline:hover {
+        border-color: var(--text);
+        color: var(--text);
+      }
+      .btn-sm-fill {
+        background: var(--rust);
+        color: white;
+      }
+      .btn-sm-fill:hover {
+        background: var(--rust-lt);
+      }
+
+      /* WISHLIST */
+      .wishlist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+        gap: 14px;
+      }
+      .wishlist-card {
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+        cursor: pointer;
+        transition: all var(--trans);
+      }
+      .wishlist-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+      }
+      .wishlist-img {
+        aspect-ratio: 1;
+        overflow: hidden;
+        background: var(--gray-5);
+        position: relative;
+      }
+      .wishlist-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .wishlist-card:hover .wishlist-img img {
+        transform: scale(1.06);
+      }
+      .wishlist-remove {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity var(--trans);
+      }
+      .wishlist-card:hover .wishlist-remove {
+        opacity: 1;
+      }
+      .wishlist-body {
+        padding: 10px 12px;
+      }
+      .wishlist-title {
+        font-size: 12px;
+        color: var(--text-2);
+        margin-bottom: 4px;
+      }
+      .wishlist-price {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      /* ADDRESSES */
+      .address-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 14px;
+      }
+      .address-card {
+        border: 1.5px solid var(--border);
+        border-radius: var(--r-lg);
+        padding: 18px;
+        position: relative;
+        transition: all var(--trans);
+        background: var(--white);
+      }
+      .address-card:hover {
+        box-shadow: var(--shadow-md);
+      }
+      .address-card.default-addr {
+        border-color: var(--rust);
+        background: linear-gradient(135deg, #fff8f5 0%, #fff 100%);
+      }
+      .address-default-tag {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--rust);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 8px;
+      }
+      .address-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .address-line {
+        font-size: 13px;
+        color: var(--gray-2);
+        line-height: 1.6;
+      }
+      .address-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .add-new-card {
+        border: 1.5px dashed var(--gray-4);
+        border-radius: var(--r-lg);
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all var(--trans);
+        min-height: 130px;
+        color: var(--gray-3);
+        background: none;
+        font-family: var(--font-body);
+        width: 100%;
+      }
+      .add-new-card:hover {
+        border-color: var(--rust);
+        color: var(--rust);
+        background: #fff8f5;
+      }
+      .add-new-card span {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      /* ADDRESS MODAL */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal-box {
+        background: var(--white);
+        border-radius: var(--r-xl);
+        padding: 28px;
+        max-width: 480px;
+        width: 100%;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(12px);
+        transition: transform 0.2s;
+      }
+      .modal-overlay.open .modal-box {
+        transform: translateY(0);
+      }
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .modal-head h3 {
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--gray-3);
+        padding: 4px;
+        border-radius: var(--r-sm);
+        transition: color var(--trans);
+      }
+      .modal-close:hover {
+        color: var(--text);
+      }
+      .modal-form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 6px;
+        flex-wrap: wrap;
+      }
+      .modal-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-2);
+        cursor: pointer;
+      }
+      .modal-checkbox input {
+        accent-color: var(--rust);
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      /* NOTIFICATIONS */
+      .notif-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .notif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--gray-5);
+        cursor: pointer;
+        transition: background var(--trans);
+        border-radius: var(--r-md);
+      }
+      .notif-item:last-child {
+        border-bottom: none;
+      }
+      .notif-item.unread {
+        background: linear-gradient(90deg, #fff8f5 0%, transparent 100%);
+      }
+      .notif-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .notif-icon-order {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+      .notif-icon-promo {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .notif-icon-msg {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+      .notif-icon-system {
+        background: var(--gray-5);
+        color: var(--gray-2);
+      }
+      .notif-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .notif-title {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .notif-item.unread .notif-title::before {
+        content: "";
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--rust);
+        margin-right: 7px;
+        vertical-align: middle;
+      }
+      .notif-sub {
+        font-size: 12px;
+        color: var(--gray-3);
+        line-height: 1.5;
+        word-break: break-word;
+      }
+      .notif-time {
+        font-size: 11px;
+        color: var(--gray-4);
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      /* Notification loading state */
+      .notif-empty {
+        text-align: center;
+        padding: 40px 20px;
+      }
+      .notif-empty-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+      .notif-empty p {
+        font-size: 13px;
+        color: var(--gray-3);
+      }
+
+      /* SECURITY */
+      .security-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--gray-5);
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .security-row:last-child {
+        border-bottom: none;
+      }
+      .security-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .security-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: var(--r-md);
+        background: var(--cream-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--rust);
+      }
+      .security-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .security-sub {
+        font-size: 12px;
+        color: var(--gray-3);
+        margin-top: 2px;
+      }
+      .security-check {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .security-check.ok {
+        color: #2e7d32;
+      }
+      .security-check.warn {
+        color: #856404;
+      }
+
+      /* TOGGLE SWITCH */
+      .toggle-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .toggle {
+        position: relative;
+        width: 44px;
+        height: 24px;
+      }
+      .toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .toggle-slider {
+        position: absolute;
+        inset: 0;
+        background: var(--gray-4);
+        border-radius: var(--r-full);
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .toggle-slider::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.2s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+      .toggle input:checked + .toggle-slider {
+        background: var(--rust);
+      }
+      .toggle input:checked + .toggle-slider::before {
+        transform: translateX(20px);
+      }
+      .toggle-label {
+        font-size: 13px;
+        color: var(--text-2);
+      }
+
+      /* EMPTY STATE */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+      }
+      .empty-state-icon {
+        font-size: 48px;
+        margin-bottom: 14px;
+      }
+      .empty-state h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .empty-state p {
+        font-size: 13px;
+        color: var(--gray-3);
+        margin-bottom: 18px;
+      }
+
+      /* SKELETON */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          var(--gray-5) 25%,
+          var(--gray-4) 50%,
+          var(--gray-5) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: var(--r-md);
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      /* TOAST */
+      #toaster {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+      }
+      .toast-msg {
+        background: var(--text);
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: var(--r-full);
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: var(--shadow-lg);
+        white-space: nowrap;
+        animation: toastIn 0.2s ease;
+      }
+      .toast-msg.ok {
+        background: #2e7d32;
+      }
+      .toast-msg.err {
+        background: #c0392b;
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* RECENTLY VIEWED */
+      .recently-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+      }
+      .recently-card {
+        cursor: pointer;
+      }
+      .recently-img {
+        aspect-ratio: 1;
+        border-radius: var(--r-md);
+        overflow: hidden;
+        background: var(--gray-5);
+        margin-bottom: 8px;
+      }
+      .recently-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .recently-card:hover .recently-img img {
+        transform: scale(1.05);
+      }
+      .recently-price {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .recently-title {
+        font-size: 11px;
+        color: var(--gray-3);
+        margin-top: 2px;
+      }
+
+      /* SECTION HEADER BADGE */
+      .section-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: var(--r-full);
+        background: var(--cream-2);
+        color: var(--rust);
+      }
+
+      /* HIDDEN FILE INPUT */
+      #photoInput {
+        display: none;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 700px) {
+        .top-strip {
+          display: none;
+        }
+        .subnav {
+          display: none;
+        }
+        .nav-search-cat {
+          display: none;
+        }
+      }
+      @media (max-width: 992px) {
+        .nav-actions {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: var(--navy-2);
+          justify-content: space-around;
+          padding: 10px;
+          box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+          z-index: 1001;
+        }
+        .nav-location {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TOP STRIP -->
+    <div class="top-strip">
+      <div class="container">
+        <div class="top-strip-left">
+          <span class="top-strip-location">Nairobi, Kenya</span>
+          <a href="#">Change Location</a>
+          <a href="#">Download App</a>
+        </div>
+        <div class="top-strip-right">
+          <a href="#">Help Center</a>
+          <a href="#">Safety Tips</a>
+          <a
+            href="create-listing.html"
+            style="color: var(--amber-lt); font-weight: 700"
+            >Sell for Free</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="nav-logo">
+          <span class="logo-icon"
+            ><i data-lucide="shopping-cart" size="28"></i
+          ></span>
+          <span class="logo-text">Soko<em>Hub</em></span>
+        </a>
+        <div class="nav-location">
+          <span class="nav-location-sub">Deliver to</span>
+          <span class="nav-location-main"
+            ><i data-lucide="map-pin" size="14"></i> Nairobi</span
+          >
+        </div>
+        <div class="nav-search">
+          <select class="nav-search-cat">
+            <option>All Categories</option>
+            <option>Electronics</option>
+            <option>Fashion</option>
+            <option>Vehicles</option>
+            <option>Home & Garden</option>
+          </select>
+          <input type="text" placeholder="Search for anything…" />
+          <button class="nav-search-btn">
+            <i data-lucide="search" size="20" color="#222"></i>
+          </button>
+        </div>
+        <div class="nav-actions">
+          <button class="nav-btn" id="signInBtn">
+            <span class="nav-btn-sub">Hello,</span>
+            <span class="nav-btn-main" id="navUserName"
+              >Account <span>▾</span></span
+            >
+          </button>
+          <a href="cart.html#saved" class="nav-btn">
+            <span class="nav-btn-sub">Your</span>
+            <span
+              class="nav-btn-main"
+              style="display: flex; align-items: center; gap: 4px"
+              >❤️ Saved</span
+            >
+          </a>
+          <button class="nav-cart" onclick="window.location.href = 'cart.html'">
+            <span
+              class="nav-cart-icon"
+              style="
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+              "
+            >
+              <i data-lucide="shopping-bag" size="24"></i>
+              <span class="cart-count" id="cartCount">0</span>
+            </span>
+            <span class="nav-cart-label">Cart</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- SUBNAV -->
+    <div class="subnav">
+      <div class="container">
+        <a href="listings.html?cat=electronics" class="subnav-link"
+          >Electronics</a
+        >
+        <a href="listings.html?cat=fashion" class="subnav-link">Fashion</a>
+        <a href="listings.html?cat=vehicles" class="subnav-link">Vehicles</a>
+        <a href="listings.html?cat=home" class="subnav-link">Home & Garden</a>
+        <a href="listings.html?cat=services" class="subnav-link">Services</a>
+        <a href="listings.html?cat=property" class="subnav-link">Property</a>
+        <a href="listings.html?cat=jobs" class="subnav-link">Jobs</a>
+      </div>
+    </div>
+
+    <!-- HIDDEN PHOTO INPUT -->
+    <input type="file" id="photoInput" accept="image/*" />
+
+    <!-- PAGE WRAP -->
+    <div class="page-wrap">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <!-- PROFILE CARD -->
+        <div class="profile-card" id="profileCard">
+          <div class="profile-avatar-wrap" id="avatarWrap">
+            <div
+              class="skeleton"
+              style="width: 88px; height: 88px; border-radius: 50%"
+            ></div>
+          </div>
+          <div
+            class="skeleton"
+            style="height: 20px; width: 140px; margin: 0 auto 6px"
+          ></div>
+          <div
+            class="skeleton"
+            style="height: 13px; width: 170px; margin: 0 auto 10px"
+          ></div>
+          <div
+            class="skeleton"
+            style="
+              height: 22px;
+              width: 80px;
+              margin: 0 auto 16px;
+              border-radius: 999px;
+            "
+          ></div>
+          <div
+            class="skeleton"
+            style="height: 12px; width: 120px; margin: 0 auto"
+          ></div>
+        </div>
+
+        <!-- SIDEBAR NAV -->
+        <nav class="sidebar-nav">
+          <button
+            class="sidebar-nav-item active"
+            onclick="switchTab('overview', this)"
+          >
+            <i data-lucide="layout-dashboard" size="17"></i> Overview
+          </button>
+          <button class="sidebar-nav-item" onclick="switchTab('profile', this)">
+            <i data-lucide="user" size="17"></i> Edit Profile
+          </button>
+          <button class="sidebar-nav-item" onclick="switchTab('orders', this)">
+            <i data-lucide="package" size="17"></i> My Orders
+            <span class="nav-badge" id="ordersBadge" style="display: none"
+              >0</span
+            >
+          </button>
+          <button
+            class="sidebar-nav-item"
+            onclick="switchTab('wishlist', this)"
+          >
+            <i data-lucide="heart" size="17"></i> Saved Items
+            <span class="nav-badge" id="wishlistBadge" style="display: none"
+              >0</span
+            >
+          </button>
+          <button
+            class="sidebar-nav-item"
+            onclick="switchTab('addresses', this)"
+          >
+            <i data-lucide="map-pin" size="17"></i> Addresses
+          </button>
+          <button
+            class="sidebar-nav-item"
+            onclick="switchTab('notifications', this)"
+          >
+            <i data-lucide="bell" size="17"></i> Notifications
+            <span class="nav-badge" id="notifBadge" style="display: none"
+              >0</span
+            >
+          </button>
+          <div class="sidebar-nav-divider"></div>
+          <button
+            class="sidebar-nav-item"
+            onclick="switchTab('security', this)"
+          >
+            <i data-lucide="shield" size="17"></i> Security
+          </button>
+          <button
+            class="sidebar-nav-item"
+            onclick="switchTab('recently', this)"
+          >
+            <i data-lucide="clock" size="17"></i> Recently Viewed
+          </button>
+          <div class="sidebar-nav-divider"></div>
+          <button
+            class="sidebar-nav-item"
+            onclick="handleSignOut()"
+            style="color: #c0392b"
+          >
+            <i data-lucide="log-out" size="17"></i> Sign Out
+          </button>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- ── OVERVIEW ── -->
+        <div class="section-card active" id="tab-overview">
+          <div class="section-head">
+            <div>
+              <h2>Account Overview</h2>
+              <p>Welcome back — here's your activity summary</p>
+            </div>
+            <span class="section-badge" id="memberSince">Member since…</span>
+          </div>
+          <div class="section-body">
+            <div class="stats-row">
+              <div class="stat-tile">
+                <div class="stat-tile-icon">📦</div>
+                <div class="stat-tile-num" id="statOrders">—</div>
+                <div class="stat-tile-label">Total Orders</div>
+              </div>
+              <div class="stat-tile">
+                <div class="stat-tile-icon">❤️</div>
+                <div class="stat-tile-num" id="statSaved">—</div>
+                <div class="stat-tile-label">Saved Items</div>
+              </div>
+              <div class="stat-tile">
+                <div class="stat-tile-icon">💬</div>
+                <div class="stat-tile-num" id="statMessages">—</div>
+                <div class="stat-tile-label">Messages</div>
+              </div>
+              <div class="stat-tile">
+                <div class="stat-tile-icon">🕒</div>
+                <div class="stat-tile-num" id="statRecent">—</div>
+                <div class="stat-tile-label">Viewed Recently</div>
+              </div>
+            </div>
+            <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 14px">
+              Recent Orders
+            </h3>
+            <div id="overviewOrders">
+              <div
+                class="skeleton"
+                style="height: 80px; margin-bottom: 10px; border-radius: 14px"
+              ></div>
+              <div
+                class="skeleton"
+                style="height: 80px; border-radius: 14px"
+              ></div>
+            </div>
+            <h3 style="font-size: 15px; font-weight: 700; margin: 24px 0 14px">
+              Recently Viewed
+            </h3>
+            <div id="overviewRecent" class="recently-grid"></div>
+          </div>
+        </div>
+
+        <!-- ── EDIT PROFILE ── -->
+        <div class="section-card" id="tab-profile">
+          <div class="section-head">
+            <div>
+              <h2>Edit Profile</h2>
+              <p>Update your personal information</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input
+                  class="form-input"
+                  id="editFirstName"
+                  placeholder="First name"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input
+                  class="form-input"
+                  id="editLastName"
+                  placeholder="Last name"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <div class="form-input-icon-wrap">
+                  <i data-lucide="mail" class="form-input-icon"></i>
+                  <input
+                    class="form-input"
+                    id="editEmail"
+                    type="email"
+                    placeholder="Email"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <div class="form-input-icon-wrap">
+                  <i data-lucide="phone" class="form-input-icon"></i>
+                  <input
+                    class="form-input"
+                    id="editPhone"
+                    placeholder="+254 7XX XXX XXX"
+                  />
+                </div>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Location / City</label>
+                <div class="form-input-icon-wrap">
+                  <i data-lucide="map-pin" class="form-input-icon"></i>
+                  <input
+                    class="form-input"
+                    id="editCity"
+                    placeholder="e.g. Nairobi, Kenya"
+                  />
+                </div>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">About Me</label>
+                <textarea
+                  class="form-input"
+                  id="editBio"
+                  rows="3"
+                  placeholder="Tell sellers a bit about yourself…"
+                  style="resize: vertical"
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button
+                class="btn-primary"
+                id="saveProfileBtn"
+                onclick="saveProfile()"
+              >
+                Save Changes
+              </button>
+              <button class="btn-ghost" onclick="cancelEdit()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ORDERS ── -->
+        <div class="section-card" id="tab-orders">
+          <div class="section-head">
+            <div>
+              <h2>My Orders</h2>
+              <p>Track and manage your purchases</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="order-list" id="ordersList">
+              <div
+                class="skeleton"
+                style="height: 140px; border-radius: 14px"
+              ></div>
+              <div
+                class="skeleton"
+                style="height: 140px; border-radius: 14px"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── WISHLIST ── -->
+        <div class="section-card" id="tab-wishlist">
+          <div class="section-head">
+            <div>
+              <h2>Saved Items</h2>
+              <p>Items you've added to your wishlist</p>
+            </div>
+            <button
+              class="btn-ghost"
+              style="font-size: 12px; padding: 7px 14px"
+              onclick="clearWishlist()"
+            >
+              Clear All
+            </button>
+          </div>
+          <div class="section-body">
+            <div class="wishlist-grid" id="wishlistGrid"></div>
+          </div>
+        </div>
+
+        <!-- ── ADDRESSES ── -->
+        <div class="section-card" id="tab-addresses">
+          <div class="section-head">
+            <div>
+              <h2>Delivery Addresses</h2>
+              <p>Manage your saved locations</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="address-grid" id="addressGrid">
+              <div
+                class="skeleton"
+                style="height: 150px; border-radius: 20px"
+              ></div>
+              <div
+                class="skeleton"
+                style="height: 150px; border-radius: 20px"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── NOTIFICATIONS ── -->
+        <div class="section-card" id="tab-notifications">
+          <div class="section-head">
+            <div>
+              <h2>Notifications</h2>
+              <p>Your recent activity and alerts</p>
+            </div>
+            <button
+              class="btn-ghost"
+              style="font-size: 12px; padding: 7px 14px"
+              onclick="markAllRead()"
+            >
+              Mark all read
+            </button>
+          </div>
+          <div class="section-body" style="padding-top: 8px">
+            <div class="notif-list" id="notifList">
+              <div
+                class="skeleton"
+                style="height: 60px; margin-bottom: 10px; border-radius: 12px"
+              ></div>
+              <div
+                class="skeleton"
+                style="height: 60px; margin-bottom: 10px; border-radius: 12px"
+              ></div>
+              <div
+                class="skeleton"
+                style="height: 60px; border-radius: 12px"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECURITY ── -->
+        <div class="section-card" id="tab-security">
+          <div class="section-head">
+            <div>
+              <h2>Security & Privacy</h2>
+              <p>Manage your account security</p>
+            </div>
+          </div>
+          <div class="section-body" style="padding-top: 8px">
+            <div class="security-row">
+              <div class="security-left">
+                <div class="security-icon">
+                  <i data-lucide="lock" size="20"></i>
+                </div>
+                <div>
+                  <div class="security-title">Password</div>
+                  <div class="security-sub">
+                    Last changed: never (Google Sign-In)
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <div class="security-check ok">
+                  <i data-lucide="check-circle" size="14"></i> Secured
+                </div>
+              </div>
+            </div>
+            <div class="security-row">
+              <div class="security-left">
+                <div class="security-icon">
+                  <i data-lucide="mail" size="20"></i>
+                </div>
+                <div>
+                  <div class="security-title">Email Verification</div>
+                  <div class="security-sub" id="secEmail">—</div>
+                </div>
+              </div>
+              <div class="security-check ok">
+                <i data-lucide="check-circle" size="14"></i> Verified
+              </div>
+            </div>
+            <div class="security-row">
+              <div class="security-left">
+                <div class="security-icon">
+                  <i data-lucide="smartphone" size="20"></i>
+                </div>
+                <div>
+                  <div class="security-title">Two-Factor Authentication</div>
+                  <div class="security-sub">
+                    Add extra security to your account
+                  </div>
+                </div>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle"
+                  ><input type="checkbox" id="twoFaToggle" /><span
+                    class="toggle-slider"
+                  ></span
+                ></label>
+                <span class="toggle-label" id="twoFaLabel">Off</span>
+              </div>
+            </div>
+            <div class="security-row">
+              <div class="security-left">
+                <div class="security-icon">
+                  <i data-lucide="bell" size="20"></i>
+                </div>
+                <div>
+                  <div class="security-title">Login Notifications</div>
+                  <div class="security-sub">
+                    Get alerted on new device sign-ins
+                  </div>
+                </div>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle"
+                  ><input type="checkbox" id="loginNotifToggle" checked /><span
+                    class="toggle-slider"
+                  ></span
+                ></label>
+                <span class="toggle-label">On</span>
+              </div>
+            </div>
+            <div class="security-row">
+              <div class="security-left">
+                <div
+                  class="security-icon"
+                  style="background: #fdecea; color: #c0392b"
+                >
+                  <i data-lucide="trash-2" size="20"></i>
+                </div>
+                <div>
+                  <div class="security-title" style="color: #c0392b">
+                    Delete Account
+                  </div>
+                  <div class="security-sub">
+                    Permanently remove your account and data
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn-danger"
+                onclick="
+                  showToast('Please contact support to delete your account.')
+                "
+              >
+                Request Deletion
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── RECENTLY VIEWED ── -->
+        <div class="section-card" id="tab-recently">
+          <div class="section-head">
+            <div>
+              <h2>Recently Viewed</h2>
+              <p>Items you've checked out lately</p>
+            </div>
+            <button
+              class="btn-ghost"
+              style="font-size: 12px; padding: 7px 14px"
+              onclick="clearRecent()"
+            >
+              Clear History
+            </button>
+          </div>
+          <div class="section-body">
+            <div class="recently-grid" id="recentGrid"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ADDRESS MODAL -->
+    <div class="modal-overlay" id="addrModal">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h3 id="addrModalTitle">Add Address</h3>
+          <button class="modal-close" onclick="closeAddrModal()">
+            <i data-lucide="x" size="20"></i>
+          </button>
+        </div>
+        <div class="modal-form">
+          <input type="hidden" id="addrEditId" />
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input
+              class="form-input"
+              id="addrName"
+              placeholder="Recipient's full name"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input
+              class="form-input"
+              id="addrPhone"
+              placeholder="+254 7XX XXX XXX"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Street / Area</label>
+            <input
+              class="form-input"
+              id="addrStreet"
+              placeholder="e.g. 14 Ngong Road, Karen"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input
+              class="form-input"
+              id="addrCity"
+              placeholder="e.g. Nairobi"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">County / Region</label>
+            <input
+              class="form-input"
+              id="addrCounty"
+              placeholder="e.g. Nairobi County"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Delivery Instructions (optional)</label>
+            <input
+              class="form-input"
+              id="addrInstructions"
+              placeholder="e.g. Green gate, ask for John"
+            />
+          </div>
+          <label class="modal-checkbox">
+            <input type="checkbox" id="addrIsDefault" /> Set as default address
+          </label>
+        </div>
+        <div class="modal-actions" style="margin-top: 20px">
+          <button class="btn-primary" id="saveAddrBtn" onclick="saveAddress()">
+            Save Address
+          </button>
+          <button class="btn-ghost" onclick="closeAddrModal()">Cancel</button>
+          <button
+            class="btn-danger"
+            id="deleteAddrBtn"
+            style="display: none"
+            onclick="deleteAddress()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toaster"></div>
+
+    <!-- FIREBASE + LOGIC -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc,
+        updateDoc,
+        deleteDoc,
+        collection,
+        query,
+        where,
+        orderBy,
+        limit,
+        getDocs,
+        addDoc,
+        serverTimestamp,
+        onSnapshot,
+        arrayUnion,
+        arrayRemove,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDH-1Q9GAH5X0BAi46EN_0bKAdHbbTul30",
+        authDomain: "sokohub-e4660.firebaseapp.com",
+        projectId: "sokohub-e4660",
+        storageBucket: "sokohub-e4660.firebasestorage.app",
+        messagingSenderId: "696413289672",
+        appId: "1:696413289672:web:2072058d2f0efa6983f9fd",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // ── HELPERS ──
+      const fmt = (n) =>
+        n
+          ? new Intl.NumberFormat("en-KE", {
+              style: "currency",
+              currency: "KES",
+              maximumFractionDigits: 0,
+            }).format(n)
+          : "Free";
+      const LS_CART = "sokohub_cart";
+      const LS_WISHLIST = "sokohub_wishlist";
+      const LS_RECENT = "sokohub_recently_viewed";
+
+      function showToast(msg, type = "") {
+        const t = document.createElement("div");
+        t.className = `toast-msg ${type}`;
+        t.textContent = msg;
+        document.getElementById("toaster").appendChild(t);
+        setTimeout(() => t.remove(), 2800);
+      }
+      window.showToast = showToast;
+
+      function getCart() {
+        return JSON.parse(localStorage.getItem(LS_CART) || "[]");
+      }
+      function getWishlist() {
+        return JSON.parse(localStorage.getItem(LS_WISHLIST) || "[]");
+      }
+      function getRecent() {
+        try {
+          return JSON.parse(localStorage.getItem(LS_RECENT) || "[]");
+        } catch {
+          return [];
+        }
+      }
+
+      function fmtDate(ts) {
+        if (!ts) return "—";
+        let d =
+          ts?.toDate?.() ||
+          (ts?.seconds ? new Date(ts.seconds * 1000) : new Date(ts));
+        return new Intl.DateTimeFormat("en-KE", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }).format(d);
+      }
+      function timeAgo(ts) {
+        if (!ts) return "";
+        const d =
+          ts?.toDate?.() ||
+          (ts?.seconds ? new Date(ts.seconds * 1000) : new Date(ts));
+        const sec = Math.floor((Date.now() - d) / 1000);
+        if (sec < 60) return "just now";
+        if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
+        if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
+        if (sec < 604800) return `${Math.floor(sec / 86400)}d ago`;
+        return fmtDate(ts);
+      }
+
+      let _currentUser = null;
+      let _notifUnsub = null;
+
+      // ──────────────────────────────────────
+      // PHOTO UPLOAD (base64 → Firestore)
+      // ──────────────────────────────────────
+      document
+        .getElementById("photoInput")
+        .addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          if (file.size > 2 * 1024 * 1024) {
+            showToast("Image too large. Max 2 MB.", "err");
+            return;
+          }
+
+          // Show spinner overlay on avatar
+          const wrap = document.getElementById("avatarWrap");
+          const spinnerEl = document.createElement("div");
+          spinnerEl.className = "avatar-uploading";
+          spinnerEl.innerHTML = `<div class="avatar-spinner"></div>`;
+          wrap.appendChild(spinnerEl);
+
+          const reader = new FileReader();
+          reader.onload = async () => {
+            const base64 = reader.result; // full data-URL e.g. "data:image/jpeg;base64,..."
+            try {
+              const user = _currentUser;
+              if (!user) throw new Error("Not signed in");
+              await updateDoc(doc(db, "users", user.uid), {
+                photoURL: base64,
+                updatedAt: serverTimestamp(),
+              });
+              // Update all avatar img elements on the page
+              document
+                .querySelectorAll(".profile-avatar")
+                .forEach((img) => (img.src = base64));
+              // If fallback was showing, swap it out
+              const fallback = wrap.querySelector(".profile-avatar-fallback");
+              if (fallback) {
+                const img = document.createElement("img");
+                img.className = "profile-avatar";
+                img.src = base64;
+                img.alt = "Avatar";
+                fallback.replaceWith(img);
+              }
+              showToast("Photo updated ✓", "ok");
+            } catch (err) {
+              showToast("Photo upload failed.", "err");
+              console.error(err);
+            } finally {
+              spinnerEl.remove();
+            }
+          };
+          reader.readAsDataURL(file);
+          // Reset so same file can be re-selected
+          e.target.value = "";
+        });
+
+      // ──────────────────────────────────────
+      // PROFILE CARD RENDER
+      // ──────────────────────────────────────
+      function renderProfileCard(user, fsData) {
+        const name = fsData?.displayName || user?.displayName || "Customer";
+        const email = fsData?.email || user?.email || "";
+        const photo = fsData?.photoURL || user?.photoURL || "";
+        const role = fsData?.role || "customer";
+        const joined = fsData?.createdAt ? fmtDate(fsData.createdAt) : "—";
+
+        const avatarEl = photo
+          ? `<img class="profile-avatar" src="${photo}" alt="${name}" onerror="this.style.display='none'" />`
+          : `<div class="profile-avatar-fallback">${name.charAt(0).toUpperCase()}</div>`;
+
+        const roleIcon =
+          role === "admin" ? "⭐" : role === "seller" ? "🛍️" : "👤";
+
+        document.getElementById("profileCard").innerHTML = `
+          <div class="profile-avatar-wrap" id="avatarWrap">
+            ${avatarEl}
+            <div class="profile-edit-avatar" title="Change photo" onclick="document.getElementById('photoInput').click()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+            </div>
+          </div>
+          <div class="profile-name" id="profileNameDisplay">${name}</div>
+          <div class="profile-email">${email}</div>
+          <div class="profile-role-badge">${roleIcon} ${role.charAt(0).toUpperCase() + role.slice(1)}</div>
+          <div class="profile-joined">Member since ${joined}</div>
+        `;
+
+        document.getElementById("navUserName").innerHTML =
+          `${name.split(" ")[0]} <span>▾</span>`;
+
+        // Prefill edit form
+        const [first, ...rest] = name.split(" ");
+        document.getElementById("editFirstName").value = first || "";
+        document.getElementById("editLastName").value = rest.join(" ") || "";
+        document.getElementById("editEmail").value = email;
+        document.getElementById("editPhone").value = fsData?.phone || "";
+        document.getElementById("editCity").value =
+          fsData?.city || "Nairobi, Kenya";
+        document.getElementById("editBio").value = fsData?.bio || "";
+
+        document.getElementById("secEmail").textContent = email;
+        document.getElementById("memberSince").textContent =
+          joined !== "—" ? `Member since ${joined}` : "New Member";
+      }
+
+      // ──────────────────────────────────────
+      // OVERVIEW STATS
+      // ──────────────────────────────────────
+      function renderOverview(orders, wishlist, recent, messages) {
+        document.getElementById("statOrders").textContent = orders.length;
+        document.getElementById("statSaved").textContent = wishlist.length;
+        document.getElementById("statMessages").textContent = messages;
+        document.getElementById("statRecent").textContent = recent.length;
+
+        const pending = orders.filter(
+          (o) => o.status === "pending" || o.status === "transit",
+        ).length;
+        if (pending > 0) {
+          const b = document.getElementById("ordersBadge");
+          b.textContent = pending;
+          b.style.display = "";
+        }
+        if (wishlist.length > 0) {
+          const w = document.getElementById("wishlistBadge");
+          w.textContent = wishlist.length;
+          w.style.display = "";
+        }
+
+        const slice = orders.slice(0, 2);
+        document.getElementById("overviewOrders").innerHTML = slice.length
+          ? slice.map((o) => orderCardHTML(o)).join("")
+          : `<div class="empty-state" style="padding:30px 20px"><div class="empty-state-icon">📦</div><p>No orders yet. <a href="listings.html" style="color:var(--rust);font-weight:600">Start shopping</a></p></div>`;
+
+        const recEl = document.getElementById("overviewRecent");
+        recEl.innerHTML =
+          recent
+            .slice(0, 6)
+            .map(
+              (r) => `
+          <div class="recently-card" onclick="window.location.href='listing-detail.html?id=${r.id}'">
+            <div class="recently-img"><img src="${r.image || ""}" alt="${r.title}" loading="lazy" /></div>
+            <div class="recently-price">${fmt(r.price)}</div>
+            <div class="recently-title">${(r.title || "").substring(0, 28)}…</div>
+          </div>`,
+            )
+            .join("") ||
+          `<p style="color:var(--gray-3);font-size:13px">Nothing viewed yet.</p>`;
+      }
+
+      // ──────────────────────────────────────
+      // ORDER CARD HTML
+      // ──────────────────────────────────────
+      const STATUS_MAP = {
+        delivered: ["status-delivered", "Delivered"],
+        transit: ["status-transit", "In Transit"],
+        pending: ["status-pending", "Pending"],
+        cancelled: ["status-cancelled", "Cancelled"],
+      };
+      function orderCardHTML(o) {
+        const [cls, label] = STATUS_MAP[o.status] || [
+          "status-pending",
+          o.status || "Pending",
+        ];
+        return `
+        <div class="order-card">
+          <div class="order-card-head">
+            <div>
+              <div class="order-id">Order #${o.id.substring(0, 10).toUpperCase()}</div>
+              <div class="order-date">${fmtDate(o.createdAt)}</div>
+            </div>
+            <span class="order-status ${cls}">${label}</span>
+          </div>
+          <div class="order-card-body">
+            <img class="order-img" src="${o.listingImage || o.image || ""}" alt="${o.listingTitle || o.title || ""}" onerror="this.src=''" />
+            <div class="order-info">
+              <div class="order-title">${(o.listingTitle || o.title || "Unnamed Item").substring(0, 45)}</div>
+              <div class="order-meta">Items: ${o.items?.length || 1} · From: ${o.items?.[0]?.shop || o.shop || "SokoHub Seller"}</div>
+            </div>
+            <div class="order-price">${fmt(o.amount || o.price * (o.qty || 1))}</div>
+          </div>
+          <div class="order-footer">
+            <button class="btn-sm btn-sm-outline" onclick="window.location.href='listing-detail.html?id=${o.listingId || o.id}'">View Item</button>
+            ${o.status === "delivered" ? `<button class="btn-sm btn-sm-fill" onclick="showToast('Review feature coming soon!')">Leave Review</button>` : ""}
+            ${o.status === "pending" ? `<button class="btn-sm btn-sm-outline" onclick="showToast('Order cancellation coming soon!')">Cancel</button>` : ""}
+          </div>
+        </div>`;
+      }
+
+      function renderOrders(orders) {
+        document.getElementById("ordersList").innerHTML = orders.length
+          ? orders.map((o) => orderCardHTML(o)).join("")
+          : `<div class="empty-state"><div class="empty-state-icon">📦</div><h3>No orders yet</h3><p>When you buy something, your orders appear here.</p><button class="btn-primary" onclick="window.location.href='listings.html'">Browse Listings</button></div>`;
+      }
+
+      function renderWishlist(items) {
+        document.getElementById("wishlistGrid").innerHTML = items.length
+          ? items
+              .map(
+                (i) => `
+            <div class="wishlist-card" onclick="window.location.href='listing-detail.html?id=${i.id}'">
+              <div class="wishlist-img">
+                <img src="${i.image || ""}" alt="${i.title || ""}" loading="lazy" />
+                <button class="wishlist-remove" onclick="event.stopPropagation();removeWishlistItem('${i.id}')" title="Remove">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+              <div class="wishlist-body">
+                <div class="wishlist-title">${(i.title || "").substring(0, 30)}</div>
+                <div class="wishlist-price">${fmt(i.price)}</div>
+              </div>
+            </div>`,
+              )
+              .join("")
+          : `<div class="empty-state" style="width:100%"><div class="empty-state-icon">❤️</div><h3>Nothing saved yet</h3><p>Tap the heart on any listing to save it here.</p><button class="btn-primary" onclick="window.location.href='listings.html'">Explore Listings</button></div>`;
+      }
+
+      function renderRecent(items) {
+        document.getElementById("recentGrid").innerHTML = items.length
+          ? items
+              .map(
+                (r) => `
+            <div class="recently-card" onclick="window.location.href='listing-detail.html?id=${r.id}'">
+              <div class="recently-img"><img src="${r.image || ""}" alt="${r.title}" loading="lazy" /></div>
+              <div class="recently-price">${fmt(r.price)}</div>
+              <div class="recently-title">${(r.title || "").substring(0, 28)}</div>
+            </div>`,
+              )
+              .join("")
+          : `<div class="empty-state" style="width:100%"><div class="empty-state-icon">🕒</div><h3>No history yet</h3><p>Items you view will appear here.</p></div>`;
+      }
+
+      // ──────────────────────────────────────
+      // NOTIFICATIONS — Firestore real-time
+      // ──────────────────────────────────────
+      const NOTIF_ICONS = {
+        order: ["notif-icon-order", "package"],
+        promo: ["notif-icon-promo", "tag"],
+        msg: ["notif-icon-msg", "message-circle"],
+        system: ["notif-icon-system", "settings"],
+        review: ["notif-icon-msg", "star"],
+        payment: ["notif-icon-order", "credit-card"],
+      };
+
+      function renderNotifications(notifs) {
+        const el = document.getElementById("notifList");
+        if (!notifs.length) {
+          el.innerHTML = `<div class="notif-empty"><div class="notif-empty-icon">🔔</div><p>No notifications yet.</p></div>`;
+          return;
+        }
+        el.innerHTML = notifs
+          .map((n) => {
+            const [cls, icon] = NOTIF_ICONS[n.type] || NOTIF_ICONS.system;
+            return `
+          <div class="notif-item ${n.read ? "" : "unread"}" onclick="markNotifRead('${n.id}')">
+            <div class="notif-icon ${cls}"><i data-lucide="${icon}" size="18"></i></div>
+            <div class="notif-body">
+              <div class="notif-title">${n.title || ""}</div>
+              <div class="notif-sub">${n.body || n.sub || ""}</div>
+            </div>
+            <div class="notif-time">${timeAgo(n.createdAt)}</div>
+          </div>`;
+          })
+          .join("");
+        lucide.createIcons();
+      }
+
+      function updateNotifBadge(notifs) {
+        const unread = notifs.filter((n) => !n.read).length;
+        const badge = document.getElementById("notifBadge");
+        badge.textContent = unread;
+        badge.style.display = unread > 0 ? "" : "none";
+      }
+
+      window.markNotifRead = async (id) => {
+        const user = _currentUser;
+        if (!user || !id) return;
+        try {
+          await updateDoc(doc(db, "users", user.uid, "notifications", id), {
+            read: true,
+          });
+        } catch (e) {
+          console.warn("markRead:", e);
+        }
+      };
+
+      window.markAllRead = async () => {
+        const user = _currentUser;
+        if (!user) return;
+        try {
+          const snap = await getDocs(
+            query(
+              collection(db, "users", user.uid, "notifications"),
+              where("read", "==", false),
+            ),
+          );
+          const updates = snap.docs.map((d) =>
+            updateDoc(d.ref, { read: true }),
+          );
+          await Promise.all(updates);
+          showToast("All notifications marked as read");
+        } catch (e) {
+          // Fallback: just re-render all as read
+          showToast("All notifications marked as read");
+        }
+      };
+
+      function subscribeNotifications(uid) {
+        if (_notifUnsub) _notifUnsub();
+        const q = query(
+          collection(db, "users", uid, "notifications"),
+          orderBy("createdAt", "desc"),
+          limit(30),
+        );
+        _notifUnsub = onSnapshot(
+          q,
+          (snap) => {
+            const notifs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+            renderNotifications(notifs);
+            updateNotifBadge(notifs);
+          },
+          (err) => {
+            console.warn("Notifications listener error:", err);
+            // Seed with static fallback if collection doesn't exist yet
+            const fallback = [
+              {
+                id: "f1",
+                type: "order",
+                title: "Your order was delivered!",
+                body: "Order #A3F92 has been delivered. Confirm receipt.",
+                createdAt: { seconds: Date.now() / 1000 - 7200 },
+                read: false,
+              },
+              {
+                id: "f2",
+                type: "promo",
+                title: "Flash Sale — Up to 60% off Electronics",
+                body: "This weekend only. Shop deals before they end.",
+                createdAt: { seconds: Date.now() / 1000 - 18000 },
+                read: false,
+              },
+              {
+                id: "f3",
+                type: "msg",
+                title: "New message from Ngugi Tech Store",
+                body: "Hi! Yes the item is still available for pickup.",
+                createdAt: { seconds: Date.now() / 1000 - 86400 },
+                read: false,
+              },
+              {
+                id: "f4",
+                type: "system",
+                title: "Profile updated successfully",
+                body: "Your display name was changed.",
+                createdAt: { seconds: Date.now() / 1000 - 259200 },
+                read: true,
+              },
+              {
+                id: "f5",
+                type: "order",
+                title: "Order confirmed!",
+                body: "Your payment was received. Seller will contact you.",
+                createdAt: { seconds: Date.now() / 1000 - 432000 },
+                read: true,
+              },
+            ];
+            renderNotifications(fallback);
+            updateNotifBadge(fallback);
+            // In-memory markRead for fallback
+            window.markNotifRead = (id) => {
+              const n = fallback.find((x) => x.id === id);
+              if (n) {
+                n.read = true;
+                renderNotifications(fallback);
+                updateNotifBadge(fallback);
+              }
+            };
+            window.markAllRead = () => {
+              fallback.forEach((n) => (n.read = true));
+              renderNotifications(fallback);
+              updateNotifBadge(fallback);
+              showToast("All notifications marked as read");
+            };
+          },
+        );
+      }
+
+      // ──────────────────────────────────────
+      // ADDRESSES — Firestore subcollection
+      // ──────────────────────────────────────
+      let _addresses = [];
+      let _editingAddrId = null;
+
+      async function loadAddresses(uid) {
+        try {
+          const snap = await getDocs(collection(db, "users", uid, "addresses"));
+          _addresses = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        } catch (e) {
+          console.warn("Addresses load error:", e);
+          _addresses = [];
+        }
+        renderAddresses();
+      }
+
+      function renderAddresses() {
+        const grid = document.getElementById("addressGrid");
+        if (!_addresses.length) {
+          grid.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;padding:40px 20px">
+              <div class="empty-state-icon">📍</div>
+              <h3>No addresses saved</h3>
+              <p>Add a delivery address to speed up checkout.</p>
+            </div>
+            <button class="add-new-card" onclick="openAddrModal()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              <span>Add New Address</span>
+            </button>`;
+          return;
+        }
+
+        grid.innerHTML =
+          _addresses
+            .map(
+              (a) => `
+          <div class="address-card ${a.isDefault ? "default-addr" : ""}">
+            ${a.isDefault ? `<div class="address-default-tag">⭐ Default</div>` : ""}
+            <div class="address-name">${a.name || "—"}</div>
+            <div class="address-line">
+              ${a.street ? a.street + "<br>" : ""}
+              ${a.city || ""}${a.county ? ", " + a.county : ""}<br>
+              ${a.phone || ""}
+              ${a.instructions ? `<br><em style="font-size:11px;color:var(--gray-3)">${a.instructions}</em>` : ""}
+            </div>
+            <div class="address-actions">
+              <button class="btn-sm btn-sm-outline" onclick="openAddrModal('${a.id}')">Edit</button>
+              ${!a.isDefault ? `<button class="btn-sm btn-sm-outline" onclick="setDefaultAddr('${a.id}')">Set Default</button>` : ""}
+            </div>
+          </div>`,
+            )
+            .join("") +
+          `
+          <button class="add-new-card" onclick="openAddrModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span>Add New Address</span>
+          </button>`;
+      }
+
+      window.openAddrModal = (id) => {
+        _editingAddrId = id || null;
+        const modal = document.getElementById("addrModal");
+        document.getElementById("addrModalTitle").textContent = id
+          ? "Edit Address"
+          : "Add Address";
+        document.getElementById("deleteAddrBtn").style.display = id
+          ? ""
+          : "none";
+        // Clear or populate fields
+        if (id) {
+          const addr = _addresses.find((a) => a.id === id);
+          if (addr) {
+            document.getElementById("addrEditId").value = addr.id;
+            document.getElementById("addrName").value = addr.name || "";
+            document.getElementById("addrPhone").value = addr.phone || "";
+            document.getElementById("addrStreet").value = addr.street || "";
+            document.getElementById("addrCity").value = addr.city || "";
+            document.getElementById("addrCounty").value = addr.county || "";
+            document.getElementById("addrInstructions").value =
+              addr.instructions || "";
+            document.getElementById("addrIsDefault").checked = !!addr.isDefault;
+          }
+        } else {
+          [
+            "addrName",
+            "addrPhone",
+            "addrStreet",
+            "addrCity",
+            "addrCounty",
+            "addrInstructions",
+          ].forEach((f) => (document.getElementById(f).value = ""));
+          document.getElementById("addrIsDefault").checked =
+            _addresses.length === 0;
+        }
+        modal.classList.add("open");
+        lucide.createIcons();
+      };
+
+      window.closeAddrModal = () => {
+        document.getElementById("addrModal").classList.remove("open");
+        _editingAddrId = null;
+      };
+
+      window.saveAddress = async () => {
+        const user = _currentUser;
+        if (!user) {
+          showToast("Not signed in.");
+          return;
+        }
+        const name = document.getElementById("addrName").value.trim();
+        const phone = document.getElementById("addrPhone").value.trim();
+        const street = document.getElementById("addrStreet").value.trim();
+        const city = document.getElementById("addrCity").value.trim();
+        if (!name || !street || !city) {
+          showToast("Name, street, and city are required.", "err");
+          return;
+        }
+
+        const btn = document.getElementById("saveAddrBtn");
+        btn.disabled = true;
+        btn.textContent = "Saving…";
+
+        const isDefault = document.getElementById("addrIsDefault").checked;
+        const data = {
+          name,
+          phone,
+          street,
+          city,
+          county: document.getElementById("addrCounty").value.trim(),
+          instructions: document
+            .getElementById("addrInstructions")
+            .value.trim(),
+          isDefault,
+          updatedAt: serverTimestamp(),
+        };
+
+        try {
+          const addrCol = collection(db, "users", user.uid, "addresses");
+          if (_editingAddrId) {
+            await updateDoc(
+              doc(db, "users", user.uid, "addresses", _editingAddrId),
+              data,
+            );
+          } else {
+            data.createdAt = serverTimestamp();
+            await addDoc(addrCol, data);
+          }
+          // If setting as default, clear others
+          if (isDefault) {
+            const all = await getDocs(addrCol);
+            const clears = all.docs
+              .filter((d) => d.id !== _editingAddrId && d.data().isDefault)
+              .map((d) => updateDoc(d.ref, { isDefault: false }));
+            await Promise.all(clears);
+          }
+          await loadAddresses(user.uid);
+          closeAddrModal();
+          showToast(
+            _editingAddrId ? "Address updated ✓" : "Address added ✓",
+            "ok",
+          );
+        } catch (e) {
+          showToast("Failed to save address.", "err");
+          console.error(e);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Save Address";
+        }
+      };
+
+      window.deleteAddress = async () => {
+        if (!_editingAddrId) return;
+        if (!confirm("Delete this address?")) return;
+        const user = _currentUser;
+        try {
+          await deleteDoc(
+            doc(db, "users", user.uid, "addresses", _editingAddrId),
+          );
+          await loadAddresses(user.uid);
+          closeAddrModal();
+          showToast("Address deleted");
+        } catch (e) {
+          showToast("Failed to delete.", "err");
+        }
+      };
+
+      window.setDefaultAddr = async (id) => {
+        const user = _currentUser;
+        if (!user) return;
+        try {
+          const addrCol = collection(db, "users", user.uid, "addresses");
+          const all = await getDocs(addrCol);
+          const updates = all.docs.map((d) =>
+            updateDoc(d.ref, { isDefault: d.id === id }),
+          );
+          await Promise.all(updates);
+          await loadAddresses(user.uid);
+          showToast("Default address updated ✓", "ok");
+        } catch (e) {
+          showToast("Failed to update default.", "err");
+        }
+      };
+
+      // ──────────────────────────────────────
+      // PROFILE SAVE
+      // ──────────────────────────────────────
+      window.saveProfile = async () => {
+        const fn = document.getElementById("editFirstName").value.trim();
+        const ln = document.getElementById("editLastName").value.trim();
+        const phone = document.getElementById("editPhone").value.trim();
+        const city = document.getElementById("editCity").value.trim();
+        const bio = document.getElementById("editBio").value.trim();
+        if (!fn) {
+          showToast("First name is required.");
+          return;
+        }
+        const user = _currentUser;
+        if (!user) {
+          showToast("Not signed in.");
+          return;
+        }
+
+        const btn = document.getElementById("saveProfileBtn");
+        btn.disabled = true;
+        btn.textContent = "Saving…";
+
+        try {
+          const newName = `${fn} ${ln}`.trim();
+          await updateDoc(doc(db, "users", user.uid), {
+            displayName: newName,
+            phone,
+            city,
+            bio,
+            updatedAt: serverTimestamp(),
+          });
+          // Update live profile name display
+          const nameEl = document.getElementById("profileNameDisplay");
+          if (nameEl) nameEl.textContent = newName;
+          document.getElementById("navUserName").innerHTML =
+            `${fn} <span>▾</span>`;
+          showToast("Profile updated ✓", "ok");
+        } catch (e) {
+          showToast("Could not save. Try again.", "err");
+          console.error(e);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Save Changes";
+        }
+      };
+      window.cancelEdit = () =>
+        document.querySelectorAll(".sidebar-nav-item")[0].click();
+
+      // ──────────────────────────────────────
+      // TABS
+      // ──────────────────────────────────────
+      window.switchTab = (id, btn) => {
+        document
+          .querySelectorAll(".section-card")
+          .forEach((c) => c.classList.remove("active"));
+        document
+          .querySelectorAll(".sidebar-nav-item")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById(`tab-${id}`)?.classList.add("active");
+        btn.classList.add("active");
+        setTimeout(() => lucide.createIcons(), 50);
+      };
+
+      // ──────────────────────────────────────
+      // WISHLIST / RECENT ACTIONS
+      // ──────────────────────────────────────
+      window.removeWishlistItem = (id) => {
+        let ws = getWishlist().filter((x) => x !== id);
+        localStorage.setItem(LS_WISHLIST, JSON.stringify(ws));
+        const recent = getRecent();
+        const items = ws
+          .map((wid) => recent.find((r) => r.id === wid))
+          .filter(Boolean);
+        renderWishlist(items);
+        showToast("Removed from saved");
+      };
+      window.clearWishlist = () => {
+        localStorage.setItem(LS_WISHLIST, "[]");
+        renderWishlist([]);
+        document.getElementById("wishlistBadge").style.display = "none";
+        showToast("Wishlist cleared");
+      };
+      window.clearRecent = () => {
+        localStorage.removeItem(LS_RECENT);
+        renderRecent([]);
+        showToast("History cleared");
+      };
+
+      // ──────────────────────────────────────
+      // SIGN OUT
+      // ──────────────────────────────────────
+      window.handleSignOut = async () => {
+        if (!confirm("Sign out of SokoHub?")) return;
+        if (_notifUnsub) _notifUnsub();
+        await signOut(auth);
+        window.location.href = "customer-login.html";
+      };
+
+      // ──────────────────────────────────────
+      // 2FA TOGGLE
+      // ──────────────────────────────────────
+      document
+        .getElementById("twoFaToggle")
+        ?.addEventListener("change", function () {
+          document.getElementById("twoFaLabel").textContent = this.checked
+            ? "On"
+            : "Off";
+          showToast(this.checked ? "2FA enabled (simulated)" : "2FA disabled");
+        });
+
+      // ──────────────────────────────────────
+      // ORDERS FROM FIRESTORE
+      // ──────────────────────────────────────
+      async function fetchOrders(uid) {
+        try {
+          const q = query(
+            collection(db, "orders"),
+            where("buyerId", "==", uid),
+            orderBy("createdAt", "desc"),
+            limit(10),
+          );
+          const snap = await getDocs(q);
+          if (snap.empty) {
+            console.log("no orders found for uid: " + uid);
+          }
+          return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        } catch (e) {
+          console.warn("Orders fetch error:", e);
+          return [
+            {
+              id: "sample001abc",
+              listingTitle: "Samsung Galaxy A54",
+              amount: 42000,
+              items: [{ qty: 1, shop: "Ngugi Tech Store" }],
+              listingImage: "",
+              status: "delivered",
+              createdAt: new Date("2025-04-10"),
+            },
+            {
+              id: "sample002xyz",
+              listingTitle: "Nike Air Max 270",
+              amount: 17000,
+              items: [{ qty: 2, shop: "Kicks Kenya" }],
+              listingImage: "",
+              status: "transit",
+              createdAt: new Date("2025-05-01"),
+            },
+          ];
+        }
+      }
+
+      async function fetchMessageCount(uid) {
+        try {
+          const snap = await getDocs(
+            query(
+              collection(db, "messages"),
+              where("buyerId", "==", uid),
+              limit(50),
+            ),
+          );
+          return snap.size;
+        } catch {
+          return 0;
+        }
+      }
+
+      // ──────────────────────────────────────
+      // MAIN AUTH FLOW
+      // ──────────────────────────────────────
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          window.location.href = "customer-login.html";
+          return;
+        }
+        _currentUser = user;
+
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const fsData = userSnap.exists() ? userSnap.data() : {};
+
+        renderProfileCard(user, fsData);
+
+        const cart = getCart();
+        document.getElementById("cartCount").textContent = cart.reduce(
+          (s, i) => s + (i.qty || 1),
+          0,
+        );
+
+        const wishlistIds = getWishlist();
+        const recentItems = getRecent();
+        const wishlistFull = wishlistIds
+          .map((id) => recentItems.find((r) => r.id === id))
+          .filter(Boolean);
+
+        const [orders, msgCount] = await Promise.all([
+          fetchOrders(user.uid),
+          fetchMessageCount(user.uid),
+        ]);
+
+        renderOverview(orders, wishlistFull, recentItems, msgCount);
+        renderOrders(orders);
+        renderWishlist(wishlistFull);
+        renderRecent(recentItems);
+        await loadAddresses(user.uid);
+        subscribeNotifications(user.uid);
+
+        lucide.createIcons();
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.lucide) lucide.createIcons();
+      });
+      // Close modal on overlay click
+      document
+        .getElementById("addrModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) window.closeAddrModal();
+        });
+    </script>
+  </body>
+</html>

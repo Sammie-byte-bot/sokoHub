@@ -2140,22 +2140,45 @@
             const [
               { initializeApp },
               { getFirestore, collection, addDoc, serverTimestamp },
+              { getAuth, onAuthStateChanged },
             ] = await Promise.all([
               import("https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"),
               import("https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js"),
+              import("https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"),
             ]);
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             createOrders.collection = collection;
             createOrders.addDoc = addDoc;
             createOrders.serverTimestamp = serverTimestamp;
+            createOrders.auth = getAuth(app);
+            createOrders.onAuthStateChanged = onAuthStateChanged;
           }
+
+          const getCurrentUser = () =>
+            new Promise((resolve) => {
+              const unsub = createOrders.onAuthStateChanged(
+                createOrders.auth,
+                (u) => {
+                  unsub();
+                  resolve(u);
+                },
+              );
+            });
+
+          const user =
+            createOrders.auth.currentUser || (await getCurrentUser());
+          if (!user)
+            throw new Error(
+              "User not authenticated. Please sign in to checkout.",
+            );
 
           const orderPromises = Object.entries(ordersBySeller).map(
             async ([sellerId, items]) => {
               return createOrders.addDoc(
                 createOrders.collection(db, "orders"),
                 {
+                  buyerId: user.uid,
                   sellerId: sellerId === "unknown" ? null : sellerId,
                   status: "pending",
                   createdAt: createOrders.serverTimestamp(),
