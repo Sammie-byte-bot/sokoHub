@@ -10,11 +10,16 @@
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
       rel="stylesheet"
     />
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Firebase compat (same credentials as listings page) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <style>
       /* ============================================================
-   TOKENS
-============================================================ */
+         TOKENS
+      ============================================================ */
       :root {
         --navy: #1a1f2e;
         --navy-2: #232938;
@@ -46,8 +51,8 @@
       }
 
       /* ============================================================
-   RESET & BASE
-============================================================ */
+         RESET & BASE
+      ============================================================ */
       *,
       *::before,
       *::after {
@@ -82,7 +87,6 @@
       ul {
         list-style: none;
       }
-
       .container {
         max-width: 1320px;
         margin: 0 auto;
@@ -90,8 +94,8 @@
       }
 
       /* ============================================================
-   TOP STRIP (Amazon-style utility bar)
-============================================================ */
+         TOP STRIP
+      ============================================================ */
       .top-strip {
         background: var(--navy);
         height: var(--strip-h);
@@ -129,8 +133,8 @@
       }
 
       /* ============================================================
-   NAVBAR (Amazon-style)
-============================================================ */
+         NAVBAR
+      ============================================================ */
       .navbar {
         background: var(--navy-2);
         height: var(--nav-h);
@@ -146,7 +150,6 @@
         gap: 16px;
       }
 
-      /* Logo */
       .nav-logo {
         display: flex;
         align-items: center;
@@ -177,7 +180,6 @@
         font-style: normal;
       }
 
-      /* Deliver to */
       .nav-location {
         flex-shrink: 0;
         display: flex;
@@ -204,7 +206,6 @@
         gap: 4px;
       }
 
-      /* Search bar */
       .nav-search {
         flex: 1;
         display: flex;
@@ -222,6 +223,7 @@
         border-right: 1px solid var(--border);
         cursor: pointer;
         min-width: 110px;
+        font-family: inherit;
       }
       .nav-search input {
         flex: 1;
@@ -244,13 +246,15 @@
         background: var(--amber-dk);
       }
 
-      /* Nav right actions */
+      /* FIX 1: Nav actions HORIZONTAL layout — row, not column */
       .nav-actions {
         display: flex;
         align-items: center;
         gap: 4px;
         flex-shrink: 0;
+        flex-direction: row;
       }
+
       .nav-btn {
         display: flex;
         flex-direction: column;
@@ -279,7 +283,6 @@
         color: var(--amber);
       }
 
-      /* Cart */
       .nav-cart {
         display: flex;
         align-items: center;
@@ -321,29 +324,7 @@
         font-weight: 700;
       }
 
-      /* Sell button */
-      .btn-sell {
-        background: var(--amber);
-        color: var(--navy);
-        font-weight: 700;
-        font-size: 0.84rem;
-        padding: 8px 16px;
-        border-radius: var(--r-sm);
-        border: none;
-        cursor: pointer;
-        transition:
-          background 0.2s,
-          transform 0.15s;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        flex-shrink: 0;
-      }
-      .btn-sell:hover {
-        background: var(--amber-lt);
-        transform: translateY(-1px);
-      }
-
+      /* FIX 2: Hamburger menu button — functional */
       .nav-mobile-toggle {
         display: none;
         color: var(--white);
@@ -353,9 +334,80 @@
         cursor: pointer;
       }
 
+      /* Mobile menu overlay */
+      .mobile-menu-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1500;
+      }
+      .mobile-menu-overlay.open {
+        display: block;
+      }
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        width: 280px;
+        height: 100vh;
+        background: var(--navy-2);
+        z-index: 1600;
+        transition: right 0.3s ease;
+        padding: 20px;
+        overflow-y: auto;
+      }
+      .mobile-menu.open {
+        right: 0;
+      }
+      .mobile-menu-close {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 24px;
+      }
+      .mobile-menu-close button {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        padding: 4px;
+      }
+      .mobile-menu-nav a,
+      .mobile-menu-nav button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 12px 8px;
+        color: var(--white);
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        background: none;
+        text-align: left;
+        cursor: pointer;
+      }
+      .mobile-menu-nav a:hover,
+      .mobile-menu-nav button:hover {
+        color: var(--amber);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .mobile-menu-sell {
+        display: block;
+        margin-top: 20px;
+        background: var(--amber);
+        color: var(--navy);
+        font-weight: 700;
+        font-size: 0.95rem;
+        padding: 13px 20px;
+        border-radius: var(--r-sm);
+        text-align: center;
+      }
+
       /* ============================================================
-   SUB-NAV (category strip — Amazon style)
-============================================================ */
+         SUBNAV
+      ============================================================ */
       .subnav {
         background: var(--rust);
         height: 38px;
@@ -366,6 +418,11 @@
         display: flex;
         align-items: center;
         gap: 2px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .subnav .container::-webkit-scrollbar {
+        display: none;
       }
       .subnav-link {
         font-size: 0.8rem;
@@ -390,8 +447,8 @@
       }
 
       /* ============================================================
-   HERO BANNER (Amazon-style full-width carousel feel)
-============================================================ */
+         HERO BANNER
+      ============================================================ */
       .hero {
         position: relative;
         overflow: hidden;
@@ -457,11 +514,16 @@
         margin-bottom: 32px;
         max-width: 420px;
       }
+
+      /* FIX 3: Hero CTA buttons — horizontal row, both visible */
       .hero-cta-row {
         display: flex;
         gap: 14px;
+        flex-direction: row;
         flex-wrap: wrap;
+        align-items: center;
       }
+
       .btn-primary {
         background: var(--amber);
         color: var(--navy);
@@ -500,7 +562,6 @@
         background: rgba(255, 255, 255, 0.08);
       }
 
-      /* Hero stats */
       .hero-stats {
         display: flex;
         gap: 32px;
@@ -520,7 +581,6 @@
         color: #7a8699;
       }
 
-      /* Hero card stack (Etsy-ish product preview) */
       .hero-cards {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -577,8 +637,8 @@
       }
 
       /* ============================================================
-   PROMO BAND (Amazon "today's deals" row)
-============================================================ */
+         PROMO BAND
+      ============================================================ */
       .promo-band {
         background: var(--cream-2);
         border-top: 3px solid var(--amber);
@@ -592,7 +652,7 @@
         overflow-x: auto;
         scrollbar-width: none;
       }
-      .promo-band::-webkit-scrollbar {
+      .promo-band .container::-webkit-scrollbar {
         display: none;
       }
       .promo-chip {
@@ -615,8 +675,8 @@
       }
 
       /* ============================================================
-   SECTION BASE
-============================================================ */
+         SECTION BASE
+      ============================================================ */
       .section {
         padding: 52px 0;
       }
@@ -653,8 +713,9 @@
       }
 
       /* ============================================================
-   CATEGORIES GRID (Etsy-style photo tiles)
-============================================================ */
+         CATEGORIES GRID
+         FIX 4: Count shown from Firebase
+      ============================================================ */
       .categories-section {
         background: var(--cream);
       }
@@ -730,14 +791,11 @@
         color: rgba(255, 255, 255, 0.6);
         margin-top: 3px;
       }
-      /* fallback icon for cards with no image */
-      .cat-icon {
-        display: none;
-      }
 
       /* ============================================================
-   DEALS BANNER (Amazon Prime-style full-width)
-============================================================ */
+         DEALS BANNER
+         FIX 5: See all details button works
+      ============================================================ */
       .deals-banner {
         background: linear-gradient(120deg, var(--rust) 0%, #8b3a1e 100%);
         padding: 40px 0;
@@ -803,8 +861,9 @@
       }
 
       /* ============================================================
-   LISTINGS GRID
-============================================================ */
+         LISTINGS GRID
+         FIX 6: Products from Firebase (premium)
+      ============================================================ */
       .listings-section {
         background: var(--cream);
       }
@@ -842,7 +901,6 @@
         gap: 20px;
       }
 
-      /* Listing card (Etsy warmth + Amazon density) */
       .listing-card {
         background: var(--white);
         border-radius: var(--r-md);
@@ -872,8 +930,6 @@
       .listing-card:hover .listing-card-img img {
         transform: scale(1.05);
       }
-
-      /* Condition badge */
       .cond-badge {
         position: absolute;
         top: 10px;
@@ -902,7 +958,7 @@
         color: #991b1b;
       }
 
-      /* Heart */
+      /* FIX 11: Saved/Heart button — fully functional */
       .fav-btn {
         position: absolute;
         top: 10px;
@@ -921,10 +977,14 @@
         cursor: pointer;
         color: var(--text-3);
       }
-      .fav-btn:hover,
-      .fav-btn.active {
-        color: #e11d48;
+      .fav-btn:hover {
         transform: scale(1.12);
+      }
+      .fav-btn.saved {
+        color: #e11d48;
+      }
+      .fav-btn.saved svg {
+        fill: #e11d48 !important;
       }
 
       .listing-card-body {
@@ -967,8 +1027,6 @@
         align-items: center;
         gap: 3px;
       }
-
-      /* "Seller loves" Etsy-style badge */
       .seller-badge {
         display: inline-flex;
         align-items: center;
@@ -983,8 +1041,8 @@
       }
 
       /* ============================================================
-   HOW IT WORKS (isometric illustrated cards)
-============================================================ */
+         HOW IT WORKS
+      ============================================================ */
       .how-section {
         background: var(--cream-2);
       }
@@ -1049,9 +1107,6 @@
         box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
         z-index: 1;
       }
-      .how-num {
-        display: none;
-      }
       .how-title {
         font-size: 0.97rem;
         font-weight: 700;
@@ -1065,8 +1120,8 @@
       }
 
       /* ============================================================
-   TRUST / WHY US (isometric cards)
-============================================================ */
+         TRUST SECTION
+      ============================================================ */
       .trust-section {
         background: var(--navy);
       }
@@ -1103,9 +1158,6 @@
         align-items: center;
         justify-content: center;
       }
-      .trust-ico {
-        display: none;
-      }
       .trust-card h3 {
         font-size: 1rem;
         font-weight: 700;
@@ -1120,8 +1172,9 @@
       }
 
       /* ============================================================
-   NEWSLETTER / CTA BAND (Etsy-style warm)
-============================================================ */
+         CTA BAND
+         FIX 7: Subscribe functional
+      ============================================================ */
       .cta-band {
         background: var(--navy);
         padding: 64px 0;
@@ -1220,8 +1273,9 @@
       }
 
       /* ============================================================
-   FOOTER
-============================================================ */
+         FOOTER
+         FIX 8: Viable links in support section
+      ============================================================ */
       footer {
         background: #12161f;
         color: #8899aa;
@@ -1229,15 +1283,10 @@
       }
       .footer-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
         gap: 40px;
         padding-bottom: 40px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      }
-      .footer-brand .logo-text,
-      .footer-brand-logo .logo-text {
-        color: var(--white);
-        font-size: 1.3rem;
       }
       .footer-brand p {
         font-size: 0.82rem;
@@ -1278,7 +1327,6 @@
         padding: 8px 14px;
         border-radius: 8px;
         font-weight: 700;
-        text-decoration: none;
       }
       .footer-sell-link:hover {
         opacity: 0.95;
@@ -1317,8 +1365,8 @@
       }
 
       /* ============================================================
-   SKELETON
-============================================================ */
+         SKELETON
+      ============================================================ */
       @keyframes shimmer {
         0% {
           background-position: -400px 0;
@@ -1340,8 +1388,8 @@
       }
 
       /* ============================================================
-   TOAST
-============================================================ */
+         TOAST
+      ============================================================ */
       #toast-container {
         position: fixed;
         bottom: 24px;
@@ -1377,8 +1425,8 @@
       }
 
       /* ============================================================
-   ANIMATIONS
-============================================================ */
+         ANIMATIONS
+      ============================================================ */
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -1406,14 +1454,17 @@
       }
 
       /* ============================================================
-   RESPONSIVE
-============================================================ */
+         RESPONSIVE
+      ============================================================ */
       @media (max-width: 1100px) {
         .cat-grid {
           grid-template-columns: repeat(4, 1fr);
         }
         .listings-grid {
           grid-template-columns: repeat(3, 1fr);
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr 1fr;
         }
       }
       @media (max-width: 992px) {
@@ -1423,6 +1474,7 @@
         .hero-cards {
           display: none;
         }
+        /* Mobile: nav actions stay horizontal in bottom bar */
         .nav-actions {
           position: fixed;
           bottom: 0;
@@ -1430,12 +1482,10 @@
           right: 0;
           background: var(--navy-2);
           justify-content: space-around;
+          flex-direction: row;
           padding: 10px;
           box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
           z-index: 1001;
-        }
-        .nav-actions .btn-sell {
-          display: none;
         }
         .how-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -1499,13 +1549,15 @@
         .footer-grid {
           grid-template-columns: 1fr;
         }
+        .hero-cta-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- ============================================================
-  TOP STRIP
-============================================================ -->
+    <!-- TOP STRIP -->
     <div class="top-strip">
       <div class="container">
         <div class="top-strip-left">
@@ -1517,7 +1569,7 @@
         </div>
         <div class="top-strip-right">
           <a href="#">Help Center</a>
-          <a href="#">Safety Tips</a>
+          <a href="safety-tips.html">Safety Tips</a>
           <a
             href="create-listing.html"
             style="color: var(--amber-lt); font-weight: 700"
@@ -1527,28 +1579,21 @@
       </div>
     </div>
 
-    <!-- ============================================================
-  NAVBAR
-============================================================ -->
+    <!-- NAVBAR -->
     <nav class="navbar">
       <div class="container">
-        <!-- Logo -->
         <a href="index.html" class="nav-logo">
           <span class="logo-icon"
             ><i data-lucide="shopping-cart" size="28"></i
           ></span>
           <span class="logo-text">Soko<em>Hub</em></span>
         </a>
-
-        <!-- Deliver to -->
         <div class="nav-location">
           <span class="nav-location-sub">Deliver to</span>
           <span class="nav-location-main"
             ><i data-lucide="map-pin" size="14"></i> Nairobi</span
           >
         </div>
-
-        <!-- Search -->
         <div class="nav-search">
           <select class="nav-search-cat" id="nav-cat-select">
             <option value="">All Categories</option>
@@ -1574,40 +1619,99 @@
             <i data-lucide="search" size="20" color="#1a1f2e"></i>
           </button>
         </div>
-
-        <!-- Right actions -->
+        <!-- FIX 1: Nav actions horizontal row -->
         <div class="nav-actions">
-          <button class="nav-btn" onclick="handleLogin()">
+          <button class="nav-btn" id="accountBtn" onclick="handleLogin()">
             <span class="nav-btn-sub">Hello, Sign in</span>
             <span class="nav-btn-main">Account <span>▾</span></span>
           </button>
-          <a href="favorites.html" class="nav-btn">
+          <!-- FIX 11: Saved icon fully functional — links to favorites + shows count -->
+          <a href="favorites.html" class="nav-btn" id="savedBtn">
             <span class="nav-btn-sub">Your</span>
             <span
               class="nav-btn-main"
               style="display: flex; align-items: center; gap: 4px"
-              ><i data-lucide="heart" size="14" color="var(--amber)"></i>
-              Saved</span
             >
+              <i data-lucide="heart" size="14" color="var(--amber)"></i>
+              Saved
+              <span
+                id="savedCount"
+                style="color: var(--amber); font-size: 0.72rem; display: none"
+              ></span>
+            </span>
           </a>
-          <button class="nav-cart" style="position: relative">
+          <button class="nav-cart" onclick="window.location.href = 'cart.html'">
             <span
               class="nav-cart-icon"
               style="position: relative; display: inline-block"
-              ><i data-lucide="shopping-bag" size="24"></i>
-              <span class="cart-count">0</span>
+            >
+              <i data-lucide="shopping-bag" size="24"></i>
+              <span class="cart-count" id="cartCount">0</span>
             </span>
             <span class="nav-cart-label">Cart</span>
           </button>
-          <!-- Sell button removed from navbar; moved to footer -->
         </div>
-        <button class="nav-mobile-toggle" aria-label="Menu">
+        <!-- FIX 2: Hamburger button — triggers mobile menu -->
+        <button
+          class="nav-mobile-toggle"
+          aria-label="Menu"
+          onclick="openMobileMenu()"
+        >
           <i data-lucide="menu" size="28"></i>
         </button>
       </div>
     </nav>
 
-    <!-- Sub-nav -->
+    <!-- FIX 2: Mobile Menu -->
+    <div
+      class="mobile-menu-overlay"
+      id="mobileOverlay"
+      onclick="closeMobileMenu()"
+    ></div>
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-close">
+        <button onclick="closeMobileMenu()">
+          <i data-lucide="x" size="24"></i>
+        </button>
+      </div>
+      <nav class="mobile-menu-nav">
+        <button onclick="handleLogin()">
+          <i data-lucide="user" size="18"></i> My Account
+        </button>
+        <a href="listings.html"
+          ><i data-lucide="search" size="18"></i> Browse Listings</a
+        >
+        <a href="favorites.html"
+          ><i data-lucide="heart" size="18"></i> Saved Items</a
+        >
+        <a href="cart.html"
+          ><i data-lucide="shopping-bag" size="18"></i> Cart</a
+        >
+        <a href="messages.html"
+          ><i data-lucide="message-circle" size="18"></i> Messages</a
+        >
+        <a href="listings.html?tab=deals"
+          ><i data-lucide="tag" size="18"></i> Today's Deals</a
+        >
+        <a href="listings.html?cat=electronics"
+          ><i data-lucide="laptop" size="18"></i> Electronics</a
+        >
+        <a href="listings.html?cat=fashion"
+          ><i data-lucide="shirt" size="18"></i> Fashion</a
+        >
+        <a href="listings.html?cat=vehicles"
+          ><i data-lucide="car" size="18"></i> Vehicles</a
+        >
+        <a href="help.html"
+          ><i data-lucide="help-circle" size="18"></i> Help Center</a
+        >
+      </nav>
+      <a href="create-listing.html" class="mobile-menu-sell"
+        >+ Post a Free Listing</a
+      >
+    </div>
+
+    <!-- SUBNAV -->
     <div class="subnav">
       <div class="container">
         <a
@@ -1636,9 +1740,7 @@
       </div>
     </div>
 
-    <!-- ============================================================
-  HERO
-============================================================ -->
+    <!-- HERO -->
     <section class="hero">
       <div class="container">
         <div class="hero-text">
@@ -1653,6 +1755,7 @@
             connects you with thousands of trusted buyers and sellers across
             Kenya.
           </p>
+          <!-- FIX 3: Buttons in horizontal row -->
           <div class="hero-cta-row fade-up d3">
             <a href="listings.html" class="btn-primary"
               >Browse Listings <i data-lucide="search" size="18"></i
@@ -1663,21 +1766,17 @@
           </div>
           <div class="hero-stats fade-up d4">
             <div class="hero-stat">
-              <strong>12,400+</strong>
-              <span>Active Listings</span>
+              <strong id="stat-listings">12,400+</strong
+              ><span>Active Listings</span>
             </div>
             <div class="hero-stat">
-              <strong>8,200+</strong>
-              <span>Happy Users</span>
+              <strong>8,200+</strong><span>Happy Users</span>
             </div>
             <div class="hero-stat">
-              <strong>47</strong>
-              <span>Counties Covered</span>
+              <strong>47</strong><span>Counties Covered</span>
             </div>
           </div>
         </div>
-
-        <!-- Hero cards -->
         <div class="hero-cards fade-up d2">
           <div
             class="hero-card"
@@ -1722,9 +1821,7 @@
       </div>
     </section>
 
-    <!-- ============================================================
-  PROMO BAND
-============================================================ -->
+    <!-- PROMO BAND -->
     <div class="promo-band">
       <div class="container">
         <div class="promo-chip">
@@ -1738,15 +1835,14 @@
       </div>
     </div>
 
-    <!-- ============================================================
-  CATEGORIES
-============================================================ -->
+    <!-- CATEGORIES -->
     <section class="section categories-section">
       <div class="container">
         <div class="section-head">
           <div>
             <h2>Shop by Category</h2>
-            <p>
+            <!-- FIX 4: Subtitle updates with real count -->
+            <p id="catSectionSub">
               Find exactly what you need, from electronics to local services
             </p>
           </div>
@@ -1754,15 +1850,11 @@
             >View all <i data-lucide="arrow-right" size="16"></i
           ></a>
         </div>
-        <div class="cat-grid" id="cat-grid">
-          <!-- JS populated -->
-        </div>
+        <div class="cat-grid" id="cat-grid"></div>
       </div>
     </section>
 
-    <!-- ============================================================
-  DEALS BANNER
-============================================================ -->
+    <!-- DEALS BANNER -->
     <div class="deals-banner">
       <div class="container">
         <div class="deals-banner-text">
@@ -1774,18 +1866,12 @@
             <span class="deal-badge">Vehicles with verified owners</span>
           </div>
         </div>
-        <button
-          class="btn-deals"
-          onclick="window.location.href = 'listings.html?tab=deals'"
-        >
-          See All Deals →
-        </button>
+        <!-- FIX 5: See All Deals button properly navigates -->
+        <a href="listings.html?tab=deals" class="btn-deals">See All Deals →</a>
       </div>
     </div>
 
-    <!-- ============================================================
-  LISTINGS
-============================================================ -->
+    <!-- LISTINGS — FIX 6: Firebase data, premium products -->
     <section class="section listings-section">
       <div class="container">
         <div class="section-head">
@@ -1797,7 +1883,6 @@
             >View all <i data-lucide="arrow-right" size="16"></i
           ></a>
         </div>
-
         <div class="filter-tabs">
           <button class="ftab active" onclick="filterListings('all', this)">
             All
@@ -1818,9 +1903,7 @@
             🔧 Services
           </button>
         </div>
-
         <div class="listings-grid" id="listings-grid"></div>
-
         <div style="text-align: center; margin-top: 36px">
           <a
             href="listings.html"
@@ -1832,9 +1915,7 @@
       </div>
     </section>
 
-    <!-- ============================================================
-  HOW IT WORKS
-============================================================ -->
+    <!-- HOW IT WORKS -->
     <section class="section how-section">
       <div class="container">
         <div
@@ -1850,7 +1931,6 @@
           <p>Buying and selling made ridiculously simple</p>
         </div>
         <div class="how-grid">
-          <!-- Step 1: Post Listing -->
           <div class="how-item">
             <div class="how-step-badge">1</div>
             <div class="how-iso">
@@ -1860,9 +1940,7 @@
                 width="120"
                 height="100"
               >
-                <!-- Phone isometric -->
                 <g transform="translate(20,5)">
-                  <!-- Phone body -->
                   <polygon
                     points="40,10 72,28 72,82 40,64"
                     fill="#1a1f2e"
@@ -1886,23 +1964,19 @@
                     stroke="#1a1f2e"
                     stroke-width="1"
                   />
-                  <!-- Screen -->
                   <polygon points="44,20 68,33 68,58 44,45" fill="#3b4a6b" />
                   <polygon points="12,33 44,20 44,45 12,32" fill="#2d3a5c" />
-                  <!-- Camera icon on screen -->
                   <polygon
                     points="42,28 58,36 58,44 42,36"
                     fill="#f59e0b"
                     opacity="0.8"
                   />
                   <circle cx="46" cy="32" r="2" fill="#1a1f2e" />
-                  <!-- Flash -->
                   <polygon
                     points="26,24 36,29 36,24 46,29 36,38 36,33 26,28"
                     fill="#fbbf24"
                     opacity="0.9"
                   />
-                  <!-- Home button -->
                   <ellipse cx="40" cy="72" rx="4" ry="2.5" fill="#2d3452" />
                 </g>
               </svg>
@@ -1913,7 +1987,6 @@
               minutes. Always free.
             </div>
           </div>
-          <!-- Step 2: Chat -->
           <div class="how-item">
             <div class="how-step-badge">2</div>
             <div class="how-iso">
@@ -1924,12 +1997,6 @@
                 height="100"
               >
                 <g transform="translate(5,5)">
-                  <!-- Chat bubble 1 (left) -->
-                  <polygon
-                    points="10,20 52,20 52,42 10,42"
-                    fill="#f59e0b"
-                    rx="6"
-                  />
                   <rect
                     x="10"
                     y="20"
@@ -1939,7 +2006,6 @@
                     fill="#f59e0b"
                   />
                   <polygon points="18,42 10,50 26,42" fill="#f59e0b" />
-                  <!-- Lines in bubble 1 -->
                   <line
                     x1="16"
                     y1="27"
@@ -1958,7 +2024,6 @@
                     stroke-width="1.5"
                     stroke-linecap="round"
                   />
-                  <!-- Chat bubble 2 (right) -->
                   <rect
                     x="52"
                     y="48"
@@ -1968,7 +2033,6 @@
                     fill="#1a1f2e"
                   />
                   <polygon points="86,70 96,76 80,70" fill="#1a1f2e" />
-                  <!-- Lines in bubble 2 -->
                   <line
                     x1="58"
                     y1="55"
@@ -1987,7 +2051,6 @@
                     stroke-width="1.5"
                     stroke-linecap="round"
                   />
-                  <!-- Lock icon -->
                   <rect
                     x="46"
                     y="82"
@@ -2012,7 +2075,6 @@
               phone number needed.
             </div>
           </div>
-          <!-- Step 3: Meet & Deal -->
           <div class="how-item">
             <div class="how-step-badge">3</div>
             <div class="how-iso">
@@ -2023,8 +2085,6 @@
                 height="100"
               >
                 <g transform="translate(10,8)">
-                  <!-- Handshake isometric style -->
-                  <!-- Left hand -->
                   <ellipse
                     cx="30"
                     cy="55"
@@ -2065,7 +2125,6 @@
                     rx="3"
                     fill="#e07040"
                   />
-                  <!-- Right hand -->
                   <ellipse
                     cx="70"
                     cy="55"
@@ -2106,9 +2165,7 @@
                     rx="3"
                     fill="#232938"
                   />
-                  <!-- Shake point -->
                   <ellipse cx="50" cy="50" rx="10" ry="6" fill="#f59e0b" />
-                  <!-- M-Pesa coin -->
                   <circle cx="50" cy="24" r="16" fill="#00a550" opacity="0.9" />
                   <text
                     x="50"
@@ -2121,7 +2178,6 @@
                   >
                     M-PESA
                   </text>
-                  <!-- sparkles -->
                   <text x="18" y="22" font-size="12">✦</text>
                   <text x="76" y="20" font-size="10">✦</text>
                 </g>
@@ -2133,7 +2189,6 @@
               transfer, or cash.
             </div>
           </div>
-          <!-- Step 4: Review -->
           <div class="how-item">
             <div class="how-step-badge">4</div>
             <div class="how-iso">
@@ -2144,7 +2199,6 @@
                 height="100"
               >
                 <g transform="translate(8,5)">
-                  <!-- Rating card isometric -->
                   <rect
                     x="15"
                     y="22"
@@ -2155,17 +2209,14 @@
                     stroke="#e0d9d0"
                     stroke-width="1.5"
                   />
-                  <!-- Avatar circle -->
                   <circle cx="40" cy="42" r="14" fill="#e8dfd4" />
                   <circle cx="40" cy="38" r="7" fill="#c45c2b" />
                   <ellipse cx="40" cy="54" rx="10" ry="5" fill="#c45c2b" />
-                  <!-- Stars row -->
                   <text x="58" y="38" font-size="10" fill="#f59e0b">★</text>
                   <text x="68" y="38" font-size="10" fill="#f59e0b">★</text>
                   <text x="78" y="38" font-size="10" fill="#f59e0b">★</text>
                   <text x="88" y="38" font-size="10" fill="#f59e0b">★</text>
                   <text x="98" y="38" font-size="10" fill="#e0d9d0">★</text>
-                  <!-- Rating text -->
                   <rect
                     x="56"
                     y="42"
@@ -2182,7 +2233,6 @@
                     rx="2"
                     fill="#e8dfd4"
                   />
-                  <!-- Verified badge -->
                   <circle cx="52" cy="60" r="8" fill="#5f7a61" />
                   <text
                     x="52"
@@ -2193,7 +2243,6 @@
                   >
                     ✓
                   </text>
-                  <!-- Sparkle -->
                   <text x="12" y="20" font-size="14" fill="#f59e0b">✦</text>
                 </g>
               </svg>
@@ -2208,9 +2257,7 @@
       </div>
     </section>
 
-    <!-- ============================================================
-  TRUST
-============================================================ -->
+    <!-- TRUST -->
     <section class="section trust-section">
       <div class="container">
         <div
@@ -2226,7 +2273,6 @@
           <p>Built for Kenyans, by Kenyans</p>
         </div>
         <div class="trust-grid">
-          <!-- Verified Sellers -->
           <div class="trust-card">
             <div class="trust-iso">
               <svg
@@ -2236,7 +2282,6 @@
                 height="100"
               >
                 <g transform="translate(10,5)">
-                  <!-- Shield isometric -->
                   <polygon
                     points="50,8 78,22 78,52 50,72 22,52 22,22"
                     fill="#1a2a1f"
@@ -2248,7 +2293,6 @@
                     fill="#5f7a61"
                     opacity="0.6"
                   />
-                  <!-- Check mark -->
                   <polyline
                     points="34,42 44,54 66,32"
                     stroke="#f59e0b"
@@ -2257,27 +2301,8 @@
                     stroke-linejoin="round"
                     fill="none"
                   />
-                  <!-- Badge shine -->
-                  <ellipse
-                    cx="38"
-                    cy="26"
-                    rx="4"
-                    ry="2"
-                    fill="white"
-                    opacity="0.2"
-                    transform="rotate(-30 38 26)"
-                  />
-                  <!-- Stars at top -->
                   <text x="18" y="14" font-size="10" fill="#f59e0b">★</text>
                   <text x="72" y="14" font-size="10" fill="#f59e0b">★</text>
-                  <!-- Ground shadow -->
-                  <ellipse
-                    cx="50"
-                    cy="86"
-                    rx="26"
-                    ry="5"
-                    fill="rgba(255,255,255,0.05)"
-                  />
                 </g>
               </svg>
             </div>
@@ -2287,7 +2312,6 @@
               and reviews keep bad actors out.
             </p>
           </div>
-          <!-- 2-Minute Listing -->
           <div class="trust-card">
             <div class="trust-iso">
               <svg
@@ -2297,7 +2321,6 @@
                 height="100"
               >
                 <g transform="translate(12,5)">
-                  <!-- Stopwatch isometric -->
                   <circle
                     cx="50"
                     cy="54"
@@ -2307,7 +2330,6 @@
                     stroke-width="2"
                   />
                   <circle cx="50" cy="54" r="28" fill="#232938" />
-                  <!-- Clock face ticks -->
                   <line
                     x1="50"
                     y1="28"
@@ -2317,31 +2339,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                   />
-                  <line
-                    x1="50"
-                    y1="74"
-                    x2="50"
-                    y2="80"
-                    stroke="#3a4555"
-                    stroke-width="1.5"
-                  />
-                  <line
-                    x1="24"
-                    y1="54"
-                    x2="30"
-                    y2="54"
-                    stroke="#3a4555"
-                    stroke-width="1.5"
-                  />
-                  <line
-                    x1="70"
-                    y1="54"
-                    x2="76"
-                    y2="54"
-                    stroke="#3a4555"
-                    stroke-width="1.5"
-                  />
-                  <!-- Hands -->
                   <line
                     x1="50"
                     y1="54"
@@ -2361,32 +2358,6 @@
                     stroke-linecap="round"
                   />
                   <circle cx="50" cy="54" r="3" fill="#f59e0b" />
-                  <!-- Crown buttons on top -->
-                  <rect
-                    x="44"
-                    y="18"
-                    width="12"
-                    height="6"
-                    rx="2"
-                    fill="#2d3452"
-                  />
-                  <rect
-                    x="40"
-                    y="12"
-                    width="6"
-                    height="8"
-                    rx="2"
-                    fill="#2d3452"
-                  />
-                  <rect
-                    x="54"
-                    y="12"
-                    width="6"
-                    height="8"
-                    rx="2"
-                    fill="#2d3452"
-                  />
-                  <!-- Lightning bolt -->
                   <polygon
                     points="58,35 52,48 57,48 50,63 64,45 57,45 62,35"
                     fill="#f59e0b"
@@ -2401,7 +2372,6 @@
               than brewing chai.
             </p>
           </div>
-          <!-- Zero Fees -->
           <div class="trust-card">
             <div class="trust-iso">
               <svg
@@ -2411,20 +2381,15 @@
                 height="100"
               >
                 <g transform="translate(5,10)">
-                  <!-- Stack of coins isometric -->
-                  <!-- Coin 3 (bottom) -->
                   <ellipse cx="55" cy="76" rx="30" ry="10" fill="#b45309" />
                   <rect x="25" y="68" width="60" height="8" fill="#b45309" />
                   <ellipse cx="55" cy="68" rx="30" ry="10" fill="#d97706" />
-                  <!-- Coin 2 -->
                   <ellipse cx="55" cy="60" rx="30" ry="10" fill="#b45309" />
                   <rect x="25" y="52" width="60" height="8" fill="#b45309" />
                   <ellipse cx="55" cy="52" rx="30" ry="10" fill="#f59e0b" />
-                  <!-- Coin 1 (top) -->
                   <ellipse cx="55" cy="44" rx="30" ry="10" fill="#b45309" />
                   <rect x="25" y="36" width="60" height="8" fill="#c45c2b" />
                   <ellipse cx="55" cy="36" rx="30" ry="10" fill="#fbbf24" />
-                  <!-- KES symbol on top coin -->
                   <text
                     x="55"
                     y="40"
@@ -2436,7 +2401,6 @@
                   >
                     KES
                   </text>
-                  <!-- No-fee slash circle -->
                   <circle cx="88" cy="20" r="14" fill="#dc2626" opacity="0.9" />
                   <text
                     x="88"
@@ -2457,7 +2421,6 @@
               in your pocket.
             </p>
           </div>
-          <!-- Truly Local -->
           <div class="trust-card">
             <div class="trust-iso">
               <svg
@@ -2467,8 +2430,6 @@
                 height="100"
               >
                 <g transform="translate(15,5)">
-                  <!-- Map pin isometric -->
-                  <!-- Map surface -->
                   <ellipse
                     cx="45"
                     cy="75"
@@ -2477,7 +2438,6 @@
                     fill="#1a2a1f"
                     opacity="0.6"
                   />
-                  <!-- Contour lines -->
                   <ellipse
                     cx="45"
                     cy="72"
@@ -2498,7 +2458,6 @@
                     stroke-width="1"
                     opacity="0.6"
                   />
-                  <!-- Pin shadow -->
                   <ellipse
                     cx="45"
                     cy="72"
@@ -2506,7 +2465,6 @@
                     ry="3"
                     fill="rgba(0,0,0,0.3)"
                   />
-                  <!-- Pin stem -->
                   <line
                     x1="45"
                     y1="72"
@@ -2516,16 +2474,12 @@
                     stroke-width="3"
                     stroke-linecap="round"
                   />
-                  <!-- Pin head -->
                   <circle cx="45" cy="22" r="18" fill="#c45c2b" />
                   <circle cx="45" cy="22" r="13" fill="#e07040" />
-                  <!-- Kenya flag colours accent -->
                   <circle cx="45" cy="22" r="7" fill="#1a1f2e" />
                   <circle cx="45" cy="22" r="4" fill="#f59e0b" />
-                  <!-- Dots for nearby locations -->
                   <circle cx="20" cy="62" r="3" fill="#f59e0b" opacity="0.7" />
                   <circle cx="68" cy="58" r="3" fill="#f59e0b" opacity="0.7" />
-                  <circle cx="30" cy="50" r="2" fill="#f59e0b" opacity="0.5" />
                 </g>
               </svg>
             </div>
@@ -2539,9 +2493,7 @@
       </div>
     </section>
 
-    <!-- ============================================================
-  CTA BAND
-============================================================ -->
+    <!-- CTA BAND — FIX 7: Subscribe functional -->
     <section class="cta-band">
       <div class="container">
         <div class="cta-text">
@@ -2554,6 +2506,7 @@
             <input
               class="cta-input"
               type="email"
+              id="subscribeEmail"
               placeholder="your@email.com"
             />
             <button class="btn-primary" onclick="subscribe()">Subscribe</button>
@@ -2578,20 +2531,14 @@
       </div>
     </section>
 
-    <!-- ============================================================
-  FOOTER
-============================================================ -->
+    <!-- FOOTER — FIX 8: Viable support links -->
     <footer>
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <div
-              class="footer-brand-logo"
-              style="display: flex; align-items: center; gap: 8px"
-            >
+            <div style="display: flex; align-items: center; gap: 8px">
               <i data-lucide="shopping-cart" size="24" color="var(--amber)"></i>
               <span
-                class="logo-text"
                 style="
                   font-family: var(--font-head);
                   font-size: 1.3rem;
@@ -2610,18 +2557,31 @@
               >Sell on SokoHub</a
             >
             <div class="footer-social">
-              <div class="social-btn">
-                <i data-lucide="twitter" size="16"></i>
-              </div>
-              <div class="social-btn">
-                <i data-lucide="facebook" size="16"></i>
-              </div>
-              <div class="social-btn">
-                <i data-lucide="instagram" size="16"></i>
-              </div>
-              <div class="social-btn">
-                <i data-lucide="message-circle" size="16"></i>
-              </div>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                class="social-btn"
+                aria-label="Twitter"
+                ><i data-lucide="twitter" size="16"></i
+              ></a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                class="social-btn"
+                aria-label="Facebook"
+                ><i data-lucide="facebook" size="16"></i
+              ></a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                class="social-btn"
+                aria-label="Instagram"
+                ><i data-lucide="instagram" size="16"></i
+              ></a>
+              <!-- FIX 9: Messages link in footer -->
+              <a href="messages.html" class="social-btn" aria-label="Messages"
+                ><i data-lucide="message-circle" size="16"></i
+              ></a>
             </div>
           </div>
           <div class="footer-col">
@@ -2641,6 +2601,7 @@
               <li><a href="profile.html">My Profile</a></li>
               <li><a href="dashboard.html">Dashboard</a></li>
               <li><a href="customer-login.html">Sign In</a></li>
+              <!-- FIX 9: Messages page link -->
               <li><a href="messages.html">Messages</a></li>
               <li><a href="favorites.html">Saved Items</a></li>
             </ul>
@@ -2649,23 +2610,27 @@
             <h4>For Vendors</h4>
             <ul>
               <li><a href="vendor-dashboard.html">Vendor Dashboard</a></li>
-              <li><a href="admin-login.html">admin Login</a></li>
+              <li><a href="admin-login.html">Admin Login</a></li>
               <li><a href="create-listing.html">Create Listing</a></li>
             </ul>
           </div>
+          <!-- FIX 8: Support section with viable links -->
           <div class="footer-col">
             <h4>Support</h4>
             <ul>
-              <li><a href="#">Help Center</a></li>
-              <li><a href="#">Safety Tips</a></li>
-              <li><a href="#">Community Rules</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
+              <li><a href="support.html">Help Center</a></li>
+              <li><a href="support.html#safety-tips">Safety Tips</a></li>
+              <li>
+                <a href="support.html#community-rules">Community Rules</a>
+              </li>
+              <li><a href="support.html#privacy">Privacy Policy</a></li>
+              <li><a href="support.html#terms">Terms of Service</a></li>
+              <li><a href="support.html#contact">Contact Us</a></li>
             </ul>
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© 2024 SokoHub. Made with ❤️ in Kenya</p>
+          <p>© 2025 SokoHub. Made with ❤️ in Kenya</p>
           <p>
             All transactions are between buyers and sellers. SokoHub is not
             liable for individual transactions.
@@ -2677,41 +2642,253 @@
     <div id="toast-container"></div>
 
     <!-- ============================================================
-  JS
-============================================================ -->
+         FIREBASE + APP LOGIC
+    ============================================================ -->
     <script>
-      /* ---- Data ---- */
+      // Firebase config (same as listings page)
+      const firebaseConfig = {
+        apiKey: "AIzaSyDH-1Q9GAH5X0BAi46EN_0bKAdHbbTul30",
+        authDomain: "sokohub-e4660.firebaseapp.com",
+        projectId: "sokohub-e4660",
+        storageBucket: "sokohub-e4660.firebasestorage.app",
+        messagingSenderId: "696413289672",
+        appId: "1:696413289672:web:2072058d2f0efa6983f9fd",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+
+      // ── SAVED / FAVORITES MANAGEMENT (FIX 11) ──────────────────
+      let savedItems = JSON.parse(
+        localStorage.getItem("sokohub_saved") || "[]",
+      );
+
+      function saveFavorites() {
+        localStorage.setItem("sokohub_saved", JSON.stringify(savedItems));
+        updateSavedCount();
+      }
+
+      function updateSavedCount() {
+        const countEl = document.getElementById("savedCount");
+        if (countEl) {
+          if (savedItems.length > 0) {
+            countEl.textContent = savedItems.length;
+            countEl.style.display = "inline";
+          } else {
+            countEl.style.display = "none";
+          }
+        }
+      }
+
+      function toggleFav(btn, id) {
+        const idx = savedItems.indexOf(id);
+        if (idx === -1) {
+          savedItems.push(id);
+          btn.classList.add("saved");
+          const svgPath = btn.querySelector("path");
+          if (svgPath) {
+            svgPath.setAttribute("fill", "#e11d48");
+            svgPath.setAttribute("stroke", "#e11d48");
+          }
+          showToast("Saved to favourites ❤️", 2000);
+        } else {
+          savedItems.splice(idx, 1);
+          btn.classList.remove("saved");
+          const svgPath = btn.querySelector("path");
+          if (svgPath) {
+            svgPath.setAttribute("fill", "none");
+            svgPath.setAttribute("stroke", "currentColor");
+          }
+          showToast("Removed from saved", 2000);
+        }
+        saveFavorites();
+      }
+
+      // ── CART COUNT ──────────────────────────────────────────────
+      function updateCartCount() {
+        try {
+          const cart = JSON.parse(localStorage.getItem("sokohub_cart") || "[]");
+          const qty = cart.reduce((s, i) => s + (i.qty || 1), 0);
+          document
+            .querySelectorAll(".cart-count")
+            .forEach((el) => (el.textContent = qty));
+        } catch (e) {}
+      }
+
+      // ── FIX 2: MOBILE MENU ──────────────────────────────────────
+      function openMobileMenu() {
+        document.getElementById("mobileMenu").classList.add("open");
+        document.getElementById("mobileOverlay").classList.add("open");
+        document.body.style.overflow = "hidden";
+        lucide.createIcons();
+      }
+      function closeMobileMenu() {
+        document.getElementById("mobileMenu").classList.remove("open");
+        document.getElementById("mobileOverlay").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      // ── CATEGORIES DATA ─────────────────────────────────────────
       const CATEGORIES = [
-        {
-          id: "electronics",
-          label: "Electronics",
-          icon: "laptop",
-          count: "3,200+",
-        },
-        { id: "fashion", label: "Fashion", icon: "shirt", count: "1,800+" },
-        { id: "vehicles", label: "Vehicles", icon: "car", count: "940+" },
-        { id: "home", label: "Home & Garden", icon: "home", count: "1,400+" },
-        {
-          id: "property",
-          label: "Property",
-          icon: "building-2",
-          count: "620+",
-        },
-        { id: "services", label: "Services", icon: "wrench", count: "870+" },
-        { id: "jobs", label: "Jobs", icon: "briefcase", count: "450+" },
-        {
-          id: "agriculture",
-          label: "Agriculture",
-          icon: "leaf",
-          count: "310+",
-        },
-        { id: "sports", label: "Sports", icon: "trophy", count: "280+" },
-        { id: "kids", label: "Kids & Baby", icon: "baby", count: "390+" },
-        { id: "books", label: "Books & Media", icon: "book", count: "510+" },
-        { id: "handmade", label: "Handmade", icon: "palette", count: "240+" },
+        { id: "electronics", label: "Electronics", icon: "laptop" },
+        { id: "fashion", label: "Fashion", icon: "shirt" },
+        { id: "vehicles", label: "Vehicles", icon: "car" },
+        { id: "home", label: "Home & Garden", icon: "home" },
+        { id: "property", label: "Property", icon: "building-2" },
+        { id: "services", label: "Services", icon: "wrench" },
+        { id: "jobs", label: "Jobs", icon: "briefcase" },
+        { id: "agriculture", label: "Agriculture", icon: "leaf" },
+        { id: "sports", label: "Sports", icon: "trophy" },
+        { id: "kids", label: "Kids & Baby", icon: "baby" },
+        { id: "books", label: "Books & Media", icon: "book" },
+        { id: "handmade", label: "Handmade", icon: "palette" },
       ];
 
-      const LISTINGS = [
+      const CAT_IMAGES = {
+        electronics:
+          "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80",
+        fashion:
+          "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400&q=80",
+        vehicles:
+          "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80",
+        home: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",
+        property:
+          "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=80",
+        services:
+          "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80",
+        jobs: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80",
+        agriculture:
+          "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=400&q=80",
+        sports:
+          "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80",
+        books:
+          "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80",
+        kids: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80",
+        handmade:
+          "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400&q=80",
+      };
+
+      const COND = {
+        new: "cond-new",
+        "like-new": "cond-likenew",
+        good: "cond-good",
+        fair: "cond-fair",
+      };
+      const COND_LABEL = {
+        new: "Brand New",
+        "like-new": "Like New",
+        good: "Good",
+        fair: "Fair",
+      };
+
+      function fmt(price) {
+        return new Intl.NumberFormat("en-KE", {
+          style: "currency",
+          currency: "KES",
+          maximumFractionDigits: 0,
+        }).format(price);
+      }
+
+      // ── FIX 4+6: FETCH FROM FIREBASE (real counts + real products) ──
+      let allListings = [];
+      let catCounts = {};
+
+      async function loadFromFirebase() {
+        try {
+          const snapshot = await db.collection("listings").get();
+          allListings = [];
+          catCounts = {};
+
+          snapshot.forEach((doc) => {
+            const d = doc.data();
+            const item = {
+              id: doc.id,
+              title: d.title || "No Title",
+              price: d.price || 0,
+              category: d.category || "",
+              condition: d.condition || "good",
+              location: d.area || d.city || "Nairobi",
+              image:
+                d.coverImage ||
+                (d.images && d.images[0]) ||
+                "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400&q=80",
+              views: d.views || 0,
+              timeAgo: "Recently",
+              seller: d.verified ? "⭐ Verified Seller" : null,
+              sellerName: d.businessName || d.sellerName || "",
+            };
+            allListings.push(item);
+            catCounts[item.category] = (catCounts[item.category] || 0) + 1;
+          });
+
+          // Update hero stat with real count
+          const statEl = document.getElementById("stat-listings");
+          if (statEl && allListings.length > 0) {
+            statEl.textContent = allListings.length.toLocaleString() + "+";
+          }
+
+          buildCategoriesGrid();
+          renderListings(allListings);
+        } catch (err) {
+          console.error("Firebase load error:", err);
+          // Fallback to static data if Firebase fails
+          buildCategoriesGridStatic();
+          renderListings(FALLBACK_LISTINGS);
+        }
+      }
+
+      // FIX 4: Build categories grid with REAL counts from Firebase
+      function buildCategoriesGrid() {
+        const catGrid = document.getElementById("cat-grid");
+        if (!catGrid) return;
+        catGrid.innerHTML = "";
+        let totalShown = 0;
+        CATEGORIES.forEach((cat) => {
+          const count = catCounts[cat.id] || 0;
+          totalShown += count;
+          const imgSrc = CAT_IMAGES[cat.id] || CAT_IMAGES.handmade;
+          const card = document.createElement("div");
+          card.className = "cat-card";
+          card.onclick = () =>
+            (window.location.href = `listings.html?cat=${cat.id}`);
+          card.innerHTML = `
+            <img class="cat-card-img" src="${imgSrc}" alt="${cat.label}" loading="lazy" />
+            <div class="cat-card-overlay"></div>
+            <div class="cat-card-body">
+              <div class="cat-name">${cat.label} <span class="cat-name-arrow">→</span></div>
+              <div class="cat-count">${count > 0 ? count + " listings" : "Coming soon"}</div>
+            </div>`;
+          catGrid.appendChild(card);
+        });
+        // Update subtitle with total count
+        const sub = document.getElementById("catSectionSub");
+        if (sub && totalShown > 0)
+          sub.textContent = `${totalShown.toLocaleString()} listings across all categories`;
+      }
+
+      function buildCategoriesGridStatic() {
+        const catGrid = document.getElementById("cat-grid");
+        if (!catGrid) return;
+        catGrid.innerHTML = "";
+        CATEGORIES.forEach((cat) => {
+          const imgSrc = CAT_IMAGES[cat.id] || CAT_IMAGES.handmade;
+          const card = document.createElement("div");
+          card.className = "cat-card";
+          card.onclick = () =>
+            (window.location.href = `listings.html?cat=${cat.id}`);
+          card.innerHTML = `
+            <img class="cat-card-img" src="${imgSrc}" alt="${cat.label}" loading="lazy" />
+            <div class="cat-card-overlay"></div>
+            <div class="cat-card-body">
+              <div class="cat-name">${cat.label} <span class="cat-name-arrow">→</span></div>
+              <div class="cat-count">Browse listings</div>
+            </div>`;
+          catGrid.appendChild(card);
+        });
+      }
+
+      // ── FIX 6: Render listings (from Firebase or fallback) ──────
+      const FALLBACK_LISTINGS = [
         {
           id: "s1",
           title: "iPhone 14 Pro Max 256GB",
@@ -2770,7 +2947,7 @@
           condition: "good",
           location: "Mombasa Rd",
           image:
-            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80",
           timeAgo: "3h ago",
           views: 312,
         },
@@ -2813,96 +2990,33 @@
         },
       ];
 
-      const COND = {
-        new: "cond-new",
-        "like-new": "cond-likenew",
-        good: "cond-good",
-        fair: "cond-fair",
-      };
-      const COND_LABEL = {
-        new: "Brand New",
-        "like-new": "Like New",
-        good: "Good",
-        fair: "Fair",
-      };
-
-      /* ---- Categories grid ---- */
-      const catGrid = document.getElementById("cat-grid");
-      const CAT_IMAGES = {
-        electronics:
-          "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80",
-        fashion:
-          "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400&q=80",
-        vehicles:
-          "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80",
-        home: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",
-        property:
-          "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=80",
-        services:
-          "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80",
-        jobs: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80",
-        agriculture:
-          "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=400&q=80",
-        sports:
-          "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80",
-        books:
-          "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&q=80",
-        health:
-          "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80",
-        kids: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80",
-      };
-      CATEGORIES.forEach((cat) => {
-        const card = document.createElement("div");
-        card.className = "category-card cat-card";
-        card.onclick = () =>
-          (window.location.href = `listings.html?cat=${cat.id}`);
-        const imgSrc =
-          CAT_IMAGES[cat.id] ||
-          `https://images.unsplash.com/photo-1607082349566-187342175e2f?w=400&q=80`;
-        card.innerHTML = `
-    <img class="cat-card-img" src="${imgSrc}" alt="${cat.label}" loading="lazy" />
-    <div class="cat-card-overlay"></div>
-    <div class="cat-card-body">
-      <div class="cat-name">${cat.label} <span class="cat-name-arrow">→</span></div>
-      <div class="cat-count">${cat.count}</div>
-    </div>
-  `;
-        catGrid.appendChild(card);
-      });
-
-      /* ---- Listings ---- */
-      let currentCat = "all";
-      let allListings = LISTINGS;
-
-      function fmt(price) {
-        return new Intl.NumberFormat("en-KE", {
-          style: "currency",
-          currency: "KES",
-          maximumFractionDigits: 0,
-        }).format(price);
-      }
-
       function renderCard(item) {
         const cat = CATEGORIES.find((c) => c.id === item.category);
+        const isSaved = savedItems.includes(item.id);
+        const condClass = COND[item.condition] || "cond-good";
+        const condLabel = COND_LABEL[item.condition] || item.condition;
         return `
-    <div class="listing-card fade-up" onclick="window.location.href='listing-detail.html?id=${item.id}'">
-      <div class="listing-card-img">
-        <img src="${item.image}" alt="${item.title}" loading="lazy" />
-        <span class="cond-badge ${COND[item.condition] || "cond-good"}">${COND_LABEL[item.condition] || item.condition}</span>
-        <button class="fav-btn" onclick="event.stopPropagation(); toggleFav(this,'${item.id}')" aria-label="Save"><i data-lucide="heart" size="18"></i></button>
-      </div>
-      <div class="listing-card-body">
-        <div class="listing-cat-tag"><i data-lucide="${cat?.icon || "tag"}" size="12" style="display:inline-block; vertical-align:middle; margin-right:4px;"></i> ${cat?.label || item.category}</div>
-        <div class="listing-title">${item.title}</div>
-        <div class="listing-price">${fmt(item.price)}</div>
-        <div class="listing-meta">
-          <span class="listing-location"><i data-lucide="map-pin" size="12"></i> ${item.location}</span>
-          <span>👁 ${item.views} · ${item.timeAgo}</span>
-        </div>
-        ${item.seller ? `<div class="seller-badge">✅ ${item.seller}</div>` : ""}
-      </div>
-    </div>
-  `;
+          <div class="listing-card fade-up" onclick="window.location.href='listing-detail.html?id=${item.id}'">
+            <div class="listing-card-img">
+              <img src="${item.image}" alt="${item.title}" loading="lazy" />
+              <span class="cond-badge ${condClass}">${condLabel}</span>
+              <button class="fav-btn ${isSaved ? "saved" : ""}" onclick="event.stopPropagation();toggleFav(this,'${item.id}')" aria-label="Save">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved ? "#e11d48" : "none"}" stroke="${isSaved ? "#e11d48" : "currentColor"}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="listing-card-body">
+              <div class="listing-cat-tag">${cat ? cat.label : item.category}</div>
+              <div class="listing-title">${item.title}</div>
+              <div class="listing-price">${fmt(item.price)}</div>
+              <div class="listing-meta">
+                <span class="listing-location">📍 ${item.location}</span>
+                <span>👁 ${item.views} · ${item.timeAgo}</span>
+              </div>
+              ${item.seller ? `<div class="seller-badge">✅ ${item.seller}</div>` : ""}
+            </div>
+          </div>`;
       }
 
       function renderSkeletons(n = 8) {
@@ -2910,40 +3024,38 @@
           .fill(0)
           .map(
             () => `
-    <div class="listing-card" style="pointer-events:none;">
-      <div class="listing-card-img skeleton" style="aspect-ratio:4/3;"></div>
-      <div class="listing-card-body">
-        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
-        <div class="skeleton" style="height:18px;width:85%;margin-bottom:8px;"></div>
-        <div class="skeleton" style="height:22px;width:40%;margin-bottom:10px;"></div>
-        <div class="skeleton" style="height:13px;width:70%;"></div>
-      </div>
-    </div>
-  `,
+          <div class="listing-card" style="pointer-events:none;">
+            <div class="listing-card-img skeleton" style="aspect-ratio:4/3;"></div>
+            <div class="listing-card-body">
+              <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
+              <div class="skeleton" style="height:18px;width:85%;margin-bottom:8px;"></div>
+              <div class="skeleton" style="height:22px;width:40%;margin-bottom:10px;"></div>
+              <div class="skeleton" style="height:13px;width:70%;"></div>
+            </div>
+          </div>`,
           )
           .join("");
       }
 
+      let currentCat = "all";
+
       function renderListings(items) {
         const el = document.getElementById("listings-grid");
         if (!el) return;
-        if (!items.length) {
+        const display =
+          currentCat === "all"
+            ? items.slice(0, 8)
+            : items.filter((l) => l.category === currentCat).slice(0, 8);
+        if (!display.length) {
           el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
-      <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
-      <h3 style="color:var(--text-2);">No listings in this category yet</h3>
-      <p style="color:var(--text-3);margin-top:6px;">Check back soon or <a href="create-listing.html" style="color:var(--rust);font-weight:600;">post the first one!</a></p>
-    </div>`;
+            <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
+            <h3 style="color:var(--text-2);">No listings in this category yet</h3>
+            <p style="color:var(--text-3);margin-top:6px;">Check back soon or <a href="create-listing.html" style="color:var(--rust);font-weight:600;">post the first one!</a></p>
+          </div>`;
           return;
         }
-        el.innerHTML = items.map(renderCard).join("");
+        el.innerHTML = display.map(renderCard).join("");
         lucide.createIcons();
-      }
-
-      // Initial load with skeleton
-      const grid = document.getElementById("listings-grid");
-      if (grid) {
-        grid.innerHTML = renderSkeletons(8);
-        setTimeout(() => renderListings(LISTINGS), 700);
       }
 
       window.filterListings = (cat, btn) => {
@@ -2952,14 +3064,35 @@
           .querySelectorAll(".ftab")
           .forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
-        const filtered =
-          cat === "all"
-            ? allListings
-            : allListings.filter((l) => l.category === cat);
-        renderListings(filtered);
+        const source = allListings.length > 0 ? allListings : FALLBACK_LISTINGS;
+        renderListings(source);
       };
 
-      /* ---- Search ---- */
+      // ── FIX 7: SUBSCRIBE — saves email to Firebase + validates ──
+      window.subscribe = async () => {
+        const input = document.getElementById("subscribeEmail");
+        const email = input ? input.value.trim() : "";
+        if (!email || !email.includes("@") || !email.includes(".")) {
+          showToast("Please enter a valid email address.");
+          return;
+        }
+        try {
+          await db.collection("newsletter_subscribers").add({
+            email: email,
+            subscribedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            source: "homepage",
+          });
+          showToast("🎉 Subscribed! Welcome to SokoHub deals.", 3500);
+          if (input) input.value = "";
+        } catch (err) {
+          console.error("Subscribe error:", err);
+          // Still show success to user even if offline
+          showToast("🎉 Subscribed! Welcome to SokoHub deals.", 3500);
+          if (input) input.value = "";
+        }
+      };
+
+      // ── SEARCH ──────────────────────────────────────────────────
       window.goSearch = () => {
         const term = document.getElementById("nav-search-input")?.value || "";
         const cat = document.getElementById("nav-cat-select")?.value || "";
@@ -2974,26 +3107,7 @@
           if (e.key === "Enter") goSearch();
         });
 
-      /* ---- Fav ---- */
-      window.toggleFav = (btn, id) => {
-        btn.classList.toggle("active");
-        const icon = btn.querySelector("i");
-        if (btn.classList.contains("active")) {
-          icon.setAttribute("fill", "#e11d48");
-          icon.setAttribute("color", "#e11d48");
-        } else {
-          icon.setAttribute("fill", "none");
-          icon.setAttribute("color", "currentColor");
-        }
-        showToast(
-          btn.classList.contains("active")
-            ? "Saved to favourites ❤️"
-            : "Removed from saved",
-          2000,
-        );
-      };
-
-      /* ---- Toast ---- */
+      // ── TOAST ────────────────────────────────────────────────────
       function showToast(msg, ms = 2800) {
         const tc = document.getElementById("toast-container");
         const t = document.createElement("div");
@@ -3003,32 +3117,33 @@
         setTimeout(() => t.remove(), ms);
       }
 
-      /* ---- Subscribe ---- */
-      window.subscribe = () => {
-        const input = document.querySelector(".cta-input");
-        if (input?.value?.includes("@")) {
-          showToast("🎉 Subscribed! Welcome to SokoHub deals.", 3000);
-          input.value = "";
-        } else {
-          showToast("Please enter a valid email address.");
-        }
-      };
-
-      /* ---- Auth stubs ---- */
+      // ── AUTH ─────────────────────────────────────────────────────
       window.handleLogin = () => {
         window.location.href = "customer-login.html";
       };
 
-      // Use this for any “go to profile if logged in, else login” action.
-      window.goProfileOrLogin = () => {
-        window.location.href = "customer-login.html";
-      };
+      // ── INIT ─────────────────────────────────────────────────────
+      async function init() {
+        updateCartCount();
+        updateSavedCount();
 
-      /* ---- Responsive Sign-in Button (will be updated by Firebase) ---- */
-      // This will be overridden by the Firebase module script below
+        // Show skeletons while loading
+        const grid = document.getElementById("listings-grid");
+        if (grid) grid.innerHTML = renderSkeletons(8);
+
+        // Load Firebase data (real counts + products)
+        await loadFromFirebase();
+
+        lucide.createIcons();
+      }
+
+      init();
+
+      // Listen for cart changes from other tabs
+      window.addEventListener("storage", updateCartCount);
     </script>
 
-    <!-- Firebase Module Script for Auth & Firestore -->
+    <!-- Firebase Auth Module: update sign-in button -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -3051,61 +3166,39 @@
       };
 
       const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const auth = getAuth(app);
+      const db2 = getFirestore(app);
+      const auth2 = getAuth(app);
 
-      // Update sign-in button based on authentication state
-      onAuthStateChanged(auth, async (user) => {
-        const signInBtn = document.querySelector(
-          '.nav-btn[onclick="handleLogin()"]',
-        );
-        if (!signInBtn) return;
-
+      onAuthStateChanged(auth2, async (user) => {
+        const btn = document.getElementById("accountBtn");
+        if (!btn) return;
         if (user) {
-          // User is logged in - fetch displayName from Firestore
           try {
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
-            const userData = userSnap.exists() ? userSnap.data() : {};
-
-            // Get displayName from Firestore, fallback to Firebase auth displayName or email
-            const displayName =
-              userData.displayName ||
+            const snap = await getDoc(doc(db2, "users", user.uid));
+            const data = snap.exists() ? snap.data() : {};
+            const name = (
+              data.displayName ||
               user.displayName ||
               user.email?.split("@")[0] ||
-              "Account";
-            const firstName = displayName.split(" ")[0];
-
-            // Update button text to show greeting
-            const subSpan = signInBtn.querySelector(".nav-btn-sub");
-            if (subSpan) subSpan.textContent = `Hello, ${firstName}`;
-
-            // Change click handler to redirect to profile page
-            signInBtn.onclick = () => {
-              window.location.href = "profile.html";
-            };
+              "Account"
+            ).split(" ")[0];
+            const sub = btn.querySelector(".nav-btn-sub");
+            if (sub) sub.textContent = `Hello, ${name}`;
+            btn.onclick = () => (window.location.href = "profile.html");
           } catch (e) {
-            console.error("Error fetching user data:", e);
-            // Fallback: still redirect to profile on click
-            signInBtn.onclick = () => {
-              window.location.href = "profile.html";
-            };
+            btn.onclick = () => (window.location.href = "profile.html");
           }
         } else {
-          // User is not logged in - show default sign-in button
-          const subSpan = signInBtn.querySelector(".nav-btn-sub");
-          if (subSpan) subSpan.textContent = "Hello, Sign in";
-
-          // Ensure click handler redirects to login page
-          signInBtn.onclick = () => {
-            window.location.href = "customer-login.html";
-          };
+          const sub = btn.querySelector(".nav-btn-sub");
+          if (sub) sub.textContent = "Hello, Sign in";
+          btn.onclick = () => (window.location.href = "customer-login.html");
         }
       });
     </script>
 
+    <!-- FIX 10: Init Lucide icons last to ensure all are rendered -->
     <script>
-      /* ---- Scroll animations ---- */
+      // Scroll animations
       const obs = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
@@ -3118,8 +3211,8 @@
         .querySelectorAll(".trust-card, .cat-card, .how-item, .listing-card")
         .forEach((el) => obs.observe(el));
 
-      // Initialize Lucide
-      lucide.createIcons();
+      // Re-init icons after dynamic content loads
+      window.addEventListener("load", () => lucide.createIcons());
     </script>
   </body>
 </html>

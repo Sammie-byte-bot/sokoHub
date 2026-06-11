@@ -1,6 +1,0 @@
-- [ ] Add auth-state driven navbar account widget to: index.html, listings.html, listing-detail.html, cart.html
-- [ ] Ensure signed-out state shows “Hello, Sign in” redirecting to customer-login.html
-- [ ] Ensure signed-in state shows avatar/initials and redirects to profile.html on click
-- [ ] Implement Firebase Auth initialization + onAuthStateChanged listener in each page (consistent config)
-- [ ] Add minimal CSS for avatar/initials (fallback)
-- [ ] Sanity check: DOM element IDs used consistently across all pages
